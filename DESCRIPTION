@@ -1,0 +1,28 @@
+Package: DataExplorer
+Title: histExplorer
+Version: 0.0.0.9000
+Authors@R: person('Busayo', 'Kodaolu', email = 'buskod21@gmail.com', role = c('cre', 'aut'))
+Description: This explores histotical data in the borealis database.
+License: MIT + file LICENSE
+URL: https://github.com/buskod21
+BugReports: https://github.com/buskod21/issues
+Imports: 
+    bs4Dash,
+    config (>= 0.3.1),
+    dplyr,
+    DT,
+    ggplot2,
+    golem (>= 0.4.1),
+    shiny (>= 1.7.1),
+    shinyWidgets,
+    skimr
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.2.0
+Depends: 
+    R (>= 2.10)
