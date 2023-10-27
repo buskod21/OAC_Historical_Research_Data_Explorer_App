@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DataExplorer
+# DataExplorer App
 
 <!-- badges: start -->
 <!-- badges: end -->
