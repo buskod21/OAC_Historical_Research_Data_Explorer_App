@@ -41,37 +41,25 @@ This shiny web application was developed as a part of the Reusable
 research data made shiny workshop that was held at the University of
 Guelph, Guelph Ontario Canada.
 
-``` r
-#library(DataExplorer)
-## basic example code
-```
+<img src="inst/app/www/workshop1.jpeg" width="80%" />
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+# How the app works
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+The front page of the App displays three tabs in the Menu as shown
+below:
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+<img src="inst/app/www/App_front.png" width="40%" />
 
-You can also embed plots, for example:
+## 1. The home tab
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+The home tab gives a general description of how the app works. It
+contains a link that directs users to Github repository where they can
+find information and files for the workshop. It also contains a link
+that direct users to the borealis database.
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+## 2. The Data explorer tab
+
+## 3. The Explore borealis tab
 
 Please note that the DataExplorer project is released with a
 [Contributor Code of
