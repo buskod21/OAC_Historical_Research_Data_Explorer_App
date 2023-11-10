@@ -7,7 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @importFrom DT datatable renderDataTable dataTableOutput
 #' @import skimr
 #' @import dplyr
 mod_data_ui <- function(id){

@@ -7,7 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @importFrom DT datatable renderDataTable dataTableOutput
 mod_metadata_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -69,7 +68,7 @@ mod_metadata_server <- function(id, exampleData){
 
     #Render a data table for metadata
     output$meta <- DT::renderDataTable({
-      datatable(metaData()[1:7,],
+      DT::datatable(metaData()[1:7,],
                 rownames = FALSE,
                 colnames = c("Keys", "Values"),
                 options = list(dom = "tp",

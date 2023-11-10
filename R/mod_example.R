@@ -7,7 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @importFrom DT datatable renderDataTable dataTableOutput
 #' @import dplyr
 mod_example_ui <- function(id){
   ns <- NS(id)

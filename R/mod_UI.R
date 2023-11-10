@@ -7,7 +7,6 @@
 #'
 #'
 #' @importFrom shiny NS tagList
-#' @import DT
 #' @import skimr
 mod_UI_ui <- function(id){
   ns <- NS(id)
