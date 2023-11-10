@@ -1,3 +1,6 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # DataExplorer
 
 <!-- badges: start -->
@@ -18,7 +21,7 @@ with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App/tree/dev")
+remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App@dev")
 
 # Run the App
 library(DataExplorer)

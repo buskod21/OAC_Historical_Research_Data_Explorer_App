@@ -23,7 +23,7 @@ mod_data_ui <- function(id){
                  elevation = 3,
                  width = 12,
                  collapsed = F,
-                 dataTableOutput(ns("rawtable"))),
+                 DT::dataTableOutput(ns("rawtable"))),
              box(title = "Summary statistics",
                  status = "white",
                  solidHeader = TRUE,
@@ -68,8 +68,8 @@ mod_data_server <- function(id, exampleData){
     })
 
 
-    output$rawtable <- renderDataTable({
-    datatable(data(),
+    output$rawtable <- DT::renderDataTable({
+    DT::datatable(data(),
               rownames = FALSE,
               options = list(dom = "tp",
                              autoWidth = FALSE,

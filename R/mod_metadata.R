@@ -20,7 +20,7 @@ mod_metadata_ui <- function(id){
                  elevation = 3,
                  width = 12,
                  collapsed = F,
-                 dataTableOutput(ns("meta"))),
+                 DT::dataTableOutput(ns("meta"))),
              box(title = "Data Schema",
                  status = "white",
                  solidHeader = TRUE,
@@ -28,7 +28,7 @@ mod_metadata_ui <- function(id){
                  elevation = 3,
                  width = 12,
                  collapsed = T,
-                 dataTableOutput(ns("schema")))
+                 DT::dataTableOutput(ns("schema")))
       )
     )
   )
@@ -68,7 +68,7 @@ mod_metadata_server <- function(id, exampleData){
 
 
     #Render a data table for metadata
-    output$meta <- renderDataTable({
+    output$meta <- DT::renderDataTable({
       datatable(metaData()[1:7,],
                 rownames = FALSE,
                 colnames = c("Keys", "Values"),
@@ -79,8 +79,8 @@ mod_metadata_server <- function(id, exampleData){
 
 
     # Render a data table for data schema
-    output$schema <- renderDataTable({
-      datatable(metaData()[8:13,],
+    output$schema <- DT::renderDataTable({
+      DT::datatable(metaData()[8:13,],
                 rownames = FALSE,
                 colnames = c("Keys", "Values"),
                 options = list(dom = "tp",
