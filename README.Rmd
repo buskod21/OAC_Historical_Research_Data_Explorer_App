@@ -62,7 +62,4 @@ The home tab gives a general description of how the app works. It contains a lin
 ## 2. The Data explorer tab
 ## 3. The Explore borealis tab
 
-
-
-
 Please note that the DataExplorer project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
