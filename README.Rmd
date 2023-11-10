@@ -31,7 +31,7 @@ remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explore
 ```
 ## Run the app on your local computer
 
-You can als run the app directly on your local computer using:
+You can also run the app directly on your local computer using:
 
 ``` r
 DataExplorer::run_app()
