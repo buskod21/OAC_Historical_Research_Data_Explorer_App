@@ -28,7 +28,11 @@ You can install DataExplorer package from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("remotes")
 remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App/tree/dev")
+
+# Run the App
+library(DataExplorer)
 ```
+
 ## Run the app on your local computer
 
 You can also run the app directly on your local computer using:
@@ -42,10 +46,8 @@ DataExplorer::run_app()
 This shiny web application was developed as a part of the Reusable research data made shiny workshop that was held at the University of Guelph, Guelph Ontario Canada.
 
 
-
-
 ```{r example}
-library(DataExplorer)
+#library(DataExplorer)
 ## basic example code
 ```
 

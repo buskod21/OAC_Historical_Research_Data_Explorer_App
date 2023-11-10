@@ -1,27 +1,48 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DataExplorer Shiny App
+# DataExplorer
 
 <!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of DataExplorer is to …
+The goal of DataExplorer is to enable user to explore and visualize
+historical data from the Borealis database. The app enables user to
+visualize the metadata for the data, check the structure of raw data,
+see some basic descriptive statistics and plot the data.
 
 ## Installation
 
-You can install the development version of DataExplorer like so:
+You can install DataExplorer package from [GitHub](https://github.com/)
+with:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# install.packages("remotes")
+remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App/tree/dev")
+
+# Run the App
+library(DataExplorer)
 ```
 
-## Example
+## Run the app on your local computer
 
-This is a basic example which shows you how to solve a common problem:
+You can also run the app directly on your local computer using:
 
 ``` r
-library(DataExplorer)
+DataExplorer::run_app()
+```
+
+## Acknowledgement
+
+This shiny web application was developed as a part of the Reusable
+research data made shiny workshop that was held at the University of
+Guelph, Guelph Ontario Canada.
+
+``` r
+#library(DataExplorer)
 ## basic example code
 ```
 
@@ -51,4 +72,8 @@ You can also embed plots, for example:
 
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.
-# ReusableData
+
+Please note that the DataExplorer project is released with a
+[Contributor Code of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
