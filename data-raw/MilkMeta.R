@@ -4,4 +4,6 @@ MilkMeta <- read.table(text = gsub("=", ":",
                        sep =  ":")
 
 
-usethis::use_data(MilkMeta, overwrite = TRUE)
+usethis::use_data(MilkMeta,
+                  overwrite = TRUE,
+                  internal=TRUE)
