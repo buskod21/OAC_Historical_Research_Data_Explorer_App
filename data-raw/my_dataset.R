@@ -12,11 +12,8 @@ MilkMeta <- read.table(text = gsub("=", ":",
                                    readLines("inst/extdata/C100_README_Cant et al_cowMilk_1997_20210922.txt")),
                        sep =  ":")
 
-data_Inbuilt<-list(Fattyacid,Feed,Milk)
 
 
-
-usethis::use_data(data_Inbuilt, overwrite = TRUE)
 
 usethis::use_data(Fattyacid, overwrite = TRUE)
 usethis::use_data(Feed)

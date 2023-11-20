@@ -44,7 +44,7 @@ mod_data_server <- function(id, exampleData){
 
     data <- reactive({
       req(exampleData())
-      path <- file.path("inst/extdata/data", paste0(exampleData(), ".rda"))
+      path <- file.path("data", paste0(exampleData(), ".rda"))
 
       # Load the .rda
       if (file.exists(path)) {

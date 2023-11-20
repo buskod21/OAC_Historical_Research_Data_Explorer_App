@@ -2,7 +2,7 @@
 #'
 #' The dataset is derived from the borealis database
 #' and is used to show how the DataExplorer App works
-#' @name treeDistances
+#' @name Example datasets
 #' @keywords datasets
 "Fattyacid"
 

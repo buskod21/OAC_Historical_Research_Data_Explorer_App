@@ -68,6 +68,8 @@ golem::use_recommended_tests()
 usethis::use_data_raw(name = "my_dataset", open = FALSE)
 
 
+
+
 ## Favicon ----
 # If you want to change the favicon (default is golem's one)
 golem::use_favicon() # path = "path/to/ico". Can be an online file.

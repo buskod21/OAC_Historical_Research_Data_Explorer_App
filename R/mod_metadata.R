@@ -42,7 +42,7 @@ mod_metadata_server <- function(id, exampleData){
 
       req(exampleData)
 
-      filename <- list.files("inst/extdata/data", pattern = paste0(exampleData(),"Meta"))
+      filename <- list.files("data", pattern = paste0(exampleData(),"Meta"))
 
       if (length(filename) == 0) {
 
