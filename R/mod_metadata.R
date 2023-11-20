@@ -5,15 +5,12 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shiny NS tagList
-#' @import DT
 mod_metadata_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
       column(12,
-             box(title = "Description of the Dataset",
+             bs4Dash::box(title = "Description of the Dataset",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,
@@ -21,7 +18,7 @@ mod_metadata_ui <- function(id){
                  width = 12,
                  collapsed = F,
                  DT::dataTableOutput(ns("meta"))),
-             box(title = "Data Schema",
+             bs4Dash::box(title = "Data Schema",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,

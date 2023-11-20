@@ -17,6 +17,7 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
+attachment::att_from_rscripts()
 
 ## 2.1 Add modules ----
 ## Create a module infrastructure in R/

@@ -7,7 +7,6 @@
 #'
 #'
 #' @importFrom shiny NS tagList
-#' @import skimr
 mod_UI_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -18,7 +17,7 @@ mod_UI_ui <- function(id){
                             "Feed" = "Feed"),
                 selected = "fattyacid"
     ),
-    tabBox(title = "",
+    bs4Dash::tabBox(title = "",
            width = 12,
            collapsible = TRUE,
            maximizable = TRUE,
@@ -27,7 +26,7 @@ mod_UI_ui <- function(id){
            status = "lightblue",
            side = "right",
            type = "tabs",
-           tabPanel("Metadata",mod_metadata_ui(ns("metadata_1"))
+          tabPanel("Metadata",mod_metadata_ui(ns("metadata_1"))
            ),
            tabPanel("Data", mod_data_ui(ns("data_1"))
            ),

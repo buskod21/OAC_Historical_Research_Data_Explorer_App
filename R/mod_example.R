@@ -7,7 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @import dplyr
 mod_example_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -18,21 +17,21 @@ mod_example_ui <- function(id){
                             "Feed" = "Feed"),
                 selected = "Fattyacid"
     ),
-    tabBox(title = "",
-           width = 12,
-           collapsible = TRUE,
-           maximizable = TRUE,
-           elevation = 1,
-           solidHeader = TRUE,
-           status = "lightblue",
-           side = "right",
-           type = "tabs",
-           tabPanel("Metadata", mod_metadata_ui(ns("metadata_1"))
-           ),
-           tabPanel("Data", mod_data_ui(ns("data_1"))
-           ),
-           tabPanel("Plot", mod_plot_ui(ns("plot_1"))
-           )
+    bs4Dash::tabBox(title = "",
+                    width = 12,
+                    collapsible = TRUE,
+                    maximizable = TRUE,
+                    elevation = 1,
+                    solidHeader = TRUE,
+                    status = "lightblue",
+                    side = "right",
+                    type = "tabs",
+                    tabPanel("Metadata", mod_metadata_ui(ns("metadata_1"))
+                    ),
+                    tabPanel("Data", mod_data_ui(ns("data_1"))
+                    ),
+                    tabPanel("Plot", mod_plot_ui(ns("plot_1"))
+                    )
     )
   )
 }

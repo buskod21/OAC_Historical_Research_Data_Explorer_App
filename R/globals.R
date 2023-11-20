@@ -1,0 +1,10 @@
+globalVariables(
+  c(
+    "Fattyacid",
+    "FattyacidMeta",
+    "Feed",
+    "FeedMeta",
+    "Milk",
+    "MilkMeta"
+  )
+)

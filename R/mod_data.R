@@ -5,18 +5,13 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shiny NS tagList
-#' @import skimr
-#' @import dplyr
-#' @import DT
 mod_data_ui <- function(id){
   ns <- NS(id)
   tagList(
 
     fluidRow(
-      column(12,
-             box(title = "Raw Data",
+      bs4Dash::column(12,
+             bs4Dash::box(title = "Raw Data",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,
@@ -24,7 +19,7 @@ mod_data_ui <- function(id){
                  width = 12,
                  collapsed = F,
                  DT::dataTableOutput(ns("rawtable"))),
-             box(title = "Summary statistics",
+             bs4Dash::box(title = "Summary statistics",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,
@@ -58,7 +53,7 @@ mod_data_server <- function(id, exampleData){
 
         #Optionally, you can modify the data here (e.g., converting columns to factors)
         df <- df %>%
-        mutate(across(1:5, as.factor))
+        dplyr::mutate(across(1:5, as.factor))
 
         return(df)
         } else {
