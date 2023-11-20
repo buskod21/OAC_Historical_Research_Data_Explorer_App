@@ -36,12 +36,12 @@ golem::set_golem_options()
 golem::install_dev_deps()
 
 ## Hide files
-# usethis::use_build_ignore("CODE_OF_CONDUCT.md")
-# usethis::use_build_ignore("LICENSE.md")
-# usethis::use_build_ignore("README.Rmd")
-# usethis::use_build_ignore("app.R")
-# usethis::use_build_ignore("data-raw/")
-# usethis::use_build_ignore("dev/")
+usethis::use_build_ignore("CODE_OF_CONDUCT.md")
+usethis::use_build_ignore("LICENSE.md")
+usethis::use_build_ignore("README.Rmd")
+usethis::use_build_ignore("app.R")
+usethis::use_build_ignore("data-raw/")
+usethis::use_build_ignore("dev/")
 
 
 ## Create Common Files ----

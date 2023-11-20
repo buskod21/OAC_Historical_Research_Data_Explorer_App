@@ -39,7 +39,6 @@ mod_UI_ui <- function(id){
 #' UI Server Functions
 #'
 #' @noRd
-#' @import DT
 mod_UI_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
