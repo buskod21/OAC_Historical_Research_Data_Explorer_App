@@ -35,6 +35,14 @@ golem::set_golem_options()
 ## Install the required dev dependencies ----
 golem::install_dev_deps()
 
+## Hide files
+usethis::use_build_ignore("CODE_OF_CONDUCT.md")
+usethis::use_build_ignore("LICENSE.md")
+usethis::use_build_ignore("README.Rmd")
+usethis::use_build_ignore("app.R")
+usethis::use_build_ignore("data-raw/")
+usethis::use_build_ignore("dev/")
+
 
 ## Create Common Files ----
 ## See ?usethis for more information
@@ -60,6 +68,8 @@ golem::use_recommended_tests()
 usethis::use_data_raw(name = "my_dataset", open = FALSE)
 
 
+
+
 ## Favicon ----
 # If you want to change the favicon (default is golem's one)
 golem::use_favicon() # path = "path/to/ico". Can be an online file.
@@ -76,3 +86,4 @@ golem::use_utils_server(with_test = TRUE)
 
 # go to dev/02_dev.R
 rstudioapi::navigateToFile("dev/02_dev.R")
+

@@ -4,11 +4,9 @@
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
-#' @noRddata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==
+#'
 #'
 #' @importFrom shiny NS tagList
-#' @import DT
-#' @import skimr
 mod_UI_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -19,7 +17,7 @@ mod_UI_ui <- function(id){
                             "Feed" = "Feed"),
                 selected = "fattyacid"
     ),
-    tabBox(title = "",
+    bs4Dash::tabBox(title = "",
            width = 12,
            collapsible = TRUE,
            maximizable = TRUE,
@@ -28,7 +26,7 @@ mod_UI_ui <- function(id){
            status = "lightblue",
            side = "right",
            type = "tabs",
-           tabPanel("Metadata",mod_metadata_ui(ns("metadata_1"))
+          tabPanel("Metadata",mod_metadata_ui(ns("metadata_1"))
            ),
            tabPanel("Data", mod_data_ui(ns("data_1"))
            ),
@@ -41,7 +39,6 @@ mod_UI_ui <- function(id){
 #' UI Server Functions
 #'
 #' @noRd
-#' @import DT
 mod_UI_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns

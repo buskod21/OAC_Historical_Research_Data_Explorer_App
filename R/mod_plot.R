@@ -7,49 +7,48 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @import ggplot2
 mod_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
     # The plot tab with option to select X and Y variable.
     #The X and Y will be updated after loading the data
     fluidRow(
-      column(3,
-             box(title = "Select Plot Type",
-                 status = "white",
-                 solidHeader = TRUE,
-                 collapsible = F,
-                 elevation = 3,
-                 width = 12,
-                 awesomeRadio(
-                   inputId = ns("button"),
-                   label = "Plot type",
-                   choices = c("Boxplot","Scatter plot"),
-                   selected = "Boxplot",
-                   inline = TRUE
-                 )),
+      bs4Dash::column(3,
+                      bs4Dash::box(title = "Select Plot Type",
+                                   status = "white",
+                                   solidHeader = TRUE,
+                                   collapsible = F,
+                                   elevation = 3,
+                                   width = 12,
+                                   awesomeRadio(
+                                     inputId = ns("button"),
+                                     label = "Plot type",
+                                     choices = c("Boxplot","Scatter plot"),
+                                     selected = "Boxplot",
+                                     inline = TRUE
+                                   )),
 
-             box(title = "Select Variables",
-                 status = "white",
-                 solidHeader = TRUE,
-                 collapsible = F,
-                 elevation = 3,
-                 width = 12,
-                 selectInput(ns("Xvar"),
-                             "X",
-                             choices = ""),
-                 selectInput(ns("Yvar"),
-                             "Y",
-                             choices =""))),
-      column(9,
-             box(title = "Plot Area",
-                 status = "white",
-                 solidHeader = TRUE,
-                 collapsible = F,
-                 elevation = 3,
-                 width = 12,
-                 plotOutput(ns("plot"))
-             )
+                      bs4Dash::box(title = "Select Variables",
+                                   status = "white",
+                                   solidHeader = TRUE,
+                                   collapsible = F,
+                                   elevation = 3,
+                                   width = 12,
+                                   selectInput(ns("Xvar"),
+                                               "X",
+                                               choices = ""),
+                                   selectInput(ns("Yvar"),
+                                               "Y",
+                                               choices =""))),
+      bs4Dash::column(9,
+                      bs4Dash::box(title = "Plot Area",
+                                   status = "white",
+                                   solidHeader = TRUE,
+                                   collapsible = F,
+                                   elevation = 3,
+                                   width = 12,
+                                   plotOutput(ns("plot"))
+                      )
       )
     )
   )
@@ -66,24 +65,37 @@ mod_plot_server <- function(id, exampleData){
 
       req(exampleData())
 
-      path <- file.path("data", paste0(exampleData(), ".rda"))
+      #   path <- file.path("data", paste0(exampleData(), ".rda"))
+      #
+      #   # Load the .rda
+      #   if (file.exists(path)) {
+      #
+      #     df <- load(path)
+      #     df <- get(df)
+      #
+      #     #Optionally, you can modify the data here (e.g., converting columns to factors)
+      #     df <- df %>%
+      #       dplyr::mutate(across(1:5, as.factor))
+      #     return(df)
+      #
+      #   } else {
+      #     # Handle the case where the file doesn't exist
+      #     return(NULL)
+      #   }
+      # })
 
-      # Load the .rda
-      if (file.exists(path)) {
-
-        df <- load(path)
-        df <- get(df)
-
-        #Optionally, you can modify the data here (e.g., converting columns to factors)
-        df <- df %>%
-          mutate(across(1:5, as.factor))
-        return(df)
-
-      } else {
-        # Handle the case where the file doesn't exist
-        return(NULL)
+      # Load package lazy data depending on user input
+      if (exampleData() %in% "Fattyacid") {
+        return(DataExplorer::Fattyacid)
+      }
+      if (exampleData() %in% "Milk") {
+        return(DataExplorer::Milk)
+      }
+      if (exampleData() %in% "Feed") {
+        return(DataExplorer::Feed)
       }
     })
+
 
     # update selectInput for Xvar based on selected data
     observe({
@@ -110,14 +122,14 @@ mod_plot_server <- function(id, exampleData){
 
       if (plot_type == "Boxplot") {
         data_plot() %>%
-          ggplot(aes_string(x = input$Xvar, y = input$Yvar, group = input$Xvar, color = input$Xvar)) +
-          geom_boxplot(size = 1) +
-          theme_classic()
+          ggplot2::ggplot(ggplot2::aes_string(x = input$Xvar, y = input$Yvar, group = input$Xvar, color = input$Xvar)) +
+          ggplot2::geom_boxplot(size = 1) +
+          ggplot2::theme_classic()
       } else if (plot_type == "Scatter plot") {
         data_plot() %>%
-          ggplot(aes_string(x = input$Xvar, y = input$Yvar, color = input$Xvar)) +
-          geom_point(size = 3) +
-          theme_classic()
+          ggplot2::ggplot(ggplot2::aes_string(x = input$Xvar, y = input$Yvar, color = input$Xvar)) +
+          ggplot2::geom_point(size = 3) +
+          ggplot2::theme_classic()
       }
 
     })

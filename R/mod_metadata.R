@@ -5,30 +5,27 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shiny NS tagList
-#' @importFrom DT datatable renderDataTable dataTableOutput
 mod_metadata_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
       column(12,
-             box(title = "Description of the Dataset",
+             bs4Dash::box(title = "Description of the Dataset",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,
                  elevation = 3,
                  width = 12,
                  collapsed = F,
-                 dataTableOutput(ns("meta"))),
-             box(title = "Data Schema",
+                 DT::dataTableOutput(ns("meta"))),
+             bs4Dash::box(title = "Data Schema",
                  status = "white",
                  solidHeader = TRUE,
                  collapsible = TRUE,
                  elevation = 3,
                  width = 12,
                  collapsed = T,
-                 dataTableOutput(ns("schema")))
+                 DT::dataTableOutput(ns("schema")))
       )
     )
   )
@@ -45,31 +42,40 @@ mod_metadata_server <- function(id, exampleData){
 
       req(exampleData)
 
-      filename <- list.files("data", pattern = paste0(exampleData(),"Meta"))
+      # filename <- list.files("data", pattern = paste0(exampleData(),"Meta"))
+      #
+      # if (length(filename) == 0) {
+      #
+      #   # Handle the case when no matching file is found
+      #   print("File not found")
+      #   return(NULL)  # Or handle the error as needed
+      #
+      #   loaded_data <- load(file.path("data", filename))
+      # }
+      #
+      # # Assuming there's only one matching file, load the data
+      # loaded_data <- load(file.path("data", filename))
+      #
+      # # Extract the loaded data from the environment
+      # loaded_data <- get(loaded_data)
 
-      if (length(filename) == 0) {
-
-        # Handle the case when no matching file is found
-        print("File not found")
-        return(NULL)  # Or handle the error as needed
-
-        loaded_data <- load(file.path("data", filename))
+      # Load package lazy data depending on user input
+      if (exampleData() %in% "Fattyacid") {
+        return(DataExplorer::FattyacidMeta)
       }
-
-      # Assuming there's only one matching file, load the data
-      loaded_data <- load(file.path("data", filename))
-
-      # Extract the loaded data from the environment
-      loaded_data <- get(loaded_data)
-
-      return(loaded_data)
+      if (exampleData() %in% "Milk") {
+        return(DataExplorer::MilkMeta)
+      }
+      if (exampleData() %in% "Feed") {
+        return(DataExplorer::FeedMeta)
+      }
     })
 
 
 
     #Render a data table for metadata
-    output$meta <- renderDataTable({
-      datatable(metaData()[1:7,],
+    output$meta <- DT::renderDataTable({
+      DT::datatable(metaData()[1:7,],
                 rownames = FALSE,
                 colnames = c("Keys", "Values"),
                 options = list(dom = "tp",
@@ -79,8 +85,8 @@ mod_metadata_server <- function(id, exampleData){
 
 
     # Render a data table for data schema
-    output$schema <- renderDataTable({
-      datatable(metaData()[8:13,],
+    output$schema <- DT::renderDataTable({
+      DT::datatable(metaData()[8:13,],
                 rownames = FALSE,
                 colnames = c("Keys", "Values"),
                 options = list(dom = "tp",

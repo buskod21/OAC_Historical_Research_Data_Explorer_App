@@ -3,32 +3,30 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
-#' @import tidyverse
-#' @import bs4Dash
-#' @import skimr
-#' @import shinyWidgets
 #' @noRd
 app_ui <- function(request) {
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
     # UI interface for the explorer App
     # Create a Shiny dashboard UI
-    ui <- dashboardPage(
+
+    ui <- bs4Dash::dashboardPage(
       skin = "lightblue",  # Set the dashboard's skin color
       scrollToTop = TRUE,  # Enable scroll to top button
       fullscreen = TRUE,  # Enable fullscreen mode
 
       # Define the dashboard header
-      dashboardHeader(
+      bs4Dash::dashboardHeader(
         title = "Menu",  # Set the title of the header
         status = "white",  # Set the header's status color
         h3("Reusable data Explorer")  # Add a subheading
       ),
 
       # Define the dashboard sidebar
-      dashboardSidebar(
+      bs4Dash::dashboardSidebar(
         collapsed = F,  # Sidebar is expanded by default
         minified = F,  # Sidebar is not minified
         skin = "light",
@@ -36,25 +34,25 @@ app_ui <- function(request) {
         elevation = 1,
 
         # Define the sidebar menu items
-        sidebarMenu(
-          menuItem("Home",  # Sidebar menu item for the home tab
+        bs4Dash::sidebarMenu(
+          bs4Dash::menuItem("Home",  # Sidebar menu item for the home tab
                    icon = icon("house-user"),
                    tabName = "home"),
 
-          menuItem("Data Explorer",  # Sidebar menu item for the data tab
+          bs4Dash::menuItem("Data Explorer",  # Sidebar menu item for the data tab
                    icon = icon("table"),
                    tabName = "data"),
 
-          menuItem("Explore borealis",  # Sidebar menu item for the owndata tab
+          bs4Dash::menuItem("Explore borealis",  # Sidebar menu item for the owndata tab
                    icon = icon("server"),
                    tabName = "owndata")
         )
       ),
 
       # Define the dashboard body
-      dashboardBody(
-        tabItems(
-          tabItem(
+      bs4Dash::dashboardBody(
+        bs4Dash::tabItems(
+          bs4Dash::tabItem(
             tabName = "home",  # Content for the "home" tab ----
             h5("Welcome to the reusable data explorer App."),  # Subheading
             br(),
@@ -92,12 +90,12 @@ app_ui <- function(request) {
             p(h5("Have fun exploring reusable data!")
             )
           ),
-          tabItem(
+          bs4Dash::tabItem(
             tabName = "data",  # Content for the "data" tab ----
             mod_example_ui("example_1")  # Include a UI element for the "Example" tab
           ),
 
-          tabItem(
+          bs4Dash::tabItem(
             tabName = "owndata",  # Content for the "owndata" tab ----
             mod_UI_ui("Borealis")  # Include a UI element for the "Borealis" tab
           )
@@ -112,8 +110,7 @@ app_ui <- function(request) {
 #' This function is internally used to add external
 #' resources inside the Shiny application.
 #'
-#' @import shiny
-#' @importFrom golem add_resource_path activate_js favicon bundle_resources
+#'
 #' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
@@ -122,7 +119,6 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "DataExplorer"

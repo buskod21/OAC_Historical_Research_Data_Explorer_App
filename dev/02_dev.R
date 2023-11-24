@@ -17,6 +17,7 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
+attachment::att_from_rscripts()
 
 ## 2.1 Add modules ----
 ## Create a module infrastructure in R/
@@ -49,7 +50,12 @@ golem::add_sass_file("custom")
 
 ## 2.5  Add internal datasets ----
 ## If you have data in your package
-usethis::use_data_raw(name = "my_dataset", open = FALSE)
+usethis::use_data_raw(name = "Fattyacid", open = FALSE)
+usethis::use_data_raw(name = "FattyacidMeta", open = FALSE)
+usethis::use_data_raw(name = "Feed", open = FALSE)
+usethis::use_data_raw(name = "FeedMeta", open = FALSE)
+usethis::use_data_raw(name = "Milk", open = FALSE)
+usethis::use_data_raw(name = "MilkMeta", open = FALSE)
 
 ## 2.6  Tests ----
 ## Add one line by test you want to create
