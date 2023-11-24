@@ -2,11 +2,17 @@
 #'
 #' The dataset is derived from the borealis database
 #' and is used to show how the DataExplorer App works
-#' @name Example datasets
+#' @name Fattyacid
 #' @keywords datasets
 "Fattyacid"
 
-#' @rdname Exampledatasets
+
+#' Example datasets
+#'
+#' The dataset is derived from the borealis database
+#' and is used to show how the DataExplorer App works
+#' @name FattyacidMeta
+#' @keywords datasets
 "FattyacidMeta"
 
 #' @rdname Exampledatasets

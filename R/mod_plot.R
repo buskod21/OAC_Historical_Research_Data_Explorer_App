@@ -65,24 +65,37 @@ mod_plot_server <- function(id, exampleData){
 
       req(exampleData())
 
-      path <- file.path("data", paste0(exampleData(), ".rda"))
+      #   path <- file.path("data", paste0(exampleData(), ".rda"))
+      #
+      #   # Load the .rda
+      #   if (file.exists(path)) {
+      #
+      #     df <- load(path)
+      #     df <- get(df)
+      #
+      #     #Optionally, you can modify the data here (e.g., converting columns to factors)
+      #     df <- df %>%
+      #       dplyr::mutate(across(1:5, as.factor))
+      #     return(df)
+      #
+      #   } else {
+      #     # Handle the case where the file doesn't exist
+      #     return(NULL)
+      #   }
+      # })
 
-      # Load the .rda
-      if (file.exists(path)) {
-
-        df <- load(path)
-        df <- get(df)
-
-        #Optionally, you can modify the data here (e.g., converting columns to factors)
-        df <- df %>%
-          dplyr::mutate(across(1:5, as.factor))
-        return(df)
-
-      } else {
-        # Handle the case where the file doesn't exist
-        return(NULL)
+      # Load package lazy data depending on user input
+      if (exampleData() %in% "Fattyacid") {
+        return(DataExplorer::Fattyacid)
+      }
+      if (exampleData() %in% "Milk") {
+        return(DataExplorer::Milk)
+      }
+      if (exampleData() %in% "Feed") {
+        return(DataExplorer::Feed)
       }
     })
+
 
     # update selectInput for Xvar based on selected data
     observe({

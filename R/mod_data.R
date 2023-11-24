@@ -11,22 +11,22 @@ mod_data_ui <- function(id){
 
     fluidRow(
       bs4Dash::column(12,
-             bs4Dash::box(title = "Raw Data",
-                 status = "white",
-                 solidHeader = TRUE,
-                 collapsible = TRUE,
-                 elevation = 3,
-                 width = 12,
-                 collapsed = F,
-                 DT::dataTableOutput(ns("rawtable"))),
-             bs4Dash::box(title = "Summary statistics",
-                 status = "white",
-                 solidHeader = TRUE,
-                 collapsible = TRUE,
-                 elevation = 3,
-                 width = 12,
-                 collapsed = T,
-                 verbatimTextOutput(ns("summary")))
+                      bs4Dash::box(title = "Raw Data",
+                                   status = "white",
+                                   solidHeader = TRUE,
+                                   collapsible = TRUE,
+                                   elevation = 3,
+                                   width = 12,
+                                   collapsed = F,
+                                   DT::dataTableOutput(ns("rawtable"))),
+                      bs4Dash::box(title = "Summary statistics",
+                                   status = "white",
+                                   solidHeader = TRUE,
+                                   collapsible = TRUE,
+                                   elevation = 3,
+                                   width = 12,
+                                   collapsed = T,
+                                   verbatimTextOutput(ns("summary")))
       )
     )
   )
@@ -44,40 +44,50 @@ mod_data_server <- function(id, exampleData){
 
     data <- reactive({
       req(exampleData())
-      path <- file.path("data", paste0(exampleData(), ".rda"))
+    #   path <- file.path("data", paste0(exampleData(), ".rda"))
+    #
+    #   # Load the .rda
+    #   if (file.exists(path)) {
+    #     df <- load(path)
+    #     df <- get(df)
+    #
+    #     #Optionally, you can modify the data here (e.g., converting columns to factors)
+    #     df <- df %>%
+    #       dplyr::mutate(across(1:5, as.factor))
+    #
+    #     return(df)
+    #   } else {
+    #     # Handle the case where the file doesn't exist
+    #     return(NULL)
+    #   }
+    # })
 
-      # Load the .rda
-      if (file.exists(path)) {
-        df <- load(path)
-        df <- get(df)
-
-        #Optionally, you can modify the data here (e.g., converting columns to factors)
-        df <- df %>%
-        dplyr::mutate(across(1:5, as.factor))
-
-        return(df)
-        } else {
-          # Handle the case where the file doesn't exist
-        return(NULL)
-      }
-    })
-
-
-    output$rawtable <- DT::renderDataTable({
+    # Load package lazy data depending on user input
+    if (exampleData() %in% "Fattyacid") {
+      return(DataExplorer::Fattyacid)
+    }
+    if (exampleData() %in% "Milk") {
+      return(DataExplorer::Milk)
+    }
+    if (exampleData() %in% "Feed") {
+      return(DataExplorer::Feed)
+    }
+  })
+  output$rawtable <- DT::renderDataTable({
     DT::datatable(data(),
-              rownames = FALSE,
-              options = list(dom = "tp",
-                             autoWidth = FALSE,
-                             scrollX = TRUE))
+                  rownames = FALSE,
+                  options = list(dom = "tp",
+                                 autoWidth = FALSE,
+                                 scrollX = TRUE))
   })
 
 
-    #output summary statistics
-    output$summary <- renderPrint({
-      skim(data())
-    })
-
+  #output summary statistics
+  output$summary <- renderPrint({
+    skim(data())
   })
+
+})
 }
 
 ## To be copied in the UI

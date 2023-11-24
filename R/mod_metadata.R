@@ -42,24 +42,33 @@ mod_metadata_server <- function(id, exampleData){
 
       req(exampleData)
 
-      filename <- list.files("data", pattern = paste0(exampleData(),"Meta"))
+      # filename <- list.files("data", pattern = paste0(exampleData(),"Meta"))
+      #
+      # if (length(filename) == 0) {
+      #
+      #   # Handle the case when no matching file is found
+      #   print("File not found")
+      #   return(NULL)  # Or handle the error as needed
+      #
+      #   loaded_data <- load(file.path("data", filename))
+      # }
+      #
+      # # Assuming there's only one matching file, load the data
+      # loaded_data <- load(file.path("data", filename))
+      #
+      # # Extract the loaded data from the environment
+      # loaded_data <- get(loaded_data)
 
-      if (length(filename) == 0) {
-
-        # Handle the case when no matching file is found
-        print("File not found")
-        return(NULL)  # Or handle the error as needed
-
-        loaded_data <- load(file.path("data", filename))
+      # Load package lazy data depending on user input
+      if (exampleData() %in% "Fattyacid") {
+        return(DataExplorer::FattyacidMeta)
       }
-
-      # Assuming there's only one matching file, load the data
-      loaded_data <- load(file.path("data", filename))
-
-      # Extract the loaded data from the environment
-      loaded_data <- get(loaded_data)
-
-      return(loaded_data)
+      if (exampleData() %in% "Milk") {
+        return(DataExplorer::MilkMeta)
+      }
+      if (exampleData() %in% "Feed") {
+        return(DataExplorer::FeedMeta)
+      }
     })
 
 
