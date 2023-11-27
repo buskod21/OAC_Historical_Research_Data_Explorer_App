@@ -1,6 +1,6 @@
 #' Example datasets
 #'
-#' The dataset is derived from the borealis database
+#' The dataset is derived from the borealis database.
 #' and is used to show how the DataExplorer App works
 #' @name Fattyacid
 #' @keywords datasets
@@ -15,14 +15,41 @@
 #' @keywords datasets
 "FattyacidMeta"
 
-#' @rdname Exampledatasets
+
+#' Example datasets
+#'
+#' The dataset is derived from the borealis database
+#' and is used to show how the DataExplorer App works
+#' @name Feed
+#' @keywords datasets
 "Feed"
 
-#' @rdname Exampledatasets
+
+#' Example datasets
+#'
+#' The dataset is derived from the borealis database
+#' and is used to show how the DataExplorer App works
+#' @name FeedMeta
+#' @keywords datasets
 "FeedMeta"
 
-#' @rdname Exampledatasets
+
+#' Example datasets
+#'
+#' The dataset is derived from the borealis database
+#' and is used to show how the DataExplorer App works
+#' @name Milk
+#' @keywords datasets
 "Milk"
 
-#' @rdname Exampledatasets
+
+#' Example datasets
+#'
+#' The dataset is derived from the borealis database
+#' and is used to show how the DataExplorer App works
+#' @name MilkMeta
+#' @keywords datasets
 "MilkMeta"
+
+
+
