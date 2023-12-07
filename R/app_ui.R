@@ -54,10 +54,7 @@ app_ui <- function(request) {
         bs4Dash::tabItems(
           bs4Dash::tabItem(
             tabName = "home",  # Content for the "home" tab ----
-            h5("Welcome to the reusable data explorer App."),  # Subheading
-            br(),
-
-            img(src = 'www/workshop1.jpeg', height=400, width=700),  # Display an image
+            h5(strong("Welcome to the reusable data explorer App.")),  # Subheading
 
             br(),
 
@@ -68,7 +65,7 @@ app_ui <- function(request) {
               tags$a(href = "https://github.com/agrifooddatacanada/RRDMS_Workshop",
                      "here.", target = "_blank")),  # Create a hyperlink
 
-            h5("About the App"),
+            h5(strong("About the App")),
 
             p(" The ", strong("Example tab "), "demonstrates how the app works.
                           It displays the Metadata, raw data, some summary statistics
@@ -90,10 +87,14 @@ app_ui <- function(request) {
                      target = "_blank"),
               " to access the oac repository in the Borealis database."),  # Create a hyperlink
 
+            br(),
+
+            img(src = 'www/workshop1.jpeg', height=400, width=700),  # Display an image
+
             # add space
             br(),
 
-            p(h4("Have fun exploring reusable data!")
+            p(h4(strong("Have fun exploring reusable data!"))
             )
           ),
 

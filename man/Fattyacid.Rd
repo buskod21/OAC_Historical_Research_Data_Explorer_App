@@ -3,9 +3,9 @@
 \docType{data}
 \name{Fattyacid}
 \alias{Fattyacid}
-\title{Example datasets}
+\title{Fattyacid data}
 \format{
-An object of class \code{data.frame} with 16 rows and 21 columns.
+A data with [16] objects and [21] variables
 }
 \usage{
 Fattyacid
@@ -14,4 +14,18 @@ Fattyacid
 The dataset is derived from the borealis database.
 and is used to show how the DataExplorer App works
 }
-\keyword{datasets}
+\details{
+Example datasets
+
+More information about the data and the study can be found in the
+borealis database here
+(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+}
+\keyword{Fish}
+\keyword{Milk}
+\keyword{Monensin,}
+\keyword{Omega-3}
+\keyword{acids}
+\keyword{composition,}
+\keyword{fatty}
+\keyword{oil,}

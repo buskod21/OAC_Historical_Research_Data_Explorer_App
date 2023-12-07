@@ -3,15 +3,29 @@
 \docType{data}
 \name{Milk}
 \alias{Milk}
-\title{Example datasets}
+\title{Cow milk production data}
 \format{
-An object of class \code{data.frame} with 48 rows and 10 columns.
+A data with [48] objects and [10] variables
 }
 \usage{
 Milk
 }
 \description{
-The dataset is derived from the borealis database
+The dataset is derived from the borealis database.
 and is used to show how the DataExplorer App works
 }
-\keyword{datasets}
+\details{
+Example datasets
+
+More information about the data and the study can be found in the
+borealis database here
+(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+}
+\keyword{Fish}
+\keyword{Milk}
+\keyword{Monensin,}
+\keyword{Omega-3}
+\keyword{acids}
+\keyword{composition,}
+\keyword{fatty}
+\keyword{oil,}

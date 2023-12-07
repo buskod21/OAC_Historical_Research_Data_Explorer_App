@@ -3,15 +3,29 @@
 \docType{data}
 \name{Feed}
 \alias{Feed}
-\title{Example datasets}
+\title{Cow Feed intake data}
 \format{
-An object of class \code{data.frame} with 112 rows and 13 columns.
+A data with [112] objects and [13] variables
 }
 \usage{
 Feed
 }
 \description{
-The dataset is derived from the borealis database
+The dataset is derived from the borealis database.
 and is used to show how the DataExplorer App works
 }
-\keyword{datasets}
+\details{
+Example datasets
+
+More information about the data and the study can be found in the
+borealis database here
+(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+}
+\keyword{Fish}
+\keyword{Milk}
+\keyword{Monensin,}
+\keyword{Omega-3}
+\keyword{acids}
+\keyword{composition,}
+\keyword{fatty}
+\keyword{oil,}

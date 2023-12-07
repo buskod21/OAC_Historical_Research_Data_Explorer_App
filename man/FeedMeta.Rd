@@ -3,7 +3,7 @@
 \docType{data}
 \name{FeedMeta}
 \alias{FeedMeta}
-\title{Example datasets}
+\title{Metadata for the Feed data}
 \format{
 An object of class \code{data.frame} with 19 rows and 2 columns.
 }
@@ -11,7 +11,19 @@ An object of class \code{data.frame} with 19 rows and 2 columns.
 FeedMeta
 }
 \description{
-The dataset is derived from the borealis database
-and is used to show how the DataExplorer App works
+The FeedMeta contains metadata and schema for the Feed data.
 }
-\keyword{datasets}
+\details{
+Example datasets
+
+More information about found in the borealis database here
+(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+}
+\keyword{Fish}
+\keyword{Milk}
+\keyword{Monensin,}
+\keyword{Omega-3}
+\keyword{acids}
+\keyword{composition,}
+\keyword{fatty}
+\keyword{oil,}
