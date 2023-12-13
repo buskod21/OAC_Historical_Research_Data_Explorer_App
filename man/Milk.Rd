@@ -3,23 +3,26 @@
 \docType{data}
 \name{Milk}
 \alias{Milk}
-\title{Cow milk production data}
+\title{Cow Milk Production Data}
 \format{
-A data with [48] objects and [10] variables
+
 }
 \usage{
 Milk
 }
 \description{
-The dataset is derived from the borealis database.
-and is used to show how the DataExplorer App works
+The "Milk" dataset, derived from the borealis database, serves as a demonstration
+of the functionalities of the DataExplorer App.
 }
 \details{
-Example datasets
+This dataset comprises 48 observations, each representing a distinct instance of
+cow milk production. It includes essential information such as treatment details, fish oil
+concentration (2%), monensin concentration (mg per kg-1 dietary dry matter), and the nutritional
+composition of milk, measured in kilograms per day (kg d-1). Additionally, it provides the
+percentage of fat, protein, and lactose in the milk.
 
-More information about the data and the study can be found in the
-borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+For a comprehensive understanding of the dataset and the associated study, refer to the borealis
+database [here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}

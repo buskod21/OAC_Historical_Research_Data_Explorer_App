@@ -49,16 +49,8 @@ mod_metadata_server <- function(id, exampleData){
     metaData <- reactive({
       req(exampleData)
 
-      # Load package lazy data depending on user input
-      if (exampleData() %in% "Fattyacid") {
-        return(DataExplorer::FattyacidMeta)
-      }
-      if (exampleData() %in% "Milk") {
-        return(DataExplorer::MilkMeta)
-      }
-      if (exampleData() %in% "Feed") {
-        return(DataExplorer::FeedMeta)
-      }
+      # # Load package lazy data depending on user input using get_data function
+      get_data(exampleData(),TRUE)
     })
 
     # Render a data table for metadata

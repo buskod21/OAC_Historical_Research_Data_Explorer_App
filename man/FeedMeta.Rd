@@ -11,13 +11,13 @@ An object of class \code{data.frame} with 19 rows and 2 columns.
 FeedMeta
 }
 \description{
-The FeedMeta contains metadata and schema for the Feed data.
-}
-\details{
-Example datasets
+The "FeedMeta" dataset serves as a metadata companion to the "Feed" dataset.
+It contains essential metadata and schema information, offering insights into the structure
+and context of the main "Feed" dataset.
 
-More information about found in the borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+For a comprehensive understanding of the "Feed" dataset and the underlying study,
+refer to the borealis database
+[here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}
