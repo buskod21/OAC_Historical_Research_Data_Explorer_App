@@ -1,0 +1,12 @@
+A100_README_Cant et al_cowFattyAcid_1997_20210922.txt (text/plain) 592 bytes.
+A101_cowFattyAcidCant1997.SAS (application/x-sas) 1242 bytes.
+A102_cowFattyAcidCant1997_SAS Code in Text.txt (text/plain) 1242 bytes.
+A103_cowFattyAcidCant1997.tab (text/tab-separated-values) 1504 bytes.
+B100_README_Cant et al_cowFeed_1997_20210922.txt (text/plain) 816 bytes.
+B101_cowFeedCant1997.SAS (application/x-sas) 1119 bytes.
+B102_cowFeedCant1997_SAS Code in Text.txt (text/plain) 1119 bytes.
+B103_cowFeedCant1997.tab (text/tab-separated-values) 5635 bytes.
+C100_README_Cant et al_cowMilk_1997_20210922.txt (text/plain) 614 bytes.
+C101_cowMilkCant1997.SAS (application/x-sas) 759 bytes.
+C102_cowMilkCant1997_SAS Code in Text.txt (text/plain) 759 bytes.
+C103_cowMilkCant1997.tab (text/tab-separated-values) 1752 bytes.

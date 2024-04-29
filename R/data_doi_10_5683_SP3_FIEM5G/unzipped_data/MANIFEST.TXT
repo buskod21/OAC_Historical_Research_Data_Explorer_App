@@ -1,0 +1,4 @@
+A100_README_Sippel et al_cowMilk_2009_20210917.txt (text/plain) 665 bytes.
+A101_cowMilkSippel2009.sas (application/x-sas) 3348 bytes.
+A102_cowMilkSippel2009_SAS Code as Text.txt (text/plain) 3348 bytes.
+A103_cowMilkSippel2009.tab (text/tab-separated-values) 3562 bytes.
