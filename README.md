@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 The goal of DataExplorer is to enable user to explore and visualize
-historical data from the Borealis database. The app enables user to
+historical data from the Borealis database. The app enables users to
 visualize the metadata for the data, check the structure of raw data,
 see some basic descriptive statistics and plot the data.
 
