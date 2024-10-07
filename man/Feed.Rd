@@ -3,23 +3,26 @@
 \docType{data}
 \name{Feed}
 \alias{Feed}
-\title{Cow Feed intake data}
+\title{Cow Feed Intake Data}
 \format{
-A data with [112] objects and [13] variables
+
 }
 \usage{
 Feed
 }
 \description{
-The dataset is derived from the borealis database.
-and is used to show how the DataExplorer App works
+The "Feed" dataset is sourced from the borealis database and serves
+as an illustrative dataset for showcasing the capabilities of the DataExplorer App.
 }
 \details{
-Example datasets
+This dataset provides insights into cow feed intake, including information
+on treatment, fish oil concentration, monensin concentration, day of measurement,
+concentrations of Dry Matter Intake (DMI) for concentrate, silage, and forage,
+as well as nutritional metrics such as Crude Protein Intake (CPI), Neutral Detergent
+Fibre Intake (NDFI), Ether Extract Intake (EEI), and Metabolizable Energy Intake (MEI).
 
-More information about the data and the study can be found in the
-borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+More information about the dataset and the underlying study can be accessed in the
+borealis database [here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}

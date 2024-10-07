@@ -11,13 +11,13 @@ An object of class \code{data.frame} with 13 rows and 2 columns.
 FattyacidMeta
 }
 \description{
-The FattyMeta contains metadata and schema for the Fattyacid data.
-}
-\details{
-Example datasets
+The "FattyacidMeta" dataset contains metadata and schema information
+related to the "Fattyacid" data. It provides details about the structure and context
+of the Fattyacid dataset.
 
-More information about found in the borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+For more comprehensive information about the "Fattyacid" dataset and the study,
+refer to the borealis database
+[here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}

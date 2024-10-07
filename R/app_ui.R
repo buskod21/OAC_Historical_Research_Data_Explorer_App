@@ -60,42 +60,36 @@ app_ui <- function(request) {
 
             p("This shiny web application was developed as a part of the Reusable
         research data made shiny workshop that was
-        held at the University of Guelph, Guelph Ontario Canada.
-          You can find more information about the workshop and access the workshop materials",
+        held at the University of Guelph, Guelph Ontario Canada.",
+          "You can find more information about the workshop and access the workshop materials",
               tags$a(href = "https://github.com/agrifooddatacanada/RRDMS_Workshop",
                      "here.", target = "_blank")),  # Create a hyperlink
 
             h5(strong("About the App")),
 
-            p(" The ", strong("Example tab "), "demonstrates how the app works.
-                          It displays the Metadata, raw data, some summary statistics
-                          and plots of data gotten from an already published article.",
-              tags$a(href = "https://doi.org/10.4141/A95-125",
-                     "Click here for the publication.",
-                     target = "_blank"), # Create a hyperlink
-              "The data used in the example tab can be found",
-              tags$a(href = "https://doi.org/10.5683/SP3/WVC09T",
-                     "here",
-                     target = "_blank"),# Create a hyperlink
-              "in the Borealis database."),
-
-            p("Finally, the ",
-              strong("Explore borealis "),
-              "allows you to explore data gotten from the Borealis database. Click ",
-              tags$a(href = "https://borealisdata.ca/dataverse/oacHist",
-                     "here",
-                     target = "_blank"),
-              " to access the oac repository in the Borealis database."),  # Create a hyperlink
-
-            br(),
-
-            img(src = 'www/workshop1.jpeg', height=400, width=700),  # Display an image
-
-            # add space
-            br(),
-
-            p(h4(strong("Have fun exploring reusable data!"))
-            )
+          p(" The ", strong("Example tab "), "demonstrates how the app works.",
+            "It displays the Metadata, raw data, some summary statistics",
+            "and plots of data gotten from an already published article.",
+            tags$a(href = "https://doi.org/10.4141/A95-125",
+                   "Click here for the publication.",
+                   target = "_blank"),
+            "The data used in the example tab can be found",
+            tags$a(href = "https://doi.org/10.5683/SP3/WVC09T",
+                   "here",
+                   target = "_blank"),
+            "in the Borealis database."),
+          p("Finally, the ",
+            strong("Explore borealis "),
+            "allows you to explore data gotten from the Borealis database. Click ",
+            tags$a(href = "https://borealisdata.ca/dataverse/oacHist",
+                   "here",
+                   target = "_blank"),
+            " to access the oac repository in the Borealis database."),
+          br(),
+          img(src = 'www/workshop1.jpeg', height = 400, width = 700),
+          br(),
+          p(h4(strong("Have fun exploring reusable data!"))
+          )
           ),
 
           bs4Dash::tabItem(

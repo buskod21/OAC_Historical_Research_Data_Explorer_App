@@ -5,21 +5,19 @@
 \alias{Fattyacid}
 \title{Fattyacid data}
 \format{
-A data with [16] objects and [21] variables
+
 }
 \usage{
 Fattyacid
 }
 \description{
-The dataset is derived from the borealis database.
-and is used to show how the DataExplorer App works
-}
-\details{
-Example datasets
+The "Fattyacid" dataset is derived from the borealis database.
+It provides information on feeding events and milk composition for a study involving
+different dietary treatments, including fish oil and monensin. The dataset is used
+to demonstrate the functionality of the DataExplorer App.
 
-More information about the data and the study can be found in the
-borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+More information about the data and the study can be found in the borealis database
+[here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}

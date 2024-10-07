@@ -11,13 +11,11 @@ An object of class \code{data.frame} with 15 rows and 2 columns.
 MilkMeta
 }
 \description{
-The MilkMeta contains metadata and schema for the Milk data.
-}
-\details{
-Example datasets
+The "MilkMeta" dataset provides metadata and schema information complementing
+the main "Milk" dataset. It serves to elucidate the structure and context of the primary dataset.
 
-More information about found in the borealis database here
-(https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T)
+For a comprehensive understanding of the "Milk" dataset and the associated study,
+refer to the borealis database [here](https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/WVC09T).
 }
 \keyword{Fish}
 \keyword{Milk}

@@ -54,16 +54,9 @@ mod_data_server <- function(id, exampleData){
     data <- reactive({
       req(exampleData())
 
-      # Load package lazy data depending on user input
-      if (exampleData() %in% "Fattyacid") {
-        return(DataExplorer::Fattyacid)
-      }
-      if (exampleData() %in% "Milk") {
-        return(DataExplorer::Milk)
-      }
-      if (exampleData() %in% "Feed") {
-        return(DataExplorer::Feed)
-      }
+      # # Load package lazy data depending on user input using get_data function
+      get_data(exampleData())
+
     })
 
     # Render the raw data table
