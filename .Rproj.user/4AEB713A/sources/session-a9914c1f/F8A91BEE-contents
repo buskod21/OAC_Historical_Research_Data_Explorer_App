@@ -1,0 +1,27 @@
+# Useful-information
+
+## This repository documents useful information 
+
+### To clone a github repository
+
+> 1. Create a new/fork an existing github repository. 
+> 2. Copy the SSH link of the created repository.
+> 3. Clone the github repository to R using *git clone "paste the copied repository"*
+> 4. Copy/add more files/folder/changes to the directory, if needed. 
+    *git add .* to add all the changes
+    *git status* to check if there has been any changes to be commited.
+> 5. Commit the changes with the commit message. 
+>   *git commit -m "commit message here"*
+> 6. Then push the new commit to gitHub.
+> *git push*
+> 7. If changes are made on the github repository, then it has to be pulled into
+the R repository to make so the changes are in sync.
+
+
+### To change directory 
+> 1. *cd* to change directory to the to home
+> 2. *ll* can be used to list all files or folder in the current directory
+> 3. *cd 'directory name* to change to that directory name
+
+
+

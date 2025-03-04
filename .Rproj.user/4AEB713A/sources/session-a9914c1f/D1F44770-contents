@@ -1,0 +1,188 @@
+# Home tab content module
+
+homeTab_UI <- function(id) {
+  ns <- NS(id) # Create a namespace for the module
+
+  tagList(
+    tags$h3(strong("RE-USABLE DATA EXPLORER APP")),
+    tags$head(tags$style(HTML("
+      /* Define a fade-in animation effect */
+      @keyframes fadeIn {
+        from { opacity: 0; }  /* Start fully transparent */
+        to { opacity: 1; }    /* End fully visible */
+      }
+
+      /* Apply the fade-in animation to elements with the class 'animated-box' */
+      .animated-box {
+        animation: fadeIn 5s ease-in-out infinite alternate;
+        /* Animation duration: 5 seconds */
+        /* 'ease-in-out' for smooth transition */
+        /* 'infinite' to repeat continuously */
+        /* 'alternate' to reverse animation direction each cycle */
+      }
+    "))),
+
+    fluidRow(
+      # Create a row containing four value boxes, each taking up 3 columns (out of 12)
+      valueBoxOutput(ns("total_studies"), width = 3),   # Box for total number of studies
+      valueBoxOutput(ns("unique_authors"), width = 3),  # Box for unique authors
+      valueBoxOutput(ns("unique_keywords"), width = 3), # Box for unique keywords
+      valueBoxOutput(ns("total_file"), width = 3)       # Box for total number of files
+    ),
+
+    br(),
+    tags$div(
+      br(),
+      tags$h4(tags$b("Explore Re-Usable data")),
+      tags$hr(style = "border: 1px solid #3c8dbc; width: 150px; text-align: left; margin-left: 0;"),
+      p("The reusable data explorer App, developed by Agri-food Data Canada,
+            allows researchers to assess and explore historical data deposited in the
+            borealis repository. This tool facilitates a preliminary review of past research data,
+            and can also enable the integration of historical datasets into larger, contemporary projects.
+            It provides access to detailed study information and exploratory data analysis functions.
+            Such application enhances the efficiency and depth of research in historical studies."),
+      style = "background-color:lightgrey; padding: 10px; width: 50%; text-align: left;"
+    ),
+    br(), br(),
+
+    tags$div(
+      tags$h4(tags$b("Mission of AgriFood Data Canada")),
+      tags$hr(style = "border: 1px solid #3c8dbc; width: 150px; margin: auto;"),
+      br(),
+      p("Agri-food Data Canada, situated at the University of Guelph,
+            strives to enhance the utility of research data by offering comprehensive
+            tools and training aligned with the principles of making data Findable,
+            Accessible, Interoperable, and Reusable (FAIR).
+            We are dedicated to simplifying the application of these principles,
+            ensuring researchers can maximize the impact of their data.
+            By leveraging historical data and integrating past research into larger datasets,
+            we aim to drive innovation and technology.
+            Our commitment is to support U of G faculty in their research efforts,
+            providing the necessary resources to facilitate groundbreaking discoveries.
+            Learn more about the Agric-Food data Canada at the University of Guelph,",
+        tags$a(href = "https://agrifooddatacanada.ca/",
+               tags$b("here."), target = "_blank", style = "color:#3c8dbc;")
+      ),
+      style = "background-color:lightgrey; padding: 10px; width: 50%; text-align: center; margin: 0 auto;"
+    ),
+    br(),
+
+    tags$div(
+      tags$h4(tags$b("Unique Features of the App"), style = "text-align: center;"),
+      tags$hr(style = "border: 1px solid #3c8dbc; width: 150px; margin: auto;"),
+      br(),
+      tags$div(
+        style = "display: flex; justify-content: space-around; align-items: flex-start;",
+        tags$div(
+          style = "flex: 1; text-align: center; padding: 10px;",
+          tags$h5(tags$b("Network")),
+          tags$img(src = "network.png", height = "100px"),
+          p("The network feature visually represents how studies are interconnected
+                through shared keywords and authors, enhancing the discovery of related research.
+                By showcasing these connections, it facilitates easier navigation and fosters a
+                deeper understanding of the research landscape and collaborative opportunities.")
+        ),
+        tags$div(
+          style = "flex: 1; text-align: center; padding: 10px;",
+          tags$h5(tags$b("Metadata")),
+          tags$img(src = "Metadata.png", height = "100px"),
+          p("Metadata provides researchers with critical information about the data,
+                enabling a comprehensive understanding of its context and content.
+                It includes details on each variable, data collection methodologies,
+                and study objectives, ensuring clarity, reliability, and effective
+                data integration for accurate and innovative research.")
+        ),
+        tags$div(
+          style = "flex: 1; text-align: center; padding: 10px;",
+          tags$h5(tags$b("Exploratory Data Analysis")),
+          tags$img(src = "analysis.png", height = "100px"),
+          p("The Data Exploration tab empowers users to perform Exploratory Data Analysis (EDA)
+                on various studies, enhancing the reusability of historical data.
+                By utilizing visualization tools and statistical techniques,
+                users can uncover patterns, trends, and relationships, summarize
+                key data characteristics, identify anomalies, and integrate historical
+                data into contemporary projects, driving innovation and advancing research outcomes.")
+        )
+      ),
+      style = "padding: 10px; width: 100%; text-align: center; margin: 0 auto;"
+    ),
+
+    tags$div(
+      tags$h4(tags$b("How the App works"), style = "text-align: center;"),
+      tags$hr(style = "border: 1px solid #3c8dbc; width: 100px; margin: auto;"),
+      br(),
+      p("The ", strong("Explore borealis tab"),
+        "allows user to view the networks of studies in the OAC repository
+            on borealis based on keywords and author's name. Users can
+            then select a particular keyword or author to further explore
+            the associated studies.The study overview, metadata and explore data
+            tab allows users to gain a deeper insight about the study and data. Click ",
+        tags$a(href = "https://borealisdata.ca/dataverse/oac",
+               tags$b("here"),
+               target = "_blank", style = "color:#3c8dbc;"),
+        " to access the OAC dataverse in the Borealis database."),
+      style = "background-color:lightgrey; padding: 10px; width: 50%;
+            text-align: center; margin: 0 auto;"
+    ),
+
+    br(),
+
+    tags$div(
+      style = "text-align: center;",
+      p(tags$h3(tags$strong("Have fun exploring re-usable historical data!")))
+    )
+  )
+}
+
+
+# Server Module for Network Tab
+homeTab_server <- function(id, study_data) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns  # Namespace for the module
+
+    # Render ValueBox for 'Total Studies'
+    output$total_studies <- renderValueBox({
+      valueBox(value = tags$span(tags$b(class = "animated-box",
+                                        style = "font-size: 60px;",
+                                        nrow(study_data()))),
+               subtitle = tags$span(style = "font-size: 20px;",
+                                    "Research papers available for exploration!"),
+               icon = icon("book"),
+               color = "info",
+               gradient = TRUE)
+    })
+
+    # Render ValueBox for 'Unique Authors'
+    output$unique_authors <- renderValueBox({
+      valueBox(value = tags$span(tags$b(class = "animated-box",
+                                        style = "font-size: 60px;",
+                                        length(unique(unlist(strsplit(study_data()$Authors, ";")))))),
+               subtitle = tags$span(style = "font-size: 20px;",
+                                    "Researchers whose work you can discover!"),
+               icon = icon("user"),
+               color = "purple")
+    })
+     # Render ValueBox for 'Unique Keywords'
+    output$unique_keywords <- renderValueBox({
+      valueBox(value = tags$span(tags$b(class = "animated-box",
+                                        style = "font-size: 60px;",
+                                        length(unique(unlist(strsplit(study_data()$Keywords, ";")))))),
+               subtitle = tags$span(style = "font-size: 20px;",
+                                    "Topics and themes to guide your research!"),
+               icon = icon("tags"),
+               color = "success")
+    })
+
+    # Render ValueBox for 'Total Files'
+    output$total_file <- renderValueBox({
+      valueBox(value = tags$span(tags$b(class = "animated-box",
+                                        style = "font-size: 60px;",
+                                        length(unique(unlist(strsplit(study_data()$FileList, ";")))))),
+               subtitle = tags$span(style = "font-size: 20px;",
+                                    "Datafiles ready for exploration and visualization!"),
+               icon = icon("file"),
+               color = "danger")
+    })
+
+  })
+}

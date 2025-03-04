@@ -1,0 +1,24 @@
+{
+    "id": "D23ECD3D",
+    "path": "~/gitHub/explorer_API/dataExploration_module.R",
+    "project_path": "dataExploration_module.R",
+    "type": "r_source",
+    "hash": "2920874103",
+    "contents": "",
+    "dirty": false,
+    "created": 1741029517363.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1740776327,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1740776327,
+    "read_only": false,
+    "read_only_alternatives": []
+}
