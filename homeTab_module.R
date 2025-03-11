@@ -16,11 +16,18 @@ homeTab_UI <- function(id) {
     "))),
 
     fluidRow(
-      # Create a row containing four value boxes, each taking up 3 columns (out of 12)
-      valueBoxOutput(ns("total_studies"), width = 3),   # Box for total number of studies
-      valueBoxOutput(ns("unique_authors"), width = 3),  # Box for unique authors
-      valueBoxOutput(ns("unique_keywords"), width = 3), # Box for unique keywords
-      valueBoxOutput(ns("total_file"), width = 3)       # Box for total number of files
+      column(
+        width = 12,
+        tags$div(
+          style = "display: flex; justify-content: space-between;
+          flex-wrap: nowrap; align-items: stretch; gap: 10px;",
+          valueBoxOutput(ns("total_dataverses"), width = 2.2),
+          valueBoxOutput(ns("total_studies"), width = 2.2),
+          valueBoxOutput(ns("unique_authors"), width = 2.2),
+          valueBoxOutput(ns("unique_keywords"), width = 2.2),
+          valueBoxOutput(ns("total_file"), width = 2.2)
+        )
+      )
     ),
 
     br(),
@@ -29,8 +36,8 @@ homeTab_UI <- function(id) {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 50%;
-    margin-left: 0;
+    max-width: 80%;
+    margin: auto;
     font-size: 20px;
     line-height: 1.6;
     color: #333333;",
@@ -157,7 +164,26 @@ homeTab_server <- function(id, study_data) {
     ns <- session$ns  # Namespace for the module
 
     # Render ValueBox for 'Total Studies'
+    output$total_dataverses <- renderValueBox({
+
+      # Compute the value only once study_data() is available
+      req(study_data())  # Ensures that the data is available
+
+      valueBox(value = tags$span(tags$b(class = "animated-box", style = "font-size: 60px; color: white;", "6")),
+               subtitle = tags$span(style = "font-size: 20px; color: white;",
+                                    "Dataverses in the OAC repository to explore!"),
+               icon = icon("database"),
+               color = "maroon",
+               elevation = 2,
+               gradient = TRUE)
+    })
+
+    # Render ValueBox for 'Total Studies'
     output$total_studies <- renderValueBox({
+
+      # Compute the value only once study_data() is available
+      req(study_data())  # Ensures that the data is available
+
       valueBox(value = tags$span(tags$b(class = "animated-box",
                                         style = "font-size: 60px;",
                                         nrow(study_data()))),
@@ -171,11 +197,16 @@ homeTab_server <- function(id, study_data) {
 
     # Render ValueBox for 'Unique Authors'
     output$unique_authors <- renderValueBox({
+      # Compute the value only once study_data() is available
+      req(study_data())  # Ensures that the data is available
+
+      # Calculate the number of unique authors once the data is ready
+      author_count <- length(unique(unlist(strsplit(study_data()$Authors, ";"))))
+
       valueBox(value = tags$span(tags$b(class = "animated-box",
                                         style = "font-size: 60px;",
-                                        length(unique(unlist(strsplit(study_data()$Authors, ";")))))),
-               subtitle = tags$span(style = "font-size: 20px;",
-                                    "Researchers whose work you can discover!"),
+                                        author_count)),
+               subtitle = tags$span(style = "font-size: 20px;", "Researchers whose work you can discover!"),
                icon = icon("user"),
                color = "purple",
                elevation = 2,
@@ -183,6 +214,10 @@ homeTab_server <- function(id, study_data) {
     })
     # Render ValueBox for 'Unique Keywords'
     output$unique_keywords <- renderValueBox({
+
+      # Compute the value only once study_data() is available
+      req(study_data())  # Ensures that the data is available
+
       valueBox(value = tags$span(tags$b(class = "animated-box",
                                         style = "font-size: 60px;",
                                         length(unique(unlist(strsplit(study_data()$Keywords, ";")))))),
@@ -196,6 +231,10 @@ homeTab_server <- function(id, study_data) {
 
     # Render ValueBox for 'Total Files'
     output$total_file <- renderValueBox({
+
+      # Compute the value only once study_data() is available
+      req(study_data())  # Ensures that the data is available
+
       valueBox(value = tags$span(tags$b(class = "animated-box",
                                         style = "font-size: 60px;",
                                         length(unique(unlist(strsplit(study_data()$FileList, ";")))))),

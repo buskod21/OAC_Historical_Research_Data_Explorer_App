@@ -27,6 +27,7 @@ networkTab_UI <- function(id) {
                  choices = NULL,  # Populate with unique dataverse names
                  multiple = TRUE  # Allow multi-select
                ),
+
                br(),
 
                # Input for choosing event type: Keywords or Authors
@@ -37,16 +38,27 @@ networkTab_UI <- function(id) {
                  selected = "Keywords",  # Default selection
                  inline = TRUE  # Display options inline
                ),
-               hr(),
 
-               # Spinner while the network plot is loading
-               withSpinner(visNetworkOutput(
-                 ns("networkPlot"),  # Network plot output
-                 width = "100%",  # Full width
-                 height = "800px"  # Height of the plot
-               ))
-             )
-      )
+               br(),hr(),
+
+               fluidRow(
+                 column(10,
+                        # Spinner while the network plot is loading
+                        withSpinner(visNetworkOutput(
+                          ns("networkPlot"),  # Network plot output
+                          width = "100%",  # Full width
+                          height = "800px"  # Height of the plot
+                        ))),
+                 column(2,
+                        div(class = "custom-legend",
+                            uiOutput(ns("customLegend"),
+                                     style = "position: relative; top: 150px; right: 50px;")
+                        )
+                 )
+
+               )
+             ))
+
     )
   )
 }
@@ -107,21 +119,53 @@ networkTab_server <- function(id, study_data, shared_data, conn) {
       edges_data() %>% filter(from %in% valid_ids & to %in% valid_ids)  # Filter edges using valid node IDs
     })
 
-    # Build a reactive legend data frame from nodes_data()
-    legend_df <- reactive({
-      nodes_data() %>%
-        mutate(label = ifelse(color == "gray", "Multiple Dataverses", DataverseName)) %>%
+    output$customLegend <- renderUI({
+      req(nodes_data())
+
+      if (nrow(nodes_data()) == 0 || is.null(input$select_dataverse)) return(NULL)
+
+      legend_data <- nodes_data() %>%
+        mutate(label = ifelse(color == "gray", "+1 Dataverse", DataverseName)) %>%
         distinct(label, color) %>%
-        arrange(label) %>%  # Sort alphabetically by label
-        mutate(shape = "square")
+        arrange(label)
+
+      legend_items <- lapply(1:nrow(legend_data), function(i) {
+        tags$div(
+          style = paste0(
+            "display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;",
+            "padding: 5px; background-color: #fff; border-radius: 5px;"
+          ),
+          tags$div(
+            style = paste0(
+              "flex-shrink: 0; width: 20px; height: 20px; background-color: ",
+              legend_data$color[i], "; ",
+              "border-radius: 2px; margin-right: 10px; margin-top: 5px; border: 1px solid #ccc;"
+            )
+          ),
+          legend_data$label[i]
+        )
+      })
+
+      bs4Card(
+        title = tags$div(
+          "Dataverse Legend",
+          style = "text-align: center; font-size: 20px; font-weight: bold;"
+        ),
+        collapsible = FALSE,
+        width = 12,
+        solidHeader = TRUE,
+        status = "lightblue",
+        do.call(tags$div, legend_items)
+      )
     })
+
 
     # Render the network plot using the reactive dataset 'network_data_reactive()'
     output$networkPlot <- renderVisNetwork({
       req(filteredNodes(), filteredEdges())  # Ensure that both nodes and edges data are available
 
       visNetwork(filteredNodes(), filteredEdges(), width = "100%", height = "800px",
-                 main = "Visualizing Connections Between Dataverses") %>%
+                 main = "Connections Between Dataverses") %>%
 
         # Configure the appearance of nodes
         visNodes(
@@ -150,21 +194,6 @@ networkTab_server <- function(id, study_data, shared_data, conn) {
 
         # Edge styling
         visEdges(smooth = FALSE) %>%
-
-        # Add a legend to help interpret node categories
-        visLegend(
-          enabled = TRUE,  # Display the legend
-          position = "right",  # Align legend to the right
-          addNodes = legend_df(),  # Use predefined dataset for legend
-          useGroups = FALSE,
-          ncol = 1,  # Display legend items in a single column
-          main = list(
-            text = "Dataverse Legend",  # Legend title
-            style = "font-family:Times New Roman;
-            color:black; font-size:20px; text-align:center;
-            font-weight:bold; margin: auto"
-          )
-        ) %>%
 
         # Enable options for highlighting nodes and selecting by ID
         visOptions(

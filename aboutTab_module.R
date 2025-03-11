@@ -11,7 +11,7 @@ aboutTab_UI <- function(id) {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 60%;
-    margin-left: 0;
+    margin: auto;
     font-size: 20px;
     line-height: 1.6;
     color: #333333;",
@@ -86,7 +86,7 @@ aboutTab_UI <- function(id) {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 60%;
-    margin-left: 0;
+    margin: auto;
     font-size: 20px;
     line-height: 1.6;
     color: #333333;",

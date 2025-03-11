@@ -285,7 +285,7 @@ cache_raw_data <- function(conn) {
         message("Found new DOIs: ", paste(new_dois_to_process, collapse = ", "))
 
         # Convert new_dois_to_process into a dataframe
-        new_dois_df <- tibble(DOI = new_dois_to_process)
+        new_dois_df <- tibble(persistent_id = new_dois_to_process)
 
         # Fetch and process the study details for the new DOIs
         new_study_details <- fetch_study_details(new_dois_df)
@@ -320,6 +320,7 @@ cache_raw_data <- function(conn) {
 }
 
 
+# Function to extract and process nodes and edges for Keywords and Authors
 process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
   if (!(input_event_type %in% c("Keywords", "Authors"))) {
     stop("input_event_type must be either 'Keywords' or 'Authors'")
@@ -328,15 +329,51 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
   table_prefix <- tolower(input_event_type)
   nodes_table <- paste0(table_prefix, "_node")
   edges_table <- paste0(table_prefix, "_edge")
+  color_table <- "dataverse_colors"  # Table for storing colors
 
   message("Processing all Dataverses...")
 
   all_data <- raw_data
-
   unique_dataverses <- unique(all_data$DataverseName)
-  dataverse_colors <- RColorBrewer::brewer.pal(min(length(unique_dataverses), 12), "Set3")
-  color_map <- setNames(dataverse_colors, unique_dataverses)
 
+  # Ensure color table exists
+  if (!DBI::dbExistsTable(conn, color_table)) {
+    DBI::dbExecute(conn, sprintf("CREATE TABLE %s (DataverseName TEXT PRIMARY KEY, Color TEXT)", color_table))
+  }
+
+  # Fetch existing color mappings from the database
+  existing_colors <- DBI::dbReadTable(conn, color_table)
+  existing_color_map <- setNames(existing_colors$Color, existing_colors$DataverseName)
+
+  # Identify new Dataverses that need color assignments
+  new_dataverses <- setdiff(unique_dataverses, names(existing_color_map))
+
+  if (length(new_dataverses) > 0) {
+    available_colors <- RColorBrewer::brewer.pal(min(length(unique_dataverses), 12), "Set3")
+    assigned_colors <- unique(existing_colors$Color)
+    unused_colors <- setdiff(available_colors, assigned_colors)  # Avoid reusing colors
+
+    # Assign colors to new Dataverses
+    new_color_map <- setNames(rep(NA, length(new_dataverses)), new_dataverses)
+    for (dataverse in new_dataverses) {
+      new_color_map[[dataverse]] <- ifelse(length(unused_colors) > 0,
+                                           unused_colors[1],
+                                           sample(available_colors, 1))
+      unused_colors <- unused_colors[-1]  # Remove assigned color from available pool
+    }
+
+    # Convert new colors to a data frame and insert into database
+    new_colors_df <- tibble::tibble(DataverseName = names(new_color_map), Color = unname(new_color_map))
+    DBI::dbWriteTable(conn, color_table, new_colors_df, append = TRUE, row.names = FALSE)
+
+    # Merge with existing color map
+    existing_color_map <- c(existing_color_map, new_color_map)
+  }
+
+  # Create final color mapping
+  color_map <- existing_color_map
+
+  # Process events (same logic as before)
   if (input_event_type == "Keywords") {
     events <- all_data$Keywords %>%
       stringr::str_split(";\\s*") %>%
@@ -361,11 +398,11 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
       stringr::str_trim()
   }
 
-  # Process nodes (authors or keywords)
+  # Process nodes
   nodes <- purrr::map_df(seq_along(events), function(i) {
     event <- events[i] %>%
-      stringr::str_squish() %>%  # Remove extra spaces
-      stringr::str_to_title()  # Standardize capitalization
+      stringr::str_squish() %>%
+      stringr::str_to_title()
 
     matched_papers <- all_data %>%
       dplyr::filter(stringr::str_detect(
@@ -395,7 +432,7 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
       DOI = paste(unique(matched_papers$DOI), collapse = "; ")
     )
   }) %>%
-    dplyr::mutate(label = stringr::str_squish(label)) %>%  # Remove spaces again for safety
+    dplyr::mutate(label = stringr::str_squish(label)) %>%
     dplyr::group_by(label) %>%
     dplyr::summarise(
       node_group = first(node_group),
@@ -407,8 +444,7 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
       DOI = paste(unique(DOI), collapse = "; ")
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(id = row_number())  # Assign unique IDs after merging
-
+    dplyr::mutate(id = row_number())
 
   event_occurrences <- lapply(nodes$label, function(ev) which(grepl(ev, all_data[[input_event_type]], ignore.case = TRUE)))
   node_pairs <- combn(nrow(nodes), 2, simplify = FALSE)
@@ -426,4 +462,114 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
 
   message("Processing complete. Data stored in: ", nodes_table, " and ", edges_table)
 }
+
+
+
+
+# process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
+#   if (!(input_event_type %in% c("Keywords", "Authors"))) {
+#     stop("input_event_type must be either 'Keywords' or 'Authors'")
+#   }
+#
+#   table_prefix <- tolower(input_event_type)
+#   nodes_table <- paste0(table_prefix, "_node")
+#   edges_table <- paste0(table_prefix, "_edge")
+#
+#   message("Processing all Dataverses...")
+#
+#   all_data <- raw_data
+#
+#   unique_dataverses <- unique(all_data$DataverseName)
+#   dataverse_colors <- RColorBrewer::brewer.pal(min(length(unique_dataverses), 12), "Set3")
+#   color_map <- setNames(dataverse_colors, unique_dataverses)
+#
+#   if (input_event_type == "Keywords") {
+#     events <- all_data$Keywords %>%
+#       stringr::str_split(";\\s*") %>%
+#       unlist() %>%
+#       na.omit() %>%
+#       stringr::str_replace_all("[^a-zA-Z0-9\\s-]", "") %>%
+#       stringr::str_squish() %>%
+#       stringr::str_to_title() %>%
+#       .[!grepl("\\bAgricultural Science(s)?\\b", ., ignore.case = TRUE)] %>%
+#       unique() %>%
+#       sort()
+#   } else {
+#     events <- all_data$Authors %>%
+#       stringr::str_split(";\\s*") %>%
+#       unlist() %>%
+#       na.omit() %>%
+#       sort() %>%
+#       stringr::str_replace_all("\\.", "") %>%
+#       stringr::str_to_title() %>%
+#       stringr::str_replace_all("\\b([A-Z])\\b", "") %>%
+#       unique() %>%
+#       stringr::str_trim()
+#   }
+#
+#   # Process nodes (authors or keywords)
+#   nodes <- purrr::map_df(seq_along(events), function(i) {
+#     event <- events[i] %>%
+#       stringr::str_squish() %>%  # Remove extra spaces
+#       stringr::str_to_title()  # Standardize capitalization
+#
+#     matched_papers <- all_data %>%
+#       dplyr::filter(stringr::str_detect(
+#         stringr::str_to_lower(.data[[input_event_type]]),
+#         fixed(stringr::str_to_lower(event))
+#       ))
+#
+#     if (nrow(matched_papers) == 0) {
+#       return(NULL)
+#     }
+#
+#     studies_count <- nrow(matched_papers)
+#     year_range <- paste(min(matched_papers$PublicationDate, na.rm = TRUE), "to",
+#                         max(matched_papers$PublicationDate, na.rm = TRUE))
+#
+#     dataverse_names <- unique(matched_papers$DataverseName)
+#     node_color <- ifelse(length(dataverse_names) > 1, "gray", color_map[dataverse_names])
+#
+#     tibble::tibble(
+#       label = event,
+#       node_group = input_event_type,
+#       title = paste("Study Count:", studies_count, "<br>", "Year Range:", year_range),
+#       color = node_color,
+#       DataverseName = paste(unique(dataverse_names), collapse = ", "),
+#       study_count = studies_count,
+#       year_range = year_range,
+#       DOI = paste(unique(matched_papers$DOI), collapse = "; ")
+#     )
+#   }) %>%
+#     dplyr::mutate(label = stringr::str_squish(label)) %>%  # Remove spaces again for safety
+#     dplyr::group_by(label) %>%
+#     dplyr::summarise(
+#       node_group = first(node_group),
+#       title = first(title),
+#       color = first(color),
+#       DataverseName = paste(unique(DataverseName), collapse = ", "),
+#       study_count = sum(study_count, na.rm = TRUE),
+#       year_range = paste(unique(year_range), collapse = " | "),
+#       DOI = paste(unique(DOI), collapse = "; ")
+#     ) %>%
+#     dplyr::ungroup() %>%
+#     dplyr::mutate(id = row_number())  # Assign unique IDs after merging
+#
+#
+#   event_occurrences <- lapply(nodes$label, function(ev) which(grepl(ev, all_data[[input_event_type]], ignore.case = TRUE)))
+#   node_pairs <- combn(nrow(nodes), 2, simplify = FALSE)
+#   edges_list <- purrr::map(node_pairs, function(pair) {
+#     i <- pair[1]
+#     j <- pair[2]
+#     count <- length(intersect(event_occurrences[[i]], event_occurrences[[j]]))
+#     if (count > 0) tibble::tibble(from = nodes$id[i], to = nodes$id[j], weight = count) else NULL
+#   }) %>% purrr::compact()
+#
+#   edges <- dplyr::bind_rows(edges_list)
+#
+#   DBI::dbWriteTable(conn, nodes_table, nodes, append = TRUE, row.names = FALSE)
+#   DBI::dbWriteTable(conn, edges_table, edges, append = TRUE, row.names = FALSE)
+#
+#   message("Processing complete. Data stored in: ", nodes_table, " and ", edges_table)
+# }
 
