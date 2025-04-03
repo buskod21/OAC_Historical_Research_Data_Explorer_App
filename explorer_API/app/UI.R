@@ -45,6 +45,17 @@ ui <- dashboardPage(
         tabName = "borealis_tab",    # Unique identifier for the Data Review tab
         datareviewTab_UI("data")    # Call the `datareviewTab_UI` module to define the Data Review tab's UI
       )
+    ),
+    
+    br(),br(),
+    
+    # Add Footer
+    tags$footer(
+      tags$p(
+        HTML(paste0("&copy; Agrifood Data Canada ", format(Sys.Date(), "%Y"), ". All rights reserved.")),
+        style = "font-size: 16px; font-weight: bold; color: #333;"
+      ),
+      style = "text-align: center; padding: 10px; background-color: #f8f8f8;"
     )
   )
 )

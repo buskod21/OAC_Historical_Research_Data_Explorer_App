@@ -376,7 +376,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
       analysis_type <- input$analysis_type
       
       
-      if (analysis_type %in% c("Boxplot", "Linear regression")) {
+      if (analysis_type %in% c("Boxplot", "Linear Regression")) {
         
         output$variable_selection_x <- renderUI({
           req(loaded_data())
@@ -402,7 +402,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
       
       analysis_type <- input$analysis_type
       
-      if (analysis_type == "Heat map") {
+      if (analysis_type == "Heat Map") {
         plotlyOutput(ns("heatmap_plot"),
                      height = "600px")
       } else {
@@ -424,7 +424,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
       
       # set variable names
       
-      if (analysis_type %in% c("Boxplot", "Linear regression")) {
+      if (analysis_type %in% c("Boxplot", "Linear Regression")) {
         
         req(input$variable_x, input$variable_y)
         
@@ -462,7 +462,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
         }
         
         # b. Linear regression
-        if (analysis_type == "Linear regression") {
+        if (analysis_type == "Linear Regression") {
           ggplot(data, aes_string(x = variable_x,
                                   y = variable_y)) +
             geom_point(size = 3.5) +
@@ -508,7 +508,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
         }
         
         # d. Density plot
-        if (analysis_type == "Density plot") {
+        if (analysis_type == "Density Plot") {
           long_data <- pivot_longer(data, cols = where(is.numeric),
                                     names_to = "variable",
                                     values_to = "value")
@@ -531,7 +531,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
         }
         
         # e. QQ plot
-        if (analysis_type == "QQ plot") {
+        if (analysis_type == "QQ Plot") {
           num_vars <- sum(sapply(loaded_data(), is.numeric))
           ncol <- ceiling(sqrt(num_vars))
           nrow <- ceiling(num_vars / ncol)
@@ -555,7 +555,7 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
     output$heatmap_plot <- renderPlotly({
       
       req(loaded_data(),
-          input$analysis_type == "Heat map") # Ensure data is loaded and non-null
+          input$analysis_type == "Heat Map") # Ensure data is loaded and non-null
       
       # Remove non-numeric columns and NA rows
       numeric_data <- loaded_data() %>%

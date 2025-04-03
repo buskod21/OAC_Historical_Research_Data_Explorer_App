@@ -83,7 +83,7 @@ explorer_list$aboutTab_ui <-tabItem(
   tags$div(
     style = "
       padding: 20px;
-      width: 80%;
+      max-width: 60%;
       text-align:center;
       margin: auto;
       border-radius: 10px;
@@ -93,29 +93,43 @@ explorer_list$aboutTab_ui <-tabItem(
       color: #333333;",
     tags$h4(tags$b("Development Team"), style = "text-align: center;"),
     tags$hr(style = "border: 2px solid #3c8dbc; width: 150px; margin: auto;"),
+    
     br(),
+    
     tags$div(
       style = "display: flex; justify-content: space-between; align-items: flex-start;",
       tags$div(
         style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$h5(tags$b("Dr. Michelle Edwards")),
-        tags$img(src = "", height = "80px"),
-        p("Director ADC")
+        tags$img(src = "AME_2019.jpg", height = "150px", width = "150px", 
+                 style = "border-radius: 50%; margin: auto; 
+                 display: block;")
+        , br(),
+        h5(tags$b("Michelle Edwards")),
+        h6("Director")
       ),
+      
       tags$div(
         style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$h5(tags$b("Dr. Lucas Alcantara")),
-        tags$img(src = "", height = "80px"),
-        p("Data Manager ADC")
+        tags$img(src = "lucas.jpg", height = "150px", width = "150px", 
+                 style = "border-radius: 50%; margin: auto; 
+                 display: block;")
+        , br(),
+        h5(tags$b("Lucas Alcantara")),
+        h6("Manager")
       ),
+      
       tags$div(
         style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$h5(tags$b("Dr. Busayo Kodaolu")),
-        tags$img(src = "", height = "80px"),
-        p("ShinyApp Developer")
+        tags$img(src = "bkodaolu_img.jpg", height = "150px", width = "150px", 
+                 style = "border-radius: 50%; margin: auto; 
+                 display: block;")
+        , br(),
+        h5(tags$b("Busayo Kodaolu")),
+        h6("Research Associate - Data Reusability")
       )
     )
   ),
+  
   
   br(), br(),
   
@@ -125,7 +139,7 @@ explorer_list$aboutTab_ui <-tabItem(
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 60%;
+    max-width: 80%;
     margin: auto;
     font-size: 20px;
     line-height: 1.6;
@@ -135,7 +149,15 @@ explorer_list$aboutTab_ui <-tabItem(
     
     br(),
     
-    p()
+    p("The Reusable Data Explorer (RED-X) app is funded by",
+      tags$a(href = "https://agrifooddatacanada.ca/",
+             tags$b("Agri-Food Data Canada"),
+             target = "_blank", style = "color:#3c8dbc;"),
+      "with partial support from",
+      tags$a(href = "https://www.computeontario.ca/",
+             tags$b("Compute Ontario"),
+             target = "_blank", style = "color:#3c8dbc;"),
+      "through a workshop that laid thefoundation for its development.")
   ),
   
   br(), br(),
@@ -156,7 +178,10 @@ explorer_list$aboutTab_ui <-tabItem(
     
     br(),
     
-    p()
+    p("This application is released under the",
+      tags$a(href = "https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App/blob/main/LICENSE.md",
+             tags$b("MIT License"),
+             target = "_blank", style = "color:#3c8dbc;"))
   )
 )
 
