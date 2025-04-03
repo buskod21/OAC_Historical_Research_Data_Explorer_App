@@ -34,6 +34,7 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
         mutate(DOI = paste0('<a class="badge badge-info" href="https://doi.org/',
                             DOI, '" target="_blank">', DOI, '</a>')) %>%
         filter(Title == input_study_select()) %>% # Filter data first before transposing
+        rename_with(~ gsub("([a-z])([A-Z])", "\\1 \\2", .x)) %>% # Adds spaces to camel case column names  
         t() # Transpose the filtered data
 
       # Render the datatable
@@ -45,7 +46,8 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
                                autoWidth = FALSE,
                                scrollX = TRUE,
                                pageLength = nrow(overview_data))  # Set page length to number of rows
-      )
+      ) %>%
+        formatStyle(0, whiteSpace = "nowrap")  # Ensures row names don't wrap
     })
   })
 }

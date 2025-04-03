@@ -1,6 +1,4 @@
 # ---- This module defines the UI and server logic for the metadata tabpanel
-
-
 metadataUI_module <- function(id){
 
   ns<- (NS(id))
@@ -18,7 +16,7 @@ metadataUI_module <- function(id){
           br(), # Add a line break for spacing
 
           # Section for displaying metadata description and schema
-          tags$b("Data description"), # Bold text for the section
+          tags$b("Data Description"), # Bold text for the section
           hr(),                       # Horizontal line separator
           uiOutput(ns("meta")),       # Output for metadata description
           tags$b("Data Schema"),      # Bold text for the schema section
