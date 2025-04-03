@@ -6,7 +6,7 @@ ui <- dashboardPage(
   fullscreen = TRUE,        # Allow the dashboard to open in fullscreen mode
   help = NULL,              # Placeholder for future help functionality (currently unused)
   dark = NULL,              # Placeholder for future dark mode functionality (currently unused)
-
+  
   # Define the dashboard header with a fixed position and a navbar menu module
   dashboardHeader(
     status = "lightblue",   # Set the header's color to light blue
@@ -17,43 +17,50 @@ ui <- dashboardPage(
         type = "notifications",
         uiOutput("update_notification")
       )),
-
-    # Include the navigation bar menu defined in the `navbarMenuUI` module
-    navbarMenuUI("navbarMenu")
+    
+    
+    # Render the navigation menu from the explorer_list 
+    explorer_list$navMenu
   ),
-
+  
   # Disable the sidebar for this dashboard layout
   dashboardSidebar(disable = TRUE),
-
+  
   # Define the main body content of the dashboard
   dashboardBody(
     # Add custom styles for active and hover states of navigation tabs
     tags$head(tags$style(".nav-pills .nav-link.active {color: #fff; background-color: #3c8dbc;}")), # Active tab styling
     tags$head(tags$style(".nav-pills .nav-link:not(.active):hover {color: #3c8dbc !important;}")),  # Hover styling for inactive tabs
-
-
+    
+    
     # Define the content of individual tabs
     tabItems(
-      tabItem(
-        tabName = "home_tab",        # Unique identifier for the Home tab
-        homeTab_UI("home")          # Call the `homeTab_UI` module to define the Home tab's UI
-      ),
-      tabItem(
-        tabName = "about_tab",       # Unique identifier for the About tab
-        aboutTab_UI("about")        # Call the `aboutTab_UI` module to define the About tab's UI
-      ),
-      tabItem(
-        tabName = "network_tab",     # Unique identifier for the Network tab
-        networkTab_UI("network")    # Call the `networkTab_UI` module to define the Network tab's UI
-      )
-      ,
+      # Render the UI elements for the home, about, and network tabs from explorer_list
+      explorer_list$homeTab_ui,        
+      explorer_list$aboutTab_ui,
+      explorer_list$networkTab_ui,
+      
+      # Define the Data Review tab with a unique identifier and content
       tabItem(
         tabName = "borealis_tab",    # Unique identifier for the Data Review tab
         datareviewTab_UI("data")    # Call the `datareviewTab_UI` module to define the Data Review tab's UI
       )
+    ),
+    
+    br(),br(),
+    
+    # Add Footer
+    tags$footer(
+      tags$p(
+        HTML(paste0("&copy; Agrifood Data Canada ", format(Sys.Date(), "%Y"), ". All rights reserved.")),
+        style = "font-size: 16px; font-weight: bold; color: #333;"
+      ),
+      style = "text-align: center; padding: 10px; background-color: #f8f8f8;"
     )
   )
 )
+
+
 
 
 
