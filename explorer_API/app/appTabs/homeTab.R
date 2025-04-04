@@ -245,7 +245,7 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
                                       style = "font-size: 60px;",
                                       nrow(study_data()))),
              subtitle = tags$span(style = "font-size: 20px;",
-                                  "Research papers available for exploration!"),
+                                  "Research papers available to explore!"),
              icon = icon("book"),
              color = "info",
              elevation = 2,
