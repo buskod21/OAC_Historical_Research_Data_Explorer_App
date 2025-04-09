@@ -40,16 +40,20 @@ server <- function(input, output, session) {
     cache_raw_data(conn)  # Call the function to fetch and cache raw data
   })
   
+  # study_data <- reactive({
+  #   read.csv("agri_environment_all.csv")
+  # })
+  
   # Initialize the home tab server logic with study_data
-  explorer_list$homeTab_server(input, output, session, study_data)
+   explorer_list$homeTab_server(input, output, session, study_data)
   
   # Observe study_data() and process the keywords and authors into nodes and edges when necessary
   observeEvent(study_data(), {
     req(study_data())  # Ensure study_data() is available
-    
+
     # Fetch the raw study data
     new_data <- study_data()
-    
+
     # Retrieve processed DOIs from the 'processed_studies' table (if it exists)
     processed_dois <- c()
     if (dbExistsTable(conn, "processed_studies")) {
@@ -59,19 +63,19 @@ server <- function(input, output, session) {
     } else {
       message("processed_studies table does not exist. It will be created.")  # Message if the table doesn't exist
     }
-    
+
     # Filter new data to only include studies not yet processed
     new_data_filtered <- new_data %>% filter(!DOI %in% processed_dois)
-    
+
     # Check if there is new data to process
     if(nrow(new_data_filtered) > 0) {
       print("Processing new study data...")
-      
+
       # Process Keywords and Authors separately using the respective function
       process_and_cache_new_data(new_data_filtered, "Keywords", conn)
       process_and_cache_new_data(new_data_filtered, "Authors", conn)
       print("Data successfully processed and stored.")
-      
+
       # Update the 'processed_studies' table with new DOIs
       new_processed <- new_data_filtered %>% select(DOI) %>% distinct()
       if(dbExistsTable(conn, "processed_studies")) {
@@ -83,22 +87,23 @@ server <- function(input, output, session) {
       print("No new study data found. Skipping processing.")  # If no new data, print a message and skip processing
     }
   })
-  
+   
   # Shared reactive values across all modules
   shared_data <- reactiveValues(
     study_choices = NULL, # Holds filtered data based on clicked node
     filtered_data = NULL, # Holds filtered data based on selected dataverse
     selected_dataverse = NULL, # Holds the input from the network tab (selected dataverse)
+    selected_collegeDept = NULL, # Hold the input to select either college or department from the Network Tab
     file_list = NULL,  # Holds the file list after fetching data based on DOI
     full_paths = list() # Holds the full paths of the files
   )
   
   # Initialize the network tab server logic with study_data
-  explorer_list$networkTab_server(input, output, session, 
+  explorer_list$networkTab_server(input, output, session,
                                   study_data, shared_data, conn)
-  
+  # 
   # Initialize the data review tab server logic with study_data
-  datareviewTab_server("data", study_data, shared_data)
+   datareviewTab_server("data", study_data, shared_data)
   
   # Clean up: disconnect from the database when the session ends.
   session$onSessionEnded(function() {

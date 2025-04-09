@@ -1,8 +1,11 @@
-# Function to extract datasets information using recursive function
-
+# Function to extract datasets information from the Agri-environment dataverse
+# using the recursive function.
 fetch_all_datasets <- function(id, layer_titles = character()) {
   base_url <- "https://borealisdata.ca/api/dataverses/"
   results <- tibble()
+  
+  # Exclude specific dataverse ID
+  if (id == "147125") return(results)
   
   url <- paste0(base_url, id, "/contents")
   response <- tryCatch({
@@ -32,19 +35,36 @@ fetch_all_datasets <- function(id, layer_titles = character()) {
     
     current_layer_titles <- c(layer_titles, title)
     
+    # Initialize columns to ensure they exist
+    if (nrow(results) == 0) {
+      results <- tibble(
+        Agri_Environment = character(0),
+        College_Campus_Institution = character(0),
+        Departments_ResearchCentres = character(0),
+        id = character(0),
+        protocol = character(0),
+        authority = character(0),
+        identifier = character(0),
+        persistent_id = character(0)
+      )
+    }
+    
     if (!is.null(dataverse_raw_data$data) && length(dataverse_raw_data$data) > 0) {
-      datasets <- dataverse_raw_data$data %>%
-        filter(type == "dataset") %>%
+      datasets <- dataverse_raw_data$data %>% filter(type == "dataset")
+      
+      # Simplify the layer assignment logic
+      datasets <- datasets %>%
         mutate(
           Agri_Environment = current_layer_titles[1],
-          College_Campus_Institution = ifelse(!is.na(current_layer_titles[2]), current_layer_titles[2], current_layer_titles[1]),
-          Departments_ResearchCentres = ifelse(!is.na(current_layer_titles[3]),
-                                              current_layer_titles[3],
-                                              ifelse(!is.na(current_layer_titles[2]), current_layer_titles[2], current_layer_titles[1]))
-        )
+          College_Campus_Institution = ifelse(length(current_layer_titles) > 1, current_layer_titles[2], current_layer_titles[1]),
+          Departments_ResearchCentres = ifelse(length(current_layer_titles) > 2, current_layer_titles[3], NA_character_)
+        ) %>%
+        mutate(id = as.character(id))  # Ensure id is character
       
+      # Add datasets to results
       results <- bind_rows(results, datasets)
       
+      # Recurse into sub-dataverses
       dataverses <- dataverse_raw_data$data %>% filter(type == "dataverse")
       if (nrow(dataverses) > 0) {
         for (dv_id in dataverses$id) {
@@ -52,6 +72,7 @@ fetch_all_datasets <- function(id, layer_titles = character()) {
         }
       }
       
+      # Handle persistent_id and filter invalid rows
       results <- results %>%
         mutate(
           persistent_id = ifelse(
@@ -60,8 +81,7 @@ fetch_all_datasets <- function(id, layer_titles = character()) {
             NA_character_
           )
         ) %>%
-        filter(!is.na(persistent_id)) 
-      
+        filter(!is.na(persistent_id))
     } else {
       message("No data available for ID ", id)
     }
@@ -69,8 +89,25 @@ fetch_all_datasets <- function(id, layer_titles = character()) {
     message("Failed to fetch data for Dataverse ", id, ": HTTP status ", response$status)
   }
   
+  # Reassign specific datasets to new dataverses and clean up columns
+  results <- results %>%
+    mutate(
+      College_Campus_Institution = case_when(
+        id == 103712 ~ "Ontario Agricultural College",
+        id == 200306 ~ "Agri-food Data Canada",
+        TRUE ~ College_Campus_Institution
+      ),
+      Departments_ResearchCentres = case_when(
+        id == 103712 ~ "Department of Plant Agriculture",
+        TRUE ~ Departments_ResearchCentres
+      )
+    ) %>%
+    select(-Agri_Environment) %>%   # Remove first layer
+    arrange(College_Campus_Institution, Departments_ResearchCentres)  # Sorting by columns
+  
   return(results)
 }
+
 
 
 all <-fetch_all_datasets(16)
@@ -218,3 +255,170 @@ cache_raw_data <- function(conn) {
 }
 
 cache_raw_data(connection)
+
+
+library(DBI)
+
+# 1. Connect to your SQLite database
+connection <- dbConnect(RSQLite::SQLite(), "database_file.db")
+
+# 2. Read the table you want to export (replace 'your_table_name' with the actual table)
+data <- dbReadTable(connection, "research_data")
+
+# 3. Save the data as a CSV file on your local computer
+write.csv(data, "agri-environment_all.csv", row.names = FALSE)
+
+# 4. Disconnect from the database
+dbDisconnect(connection)
+
+
+process_and_cache_new_data <- function(raw_data, input_event_type, conn, color_by = "College") {
+  
+  # Check input validity
+  if (!(input_event_type %in% c("Keywords", "Authors"))) {
+    stop("input_event_type must be either 'Keywords' or 'Authors'")
+  }
+  
+  if (!color_by %in% c("College", "Department")) {
+    stop("color_by must be either 'College' or 'Department'")
+  }
+  
+  # Define table names
+  table_prefix <- tolower(input_event_type)
+  nodes_table <- paste0(table_prefix, "_node")
+  edges_table <- paste0(table_prefix, "_edge")
+  grouping_col <- ifelse(color_by == "College", "CollegeName", "DepartmentName")
+  color_table <- paste0(tolower(color_by), "_colors")  # e.g., "college_colors"
+  
+  message("Processing all Dataverses...")
+  
+  all_data <- raw_data
+  unique_groups <- unique(all_data[[grouping_col]])
+  
+  # Ensure color table exists
+  if (!DBI::dbExistsTable(conn, color_table)) {
+    DBI::dbExecute(conn, sprintf("CREATE TABLE %s (%s TEXT PRIMARY KEY, Color TEXT)", color_table, grouping_col))
+  }
+  
+  # Load existing colors
+  existing_colors <- DBI::dbReadTable(conn, color_table)
+  existing_color_map <- setNames(existing_colors$Color, existing_colors[[grouping_col]])
+  
+  # Assign new colors if needed
+  new_groups <- setdiff(unique_groups, names(existing_color_map))
+  if (length(new_groups) > 0) {
+    available_colors <- RColorBrewer::brewer.pal(min(length(unique_groups), 12), "Set3")
+    assigned_colors <- unique(existing_colors$Color)
+    unused_colors <- setdiff(available_colors, assigned_colors)
+    
+    new_color_map <- setNames(rep(NA, length(new_groups)), new_groups)
+    for (grp in new_groups) {
+      new_color_map[[grp]] <- ifelse(length(unused_colors) > 0,
+                                     unused_colors[1],
+                                     sample(available_colors, 1))
+      unused_colors <- unused_colors[-1]
+    }
+    
+    new_colors_df <- tibble::tibble(!!grouping_col := names(new_color_map), Color = unname(new_color_map))
+    DBI::dbWriteTable(conn, color_table, new_colors_df, append = TRUE, row.names = FALSE)
+    
+    existing_color_map <- c(existing_color_map, new_color_map)
+  }
+  
+  color_map <- existing_color_map
+  
+  # Process Keywords or Authors
+  if (input_event_type == "Keywords") {
+    events <- all_data$Keywords %>%
+      stringr::str_split(";\\s*") %>%
+      unlist() %>%
+      na.omit() %>%
+      stringr::str_replace_all("[^a-zA-Z0-9\\s-]", "") %>%
+      stringr::str_squish() %>%
+      stringr::str_to_title() %>%
+      .[!grepl("\\bAgricultural Science(s)?\\b", ., ignore.case = TRUE)] %>%
+      unique() %>%
+      sort()
+  } else {
+    events <- all_data$Authors %>%
+      stringr::str_split(";\\s*") %>%
+      unlist() %>%
+      na.omit() %>%
+      sort() %>%
+      stringr::str_replace_all("\\.", "") %>%
+      stringr::str_to_title() %>%
+      stringr::str_replace_all("\\b([A-Z])\\b", "") %>%
+      unique() %>%
+      stringr::str_trim()
+  }
+  
+  # Create nodes
+  nodes <- purrr::map_df(seq_along(events), function(i) {
+    event <- events[i] %>%
+      stringr::str_squish() %>%
+      stringr::str_to_title()
+    
+    matched_papers <- all_data %>%
+      dplyr::filter(stringr::str_detect(
+        stringr::str_to_lower(.data[[input_event_type]]),
+        fixed(stringr::str_to_lower(event))
+      ))
+    
+    if (nrow(matched_papers) == 0) return(NULL)
+    
+    studies_count <- nrow(matched_papers)
+    year_range <- paste(min(matched_papers$PublicationDate, na.rm = TRUE), "to",
+                        max(matched_papers$PublicationDate, na.rm = TRUE))
+    
+    group_names <- unique(matched_papers[[grouping_col]])
+    node_color <- ifelse(length(group_names) > 1, "gray", color_map[group_names])
+    
+    tibble::tibble(
+      label = event,
+      node_group = input_event_type,
+      title = paste("Study Count:", studies_count, "<br>", "Year Range:", year_range),
+      color = node_color,
+      DataverseName = paste(unique(matched_papers$DataverseName), collapse = ", "),
+      CollegeName = paste(unique(matched_papers$CollegeName), collapse = ", "),
+      DepartmentName = paste(unique(matched_papers$DepartmentName), collapse = ", "),
+      study_count = studies_count,
+      year_range = year_range,
+      DOI = paste(unique(matched_papers$DOI), collapse = "; ")
+    )
+  }) %>%
+    dplyr::mutate(label = stringr::str_squish(label)) %>%
+    dplyr::group_by(label) %>%
+    dplyr::summarise(
+      node_group = first(node_group),
+      title = first(title),
+      color = first(color),
+      DataverseName = paste(unique(DataverseName), collapse = ", "),
+      CollegeName = paste(unique(CollegeName), collapse = ", "),
+      DepartmentName = paste(unique(DepartmentName), collapse = ", "),
+      study_count = sum(study_count, na.rm = TRUE),
+      year_range = paste(unique(year_range), collapse = " | "),
+      DOI = paste(unique(DOI), collapse = "; ")
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(id = dplyr::row_number())
+  
+  # Create edges
+  event_occurrences <- lapply(nodes$label, function(ev) which(grepl(ev, all_data[[input_event_type]], ignore.case = TRUE)))
+  node_pairs <- combn(nrow(nodes), 2, simplify = FALSE)
+  edges_list <- purrr::map(node_pairs, function(pair) {
+    i <- pair[1]
+    j <- pair[2]
+    count <- length(intersect(event_occurrences[[i]], event_occurrences[[j]]))
+    if (count > 0) tibble::tibble(from = nodes$id[i], to = nodes$id[j], weight = count) else NULL
+  }) %>% purrr::compact()
+  
+  edges <- dplyr::bind_rows(edges_list)
+  
+  # Store to database
+  DBI::dbWriteTable(conn, nodes_table, nodes, append = TRUE, row.names = FALSE)
+  DBI::dbWriteTable(conn, edges_table, edges, append = TRUE, row.names = FALSE)
+  
+  message("Processing complete. Data stored in: ", nodes_table, " and ", edges_table)
+}
+
+process_and_cache_new_data(network_data, "Keywords", connection, color_by = "College")

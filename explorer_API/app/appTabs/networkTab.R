@@ -3,7 +3,8 @@ explorer_list$networkTab_ui <-tabItem(
   tabName = "network_tab",
   fluidRow(
     box(
-      title = tags$b("Select a Dataverse to View"),
+      title = tags$b("Filter Data by :", 
+                     style = "padding-left: 5px; margin-bottom: 2px;"),
       width = 12,  # Full-width box
       collapsible = FALSE,
       maximizable = FALSE,
@@ -13,12 +14,19 @@ explorer_list$networkTab_ui <-tabItem(
       side = "right",
       type = "pills",
       
-      pickerInput(
-        inputId = "select_dataverse",
-        label = "",
-        choices = NULL,  # Populate with unique dataverse names
-        multiple = TRUE  # Allow multi-select
-      ),
+      div(style ="margin-left: 10px;",
+          awesomeRadio(
+            inputId = "collegeDept_filter",
+            label = "",
+            choices = c(
+              "Colleges / Campus / Institution" = "CollegeName",
+              "Department / Research Centre" = "DepartmentName"
+            ),
+            selected = "CollegeName",
+            inline = TRUE
+          )),
+      
+      uiOutput("dynamic_filter_ui"),
       
       sidebar = boxSidebar(
         id = "infoPanel",
@@ -29,8 +37,7 @@ explorer_list$networkTab_ui <-tabItem(
       
       hr(),
       
-      h6(tags$b("View Network By: "),
-         style = "padding-left: 10px; margin-bottom: 2px;"),
+      h6(tags$b("View Network By : ", style = "padding-left: 10px; margin-bottom: 2px;")),
       
       div(style = "margin-left: 10px;",
           awesomeRadio(
@@ -71,49 +78,80 @@ explorer_list$networkTab_ui <-tabItem(
 # Server Module for Network Tab
 explorer_list$networkTab_server <- function(input, output, session, study_data, shared_data, conn) {
   
-  # Observer to update the PickerInput based on study_data()
-  observe({
-    # Retrieve the current study data.
-    data <- study_data()
-    # Extract unique study titles (or any other field) to use as choices.
-    choices <- unique(data$DataverseName)
-    # Update the PickerInput with the new choices.
-    updatePickerInput(session, "select_dataverse", choices = choices)
+  
+  # Dynamic filter UI rendering based on college/dept selection
+  output$dynamic_filter_ui <- renderUI({
+    req(input$collegeDept_filter, study_data())
+    
+    # Dynamically create the choices based on the selected filter
+    choices <- sort(unique(study_data()[[input$collegeDept_filter]]))
+    
+    div(style = "margin-left: 10px; margin-bottom: 4px;",
+        pickerInput(
+          inputId = "select_dataverse",
+          label = "",
+          choices = choices,
+          multiple = TRUE
+        ))
   })
   
+  # Sync selected college/dept with reactiveVal shared_data for further use
   observe({
-    # Sync the selected dataverse with shared_data for further use
+    req(input$collegeDept_filter)
+    shared_data$selected_collegeDept <- input$collegeDept_filter
+  })
+  
+  # Sync selected dataverse with shared_data for further use
+  observe({
+    req(input$select_dataverse)
     shared_data$selected_dataverse <- input$select_dataverse
   })
   
   # Reactive expression to filter data based on selected dataverse(s)
   shared_data$filtered_data <- reactive({
-    req(shared_data$selected_dataverse, !is.null(study_data()), nrow(study_data()) > 0)  # Ensure inputs are valid
+    req(study_data(), shared_data$selected_dataverse, shared_data$selected_collegeDept)
+    
+    # Filter the data based on the selected dataverse
     study_data() %>%
-      filter(DataverseName %in% shared_data$selected_dataverse)  # Filter for selected dataverses
+      dplyr::filter(.data[[shared_data$selected_collegeDept]] %in% shared_data$selected_dataverse)
   })
+  
   
   # Fetch nodes data from the database based on the selected event type (Keywords or Authors)
   nodes_data <- reactive({
     req(input$event_type)  # Ensure input exists
     table_name <- paste0(input$event_type, "_node")  # Construct table name dynamically
-    dbGetQuery(conn, paste0("SELECT * FROM ", table_name)) # Query the nodes table
+    dbGetQuery(connection, paste0("SELECT * FROM ", table_name)) # Query the nodes table
   })
   
   # Fetch edges data from the database based on the selected event type (Keywords or Authors)
   edges_data <- reactive({
     req(input$event_type) # Ensure input exists
     table_name <- paste0(input$event_type, "_edge")  # Construct table name dynamically
-    dbGetQuery(conn, paste0("SELECT * FROM ", table_name)) # Query the nodes table
+    dbGetQuery(connection, paste0("SELECT * FROM ", table_name)) # Query the nodes table
   })
   
-  # Filter nodes based on selected dataverse(s)
+
+  # Filter nodes based on selected college(s) or department(s)
   filteredNodes <- reactive({
-    req(input$select_dataverse)  # Ensure input exists
-    nodes_data() %>%
-      filter(
-        str_detect(DataverseName, paste(input$select_dataverse, collapse = "|")))  # Filter nodes based on selected dataverses
+    req(nodes_data(), shared_data$selected_collegeDept, shared_data$selected_dataverse)  # Ensure data is loaded
+    
+    df <- nodes_data()
+    # selected_value <- shared_data$selected_collegeDept  # The selected value (either College or Department)
+    
+    # Filter based on the selected value (College or Department)
+    if (!is.null(shared_data$selected_dataverse) && length(shared_data$selected_dataverse) > 0) {
+      df <- df %>%
+        filter(
+          str_detect(CollegeName, paste(shared_data$selected_dataverse, collapse = "|")) | 
+            str_detect(DepartmentName, paste(shared_data$selected_dataverse, collapse = "|"))
+        )
+    }
+    
+    # Return the filtered dataframe
+    df
   })
+  
   
   # Filter edges based on valid node IDs
   filteredEdges <- reactive({
@@ -122,53 +160,54 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
     edges_data() %>% filter(from %in% valid_ids & to %in% valid_ids)  # Filter edges using valid node IDs
   })
   
-  output$customLegend <- renderUI({
-    req(nodes_data())
-    
-    if (nrow(nodes_data()) == 0 || is.null(input$select_dataverse)) return(NULL)
-    
-    legend_data <- nodes_data() %>%
-      mutate(label = ifelse(color == "gray", "+1 Dataverse", DataverseName)) %>%
-      distinct(label, color) %>%
-      arrange(label)
-    
-    bs4Card(
-      title = tags$div(
-        "Dataverse Legend",
-        style = "text-align: center; font-size: 24px; font-weight: bold;"
-      ),
-      collapsible = FALSE,
-      width = 12,  # Changed to a smaller card width
-      solidHeader = TRUE,
-      status = "lightblue",
-      
-      # Wrapper for the reactable with proper width and overflow handling
-      reactable(
-        legend_data,
-        columns = list(
-          label = colDef(
-            name = "",
-            minWidth = 200  # Increase the width of the label column
-          ),
-          color = colDef(
-            name = "",
-            cell = function(value) {
-              div(style = paste("background-color:", value, "; width: 20px; height: 20px; border-radius: 4px;"))
-            },
-            headerStyle = list(textAlign = "center"),  # Centers header
-            style = list(
-              textAlign = "right"        # Centers the color code content
-            ),
-            minWidth = 50    # The width of the label column
-          )
-        ),
-        width = "100%",
-        outlined = TRUE,
-        borderless = TRUE,
-        sortable = FALSE
-      )
-    )
-  })
+  # # Customize the legend for the network
+  # output$customLegend <- renderUI({
+  #   req(nodes_data())
+  #   
+  #   if (nrow(nodes_data()) == 0 || is.null(input$select_dataverse)) return(NULL)
+  #   
+  #   legend_data <- nodes_data() %>%
+  #     mutate(label = ifelse(color == "gray", "+1 Dataverse", DataverseName)) %>%
+  #     distinct(label, color) %>%
+  #     arrange(label)
+  #   
+  #   bs4Card(
+  #     title = tags$div(
+  #       "Dataverse Legend",
+  #       style = "text-align: center; font-size: 24px; font-weight: bold;"
+  #     ),
+  #     collapsible = FALSE,
+  #     width = 12,  # Changed to a smaller card width
+  #     solidHeader = TRUE,
+  #     status = "lightblue",
+  #     
+  #     # Wrapper for the reactable with proper width and overflow handling
+  #     reactable(
+  #       legend_data,
+  #       columns = list(
+  #         label = colDef(
+  #           name = "",
+  #           minWidth = 200  # Increase the width of the label column
+  #         ),
+  #         color = colDef(
+  #           name = "",
+  #           cell = function(value) {
+  #             div(style = paste("background-color:", value, "; width: 20px; height: 20px; border-radius: 4px;"))
+  #           },
+  #           headerStyle = list(textAlign = "center"),  # Centers header
+  #           style = list(
+  #             textAlign = "right"        # Centers the color code content
+  #           ),
+  #           minWidth = 50    # The width of the label column
+  #         )
+  #       ),
+  #       width = "100%",
+  #       outlined = TRUE,
+  #       borderless = TRUE,
+  #       sortable = FALSE
+  #     )
+  #   )
+  # })
   
   
   

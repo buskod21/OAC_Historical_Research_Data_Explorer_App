@@ -226,9 +226,10 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
     # Compute the value only once study_data() is available
     req(study_data())  # Ensures that the data is available
     
-    valueBox(value = tags$span(tags$b(class = "animated-box", style = "font-size: 60px; color: white;", "6")),
+    valueBox(value = tags$span(tags$b(class = "animated-box", style = "font-size: 60px; color: white;", 
+                                      length(unique(study_data()$CollegeName)))),
              subtitle = tags$span(style = "font-size: 20px; color: white;",
-                                  "Dataverses in the OAC repository to explore!"),
+                                  "Agri-Environment Dataverses to Explore!"),
              icon = icon("database"),
              color = "maroon",
              elevation = 2,

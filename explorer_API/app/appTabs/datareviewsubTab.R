@@ -25,7 +25,7 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
       req(input_study_select())  # Ensure that a selection has been made and detailed_data is available
 
 
-      # Dynamically choose between study_data and hared_data$filtered_data() to display study details
+      # Dynamically choose between study_data and shared_data$filtered_data() to display study details
       data <- if (is.null(shared_data$selected_dataverse)) study_data() else shared_data$filtered_data()
 
       # Filter data first before transposing
