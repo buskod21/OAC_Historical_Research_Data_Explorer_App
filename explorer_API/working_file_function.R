@@ -265,6 +265,7 @@ connection <- dbConnect(RSQLite::SQLite(), "database_file.db")
 # 2. Read the table you want to export (replace 'your_table_name' with the actual table)
 data <- dbReadTable(connection, "research_data")
 
+dbDisconnect(connection)
 # 3. Save the data as a CSV file on your local computer
 write.csv(data, "agri-environment_all.csv", row.names = FALSE)
 
@@ -272,60 +273,66 @@ write.csv(data, "agri-environment_all.csv", row.names = FALSE)
 dbDisconnect(connection)
 
 
-process_and_cache_new_data <- function(raw_data, input_event_type, conn, color_by = "College") {
+process_and_cache_new_data <- function(raw_data, input_event_type, conn) {
   
   # Check input validity
   if (!(input_event_type %in% c("Keywords", "Authors"))) {
     stop("input_event_type must be either 'Keywords' or 'Authors'")
   }
   
-  if (!color_by %in% c("College", "Department")) {
-    stop("color_by must be either 'College' or 'Department'")
-  }
+  message("Processing all Dataverses...")
+  
+  all_data <- raw_data
   
   # Define table names
   table_prefix <- tolower(input_event_type)
   nodes_table <- paste0(table_prefix, "_node")
   edges_table <- paste0(table_prefix, "_edge")
-  grouping_col <- ifelse(color_by == "College", "CollegeName", "DepartmentName")
-  color_table <- paste0(tolower(color_by), "_colors")  # e.g., "college_colors"
   
-  message("Processing all Dataverses...")
+  # Generate color palette (up to 20 unique colors)
+  colors_set3 <- RColorBrewer::brewer.pal(12, "Set3")  # First 12 colors
+  colors_paired <- RColorBrewer::brewer.pal(12, "Paired")  # Next 8 colors
+  all_colors <- c(colors_set3, colors_paired)  # Combine to get 24 colors
   
-  all_data <- raw_data
-  unique_groups <- unique(all_data[[grouping_col]])
-  
-  # Ensure color table exists
-  if (!DBI::dbExistsTable(conn, color_table)) {
-    DBI::dbExecute(conn, sprintf("CREATE TABLE %s (%s TEXT PRIMARY KEY, Color TEXT)", color_table, grouping_col))
-  }
-  
-  # Load existing colors
-  existing_colors <- DBI::dbReadTable(conn, color_table)
-  existing_color_map <- setNames(existing_colors$Color, existing_colors[[grouping_col]])
-  
-  # Assign new colors if needed
-  new_groups <- setdiff(unique_groups, names(existing_color_map))
-  if (length(new_groups) > 0) {
-    available_colors <- RColorBrewer::brewer.pal(min(length(unique_groups), 12), "Set3")
-    assigned_colors <- unique(existing_colors$Color)
-    unused_colors <- setdiff(available_colors, assigned_colors)
-    
-    new_color_map <- setNames(rep(NA, length(new_groups)), new_groups)
-    for (grp in new_groups) {
-      new_color_map[[grp]] <- ifelse(length(unused_colors) > 0,
-                                     unused_colors[1],
-                                     sample(available_colors, 1))
-      unused_colors <- unused_colors[-1]
+  # Ensure color tables exist
+  for (grouping_col in c("CollegeName", "DepartmentName")) {
+    color_table <- paste0(tolower(gsub("Name", "", grouping_col)), "_colors")
+    if (!DBI::dbExistsTable(conn, color_table)) {
+      DBI::dbExecute(conn, sprintf("CREATE TABLE %s (%s TEXT PRIMARY KEY, Color TEXT)", color_table, grouping_col))
     }
     
-    new_colors_df <- tibble::tibble(!!grouping_col := names(new_color_map), Color = unname(new_color_map))
-    DBI::dbWriteTable(conn, color_table, new_colors_df, append = TRUE, row.names = FALSE)
+    # Load and extend color mapping
+    unique_groups <- unique(all_data[[grouping_col]])
+    existing_colors <- DBI::dbReadTable(conn, color_table)
+    existing_color_map <- setNames(existing_colors$Color, existing_colors[[grouping_col]])
+    new_groups <- setdiff(unique_groups, names(existing_color_map))
     
-    existing_color_map <- c(existing_color_map, new_color_map)
+    if (length(new_groups) > 0) {
+      available_colors <- all_colors[seq_len(min(length(new_groups), length(all_colors)))]  # Adjust the color selection logic
+      assigned_colors <- unique(existing_colors$Color)
+      unused_colors <- setdiff(available_colors, assigned_colors)
+      
+      new_color_map <- setNames(rep(NA, length(new_groups)), new_groups)
+      for (grp in new_groups) {
+        new_color_map[[grp]] <- ifelse(length(unused_colors) > 0,
+                                       unused_colors[1],
+                                       sample(available_colors, 1))
+        unused_colors <- unused_colors[-1]
+      }
+      
+      new_colors_df <- tibble::tibble(!!grouping_col := names(new_color_map), Color = unname(new_color_map))
+      DBI::dbWriteTable(conn, color_table, new_colors_df, append = TRUE, row.names = FALSE)
+    }
   }
   
-  color_map <- existing_color_map
+  # Reload updated color maps
+  college_colors <- DBI::dbReadTable(conn, "college_colors") |> 
+    dplyr::distinct(CollegeName, Color) |> 
+    tibble::deframe()
+  
+  department_colors <- DBI::dbReadTable(conn, "department_colors") |> 
+    dplyr::distinct(DepartmentName, Color) |> 
+    tibble::deframe()
   
   # Process Keywords or Authors
   if (input_event_type == "Keywords") {
@@ -370,17 +377,30 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn, color_b
     year_range <- paste(min(matched_papers$PublicationDate, na.rm = TRUE), "to",
                         max(matched_papers$PublicationDate, na.rm = TRUE))
     
-    group_names <- unique(matched_papers[[grouping_col]])
-    node_color <- ifelse(length(group_names) > 1, "gray", color_map[group_names])
+    college_names <- unique(matched_papers$CollegeName)
+    department_names <- unique(matched_papers$DepartmentName)
+    
+    # Assign color for College and Department
+    if (length(college_names) > 1) {
+      college_color <- "gray"
+    } else {
+      college_color <- unique(na.omit(college_colors[college_names]))
+    }
+    
+    if (length(department_names) > 1) {
+      department_color <- "gray"
+    } else {
+      department_color <- unique(na.omit(department_colors[department_names]))
+    }
     
     tibble::tibble(
       label = event,
       node_group = input_event_type,
       title = paste("Study Count:", studies_count, "<br>", "Year Range:", year_range),
-      color = node_color,
-      DataverseName = paste(unique(matched_papers$DataverseName), collapse = ", "),
-      CollegeName = paste(unique(matched_papers$CollegeName), collapse = ", "),
-      DepartmentName = paste(unique(matched_papers$DepartmentName), collapse = ", "),
+      CollegeName = paste(college_names, collapse = ", "),
+      DepartmentName = paste(department_names, collapse = ", "),
+      CollegeColor = college_color,
+      DepartmentColor = department_color,
       study_count = studies_count,
       year_range = year_range,
       DOI = paste(unique(matched_papers$DOI), collapse = "; ")
@@ -391,8 +411,8 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn, color_b
     dplyr::summarise(
       node_group = first(node_group),
       title = first(title),
-      color = first(color),
-      DataverseName = paste(unique(DataverseName), collapse = ", "),
+      CollegeColor = first(CollegeColor),
+      DepartmentColor = first(DepartmentColor),
       CollegeName = paste(unique(CollegeName), collapse = ", "),
       DepartmentName = paste(unique(DepartmentName), collapse = ", "),
       study_count = sum(study_count, na.rm = TRUE),
@@ -421,4 +441,4 @@ process_and_cache_new_data <- function(raw_data, input_event_type, conn, color_b
   message("Processing complete. Data stored in: ", nodes_table, " and ", edges_table)
 }
 
-process_and_cache_new_data(network_data, "Keywords", connection, color_by = "College")
+process_and_cache_new_data(data, "Keywords", connection)

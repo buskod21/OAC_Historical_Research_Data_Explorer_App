@@ -8,6 +8,7 @@ datareviewTab_UI <- function(id) {
   
   # Build the UI elements using tagList
   tagList(
+    
     # Div containing the dropdown for selecting a study
     div(
       id = "selectDiv",
@@ -79,8 +80,6 @@ datareviewTab_server <- function(id, study_data, shared_data) {
     
     # Update study_select dropdown when the selected_dataverse changes
     observe({
-      # Ensure selected_collegeDept is valid before processing
-      req(shared_data$selected_collegeDept)  # Require the selected college/dept column to be set
       
       # Determine which data to use (filtered or full)
       data <- if (is.null(shared_data$selected_dataverse) || length(shared_data$selected_dataverse) == 0) {
@@ -122,7 +121,7 @@ datareviewTab_server <- function(id, study_data, shared_data) {
     # Observe changes in the study selection
     observeEvent(input$study_select, {
       # Check if a study is selected
-      if (!is.null(input$study_select) && input$study_select != "") {
+      if (length(input$study_select) > 0 && nzchar(input$study_select)) {
         # Show the overviewBox if a study is selected
         shinyjs::show("overviewBox")
       } else {

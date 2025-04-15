@@ -28,6 +28,7 @@ library(reactlog)
 library(glue)
 library(RColorBrewer)
 library(slickR)
+library(waiter)
 
 ## 3. Visualization: These libraries are used for creating visual representations of data
 

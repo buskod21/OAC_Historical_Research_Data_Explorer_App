@@ -1,6 +1,27 @@
 
 explorer_list$networkTab_ui <-tabItem(
   tabName = "network_tab",
+  
+  tags$head(tags$style(HTML("
+  /* Style for the picker input button */
+  .bootstrap-select .dropdown-toggle {
+    border-radius: .25rem;
+    min-height: calc(2.25rem + 2px);
+    border: 1px solid #ced4da;
+  }
+
+  /* Align group headers (optgroup labels like College names) to the left */
+  .dropdown-menu li.dropdown-header {
+    text-align: left !important;
+    font-weight: bold;
+  }
+
+  /* Align individual dropdown items (like Department names) to the left */
+  .dropdown-menu.inner li a {
+    text-align: left !important;
+  }
+"))),
+  
   fluidRow(
     box(
       title = tags$b("Filter Data by :", 
@@ -50,7 +71,6 @@ explorer_list$networkTab_ui <-tabItem(
       ),
       
       hr(),
-      
       fluidRow(
         column(10,  # 100% width for the plot on small screens
                withSpinner(visNetworkOutput(
@@ -79,31 +99,47 @@ explorer_list$networkTab_ui <-tabItem(
 explorer_list$networkTab_server <- function(input, output, session, study_data, shared_data, conn) {
   
   
-  # Dynamic filter UI rendering based on college/dept selection
   output$dynamic_filter_ui <- renderUI({
     req(input$collegeDept_filter, study_data())
     
-    # Dynamically create the choices based on the selected filter
-    choices <- sort(unique(study_data()[[input$collegeDept_filter]]))
+    data <- study_data()
     
-    div(style = "margin-left: 10px; margin-bottom: 4px;",
-        pickerInput(
-          inputId = "select_dataverse",
-          label = "",
-          choices = choices,
-          multiple = TRUE
-        ))
+    
+    if (input$collegeDept_filter == "DepartmentName") {
+      # Group DepartmentName by CollegeName
+      grouped_choices <- split(data$DepartmentName, data$CollegeName)
+      
+      # Convert each group to unique, sorted list
+      grouped_choices <- lapply(grouped_choices, function(x) sort(unique((x))))
+      
+      choice_input <- grouped_choices
+    } else {
+      choice_input <- sort(unique(data$CollegeName))
+    }
+    
+    div(
+      style = "margin-left: 10px; margin-bottom: 4px;",
+      virtualSelectInput(
+        inputId = "select_dataverse",
+        label = NULL,
+        choices = choice_input,
+        selected = NULL,
+        multiple = TRUE,
+        search = TRUE,
+        dropboxWrapper = "body",
+        width = "100%"
+      )
+    )
   })
+  
   
   # Sync selected college/dept with reactiveVal shared_data for further use
   observe({
-    req(input$collegeDept_filter)
     shared_data$selected_collegeDept <- input$collegeDept_filter
   })
   
   # Sync selected dataverse with shared_data for further use
   observe({
-    req(input$select_dataverse)
     shared_data$selected_dataverse <- input$select_dataverse
   })
   
@@ -116,115 +152,131 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
       dplyr::filter(.data[[shared_data$selected_collegeDept]] %in% shared_data$selected_dataverse)
   })
   
-  
   # Fetch nodes data from the database based on the selected event type (Keywords or Authors)
   nodes_data <- reactive({
     req(input$event_type)  # Ensure input exists
-    table_name <- paste0(input$event_type, "_node")  # Construct table name dynamically
-    dbGetQuery(connection, paste0("SELECT * FROM ", table_name)) # Query the nodes table
+    table_name <- paste0(input$event_type, "_node") # Construct table name dynamically
+    dbGetQuery(conn, paste0("SELECT * FROM ", table_name)) # Query the nodes table
   })
   
   # Fetch edges data from the database based on the selected event type (Keywords or Authors)
   edges_data <- reactive({
     req(input$event_type) # Ensure input exists
     table_name <- paste0(input$event_type, "_edge")  # Construct table name dynamically
-    dbGetQuery(connection, paste0("SELECT * FROM ", table_name)) # Query the nodes table
+    dbGetQuery(conn, paste0("SELECT * FROM ", table_name)) # Query the nodes table
   })
   
-
   # Filter nodes based on selected college(s) or department(s)
   filteredNodes <- reactive({
-    req(nodes_data(), shared_data$selected_collegeDept, shared_data$selected_dataverse)  # Ensure data is loaded
+    req(nodes_data(), shared_data$selected_dataverse, shared_data$selected_collegeDept)
     
-    df <- nodes_data()
-    # selected_value <- shared_data$selected_collegeDept  # The selected value (either College or Department)
-    
-    # Filter based on the selected value (College or Department)
-    if (!is.null(shared_data$selected_dataverse) && length(shared_data$selected_dataverse) > 0) {
-      df <- df %>%
-        filter(
-          str_detect(CollegeName, paste(shared_data$selected_dataverse, collapse = "|")) | 
-            str_detect(DepartmentName, paste(shared_data$selected_dataverse, collapse = "|"))
-        )
+    if (is.null(shared_data$selected_dataverse) || length(shared_data$selected_dataverse) == 0) {
+      return(NULL)
     }
     
-    # Return the filtered dataframe
-    df
+    df <- nodes_data() %>%
+      filter(
+        str_detect(
+          .data[[shared_data$selected_collegeDept]],
+          paste(shared_data$selected_dataverse, collapse = "|")
+        )
+      ) %>%
+      mutate(
+        color = case_when(
+          shared_data$selected_collegeDept == "CollegeName" ~ CollegeColor,
+          shared_data$selected_collegeDept == "DepartmentName" ~ DepartmentColor
+        ),
+        title = paste0(
+          title, "<br>Affiliation(s): ", .data[[shared_data$selected_collegeDept]]
+        )
+      )
   })
   
   
   # Filter edges based on valid node IDs
   filteredEdges <- reactive({
-    req(filteredNodes())  # Ensure filtered nodes are available
-    valid_ids <- filteredNodes()$id
-    edges_data() %>% filter(from %in% valid_ids & to %in% valid_ids)  # Filter edges using valid node IDs
+    nodes <- filteredNodes()
+    if (is.null(nodes)) return(NULL)
+    
+    valid_ids <- nodes$id
+    edges_data() %>%
+      filter(from %in% valid_ids & to %in% valid_ids)
   })
   
-  # # Customize the legend for the network
-  # output$customLegend <- renderUI({
-  #   req(nodes_data())
-  #   
-  #   if (nrow(nodes_data()) == 0 || is.null(input$select_dataverse)) return(NULL)
-  #   
-  #   legend_data <- nodes_data() %>%
-  #     mutate(label = ifelse(color == "gray", "+1 Dataverse", DataverseName)) %>%
-  #     distinct(label, color) %>%
-  #     arrange(label)
-  #   
-  #   bs4Card(
-  #     title = tags$div(
-  #       "Dataverse Legend",
-  #       style = "text-align: center; font-size: 24px; font-weight: bold;"
-  #     ),
-  #     collapsible = FALSE,
-  #     width = 12,  # Changed to a smaller card width
-  #     solidHeader = TRUE,
-  #     status = "lightblue",
-  #     
-  #     # Wrapper for the reactable with proper width and overflow handling
-  #     reactable(
-  #       legend_data,
-  #       columns = list(
-  #         label = colDef(
-  #           name = "",
-  #           minWidth = 200  # Increase the width of the label column
-  #         ),
-  #         color = colDef(
-  #           name = "",
-  #           cell = function(value) {
-  #             div(style = paste("background-color:", value, "; width: 20px; height: 20px; border-radius: 4px;"))
-  #           },
-  #           headerStyle = list(textAlign = "center"),  # Centers header
-  #           style = list(
-  #             textAlign = "right"        # Centers the color code content
-  #           ),
-  #           minWidth = 50    # The width of the label column
-  #         )
-  #       ),
-  #       width = "100%",
-  #       outlined = TRUE,
-  #       borderless = TRUE,
-  #       sortable = FALSE
-  #     )
-  #   )
-  # })
-  
-  
+  # Legend output for the plots
+  output$customLegend <- renderUI({
+    req(filteredNodes(), shared_data$selected_dataverse,
+        shared_data$selected_collegeDept)
+    
+    legend_data <- filteredNodes() %>%
+      mutate(label = dplyr::case_when(
+        color == "gray" ~ "Shared Across Multiple",
+        TRUE ~ .data[[shared_data$selected_collegeDept]]
+      )) %>%
+      distinct(label, color) %>%
+      arrange(label)
+    
+    bs4Card(
+      title = tags$div(
+        "Network Legend",
+        style = "text-align: center; font-size: 20px; font-weight: bold;"
+      ),
+      collapsible = FALSE,
+      width = 12,
+      solidHeader = TRUE,
+      status = "lightblue",
+      
+      reactable(
+        legend_data,
+        columns = list(
+          label = colDef(
+            name = "",
+            minWidth = 200
+          ),
+          color = colDef(
+            name = "",
+            cell = function(value) {
+              div(style = paste0("background-color:", value, 
+                                 "; width: 20px; height: 20px; border-radius: 4px;"))
+            },
+            headerStyle = list(textAlign = "center"),
+            style = list(textAlign = "right"),
+            minWidth = 50
+          )
+        ),
+        width = "100%",
+        outlined = TRUE,
+        borderless = TRUE,
+        sortable = FALSE
+      )
+    )
+  })
   
   # Render the network plot using the reactive dataset 'network_data_reactive()'
   output$networkPlot <- renderVisNetwork({
-    req(filteredNodes(), filteredEdges())  # Ensure that both nodes and edges data are available
+    req(
+      filteredNodes(), 
+      filteredEdges(), 
+      shared_data$selected_collegeDept, 
+      shared_data$selected_dataverse,
+      length(shared_data$selected_dataverse) > 0  # This ensures something is actually selected
+    )
     
-    visNetwork(filteredNodes(), filteredEdges(), width = "100%", height = "800px",
+    # Dynamically assign color based on selected_collegeDept
+    color <- ifelse(shared_data$selected_collegeDept == "CollegeName",
+                    filteredNodes()$CollegeColor,  # Use CollegeColor if College is selected
+                    ifelse(shared_data$selected_collegeDept == "DepartmentName",
+                           filteredNodes()$DepartmentColor))
+    
+    # Create the network plot
+    visNetwork(filteredNodes(), filteredEdges(), width = "100%", height = "800px", 
                main = "Connections Between Dataverses") %>%
-      
-      # Configure the appearance of nodes
       visNodes(
         size = 200,  # Default node size
         shape = "ellipse",  # Node shape
         borderWidth = 2,  # Border thickness
         color = list(
-          background = "field:color",  # Use field data for color assignment
+          background = color,  # Assign dynamic color based on CollegeColor or DepartmentColor
           border = "black",  # Black border for nodes
           highlight = "#ff0"  # Yellow highlight when selected
         ),
@@ -292,7 +344,6 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
       ))
   })
   
-  
   # Event: Update UI based on selected node
   observeEvent(input$selectedEvent, {
     req(shared_data$filtered_data(), shared_data$selected_dataverse, input$selectedEvent, conn)
@@ -301,7 +352,9 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
     data <- shared_data$filtered_data()
     
     # Determine which table to query (Keywords or Authors)
-    table_name <- if (input$event_type == "Keywords") "keywords_node" else "authors_node"
+    table_name <- switch(input$event_type,
+                         "Keywords" = "keywords_node",
+                         "Authors" = "authors_node")
     
     # Fetch the event name from the database using selectedEvent (ID)
     selected_event_query <- paste0("SELECT label FROM ", table_name, " WHERE id = ?")

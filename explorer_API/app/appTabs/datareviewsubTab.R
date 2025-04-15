@@ -22,7 +22,7 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
     # Show study details based on selection
     output$study_details <- DT::renderDataTable({
 
-      req(input_study_select())  # Ensure that a selection has been made and detailed_data is available
+       req(input_study_select())  # Ensure that a selection has been made and detailed_data is available
 
 
       # Dynamically choose between study_data and shared_data$filtered_data() to display study details
@@ -33,6 +33,8 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
         mutate(PeriodCovered = str_replace_all(PeriodCovered, "/", " - ")) %>%
         mutate(DOI = paste0('<a class="badge badge-info" href="https://doi.org/',
                             DOI, '" target="_blank">', DOI, '</a>')) %>%
+        mutate(DataLicense = paste0('<a class="badge badge-info" href="',DataLicense, 
+                                    '"target="_blank">',DataLicense, '</a>')) %>% 
         filter(Title == input_study_select()) %>% # Filter data first before transposing
         rename_with(~ gsub("([a-z])([A-Z])", "\\1 \\2", .x)) %>% # Adds spaces to camel case column names  
         t() # Transpose the filtered data
