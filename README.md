@@ -1,7 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DataExplorer
+# RED-X: Re-usable Data Explorer App
+
 
 <!-- badges: start -->
 
@@ -14,54 +15,82 @@ historical data from the Borealis database. The app enables user to
 visualize the metadata for the data, check the structure of raw data,
 see some basic descriptive statistics and plot the data.
 
-## Installation
-
-You can install DataExplorer package from [GitHub](https://github.com/)
-with:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App@dev")
-
-# Run the App
-library(DataExplorer)
-```
-
-## Run the app on your local computer
-
-You can also run the app directly on your local computer using:
-
-``` r
-DataExplorer::run_app()
-```
 
 ## Acknowledgement
 
-This shiny web application was developed as a part of the Reusable
-research data made shiny workshop that was held at the University of
-Guelph, Guelph Ontario Canada.
+This application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
 
 <img src="inst/app/www/workshop1.jpeg" width="80%" />
 
-# How the app works
+## About the App
 
-The front page of the App displays three tabs in the Menu as shown
-below:
+RED-X supports the FAIR data principles (Findable, Accessible, Interoperable, and Reusable), helping users:
 
-<img src="inst/app/www/App_front.png" width="40%" />
+-Discover reusable datasets from agri-environmental research
 
-## 1. The home tab
+-Visualize relationships between datasets, authors, and keywords
 
-The home tab gives a general description of how the app works. It
-contains a link that directs users to Github repository where they can
-find information and files for the workshop. It also contains a link
-that direct users to the borealis database.
+-Filter data by college, department, or research center
 
-## 2. The Data explorer tab
+-Navigate and explore studies in a clean, structured layout
 
-## 3. The Explore borealis tab
+## App Overview
 
-Please note that the DataExplorer project is released with a
+The application consists of four primary tabs:
+
+## 1. Home Tab
+
+-Displays summary statistics including:
+
+-Number of Agri-Environment Dataverses
+
+-Total research papers
+
+-Unique authors and keywords
+
+-Metadata and data file counts
+
+
+
+## 2. About Tab
+
+Explains the motivation behind the app and its development, emphasizing the importance of reusing historical datasets for research, innovation, and automation in the agri-food sector.
+
+
+
+## 3. Network Explorer Tab
+
+-Enables users to explore datasets via network plots:
+
+-Filter by College or Department
+
+-View relationships based on Keywords or Authors
+
+
+
+## 4. Data Explorer Tab
+
+-Allows users to:
+
+-Select a study from a searchable dropdown
+
+-View study overview and objectives
+
+-Inspect associated metadata
+
+-Explore and visualize data files
+
+
+
+## License
+
+This project is licensed under the EUPL v1.2 (European Union Public Licence). 
+Individual dataset licenses are also displayed in the app when available.
+
+
+## Contributor Code of Conduct
+
+Please note that the Reusable DataExplorer project is released with a
 [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

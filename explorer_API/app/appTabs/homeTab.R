@@ -2,93 +2,113 @@
 
 explorer_list$homeTab_ui  <- tabItem(
   tabName = "home_tab", 
+  
+  # CSS use to custom style the carousel nav and dots
   tags$head(tags$style(HTML("
-  /* Fade-in Animation */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .animated-box {
-    animation: fadeIn 5s ease-in-out;
-  }
+    /* Fade-in Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animated-box {
+      animation: fadeIn 5s ease-in-out;
+    }
 
-  /* SlickR Dots Customization */
-  .slick-slider button:before {
-    font-size: 20px !important;  /* Increase dot size */
-    color: lightblue !important;  /* Change dot color */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+    background-color: #3c8dbc;
+    border-radius: 50%;
+    background-size: 80% 80%;
   }
-
-  .slick-dots li.slick-active button:before {
-    color: #3c8dbc !important;  /* Change active dot color */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5%;
+  }
+  
+  .carousel-indicators li {
+    background-color: #3c8dbc;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 0 5px;
+  }
+  .carousel-indicators .active {
+    background-color: #3c8dbc;
   }
   "))),
   
-  fluidRow(
-    slickR::slickR(
-      width = "78%",
-      slick_list(
-        # Value Boxes Slide
-        tags$div(
+  #  Carousel sliders to show key app metrics and navigate to network and data tabs
+  carousel(
+    id = "mycarousel",
+    width = "100%",
+    
+    # Slide 1: value boxes
+    carouselItem(
+      caption = NULL,
+      tags$div(
+        style = "width: 100%; height: 350px; display: flex; align-items: center; 
+          justify-content: center;",
+        fluidRow(
           id = "valueBoxes",
           class = "row justify-content-center",
-          style = "gap: 20px; padding: 20px; border-radius: 10px; height: 400px; width: 100%; align-items: center;",
-          
-          valueBoxOutput("total_dataverses", width = "4 col-lg-2"),
-          valueBoxOutput("total_studies", width = "4 col-lg-2"),
-          valueBoxOutput("unique_authors", width = "4 col-lg-2"),
-          valueBoxOutput("unique_keywords", width = "4 col-lg-2"),
-          valueBoxOutput("total_file", width = "4 col-lg-2")
-        ),
+          style = "gap: 20px;   width: 100%; margin: 0;",
+          valueBoxOutput("total_dataverses", width = 2),
+          valueBoxOutput("total_studies", width = 2),
+          valueBoxOutput("unique_authors", width = 2),
+          valueBoxOutput("unique_keywords", width = 2),
+          valueBoxOutput("total_file", width = 2)
+        )
+      )
+    ),
+    
+    # Slide 2: Explore Network
+    carouselItem(
+      caption = NULL,
+      tags$div(
+        id = "exploreNetwork", 
         
-        # Second Slide: Explore Network
         tags$div(
-          id = "exploreNetwork", 
-          style = "position: relative; width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;",
+          style = "display:flex; justify-content: center; align-items: center;",
+          tags$img(src = "view_network.jpg", class = "img-fluid",
+                   style = "width: 90%; height: 350px; object-fit: cover; border-radius: 15px;"),  
           tags$div(
-            # Image container with responsive settings
-            tags$img(src = "view_network.jpg", class = "img-fluid",
-                     style = "width: 100%; height: 100%; object-fit: cover; border-radius: 50px;"),  
-            
-            # Text overlay
-            tags$div(
-              style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                       text-align: center; background: rgba(0, 0, 0, 0.5); padding: 20px;
-                       border-radius: 10px; color: white",
-              tags$h1("Explore Networks within the App", style = "font-size: 40px; font-weight: bold;"),
-              tags$p("Discover relationships and connections between authors and keywords",
-                     style = "font-size: 15px; font-weight: bold;"),
-              actionButton("go_to_network", "Go to Network Explorer", class = "btn btn-primary")
-            )
-          )
-        ),
-        
-        # Third Slide: Explore Data
-        tags$div(
-          id = "exploreData", 
-          style = "position: relative; width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;", 
-          tags$div(
-            # Ensure the image fills the container
-            tags$img(src = "Explore_data.jpg", class = "img-fluid", 
-                     style = "width: 100%; height: 100%; object-fit: cover; border-radius: 50px;"), 
-            
-            tags$div(
-              style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                       text-align: center; background: rgba(0, 0, 0, 0.5); padding: 20px; 
-                       border-radius: 10px; color: white",
-              tags$h1("Explore and Visualize Data", style = "font-size: 40px; font-weight: bold;"),  
-              tags$p("Discover various metadata and datasets for diverse studies within OAC", 
-                     style = "font-size: 15px; font-weight: bold;"),
-              actionButton("go_to_borealis", "Go to Data Explorer", class = "btn btn-primary")
-            )
+            style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                     text-align: center; background: rgba(0, 0, 0, 0.5); padding: 20px;
+                     border-radius: 10px; color: white",
+            tags$h1("Explore Networks within the App", style = "font-size: 40px; font-weight: bold;"),
+            tags$p("Discover relationships and connections between authors and keywords",
+                   style = "font-size: 15px; font-weight: bold;"),
+            actionButton("go_to_network", "Go to Network Explorer", class = "btn btn-primary")
           )
         )
       )
-    ) + slickR::settings(autoplay = TRUE, dots = TRUE)
-  ),
+    ),
+    
+    # slide 3: Explore Data
+    carouselItem(
+      caption = NULL,
+      tags$div(
+        id = "exploreData", 
+        
+        tags$div(
+          style = "display:flex; justify-content: center; align-items: center;",
+          tags$img(src = "Explore_data.jpg", class = "img-fluid", 
+                   style = "width: 90%; height: 350px; object-fit: cover; border-radius: 15px;"), 
+          tags$div(
+            style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                     text-align: center; background: rgba(0, 0, 0, 0.5); padding: 20px; 
+                     border-radius: 10px; color: white",
+            tags$h1("Explore and Visualize Data", style = "font-size: 40px; font-weight: bold;"),  
+            tags$p("Discover various metadata and datasets for diverse studies within OAC", 
+                   style = "font-size: 15px; font-weight: bold;"),
+            actionButton("go_to_borealis", "Go to Data Explorer", class = "btn btn-primary")
+          )
+        )
+      )
+    ) 
+  ), 
   
-  
-  
-  br(),
+  br(), br(),
   tags$div(
     style = " padding: 20px;
     border-radius: 10px;
@@ -220,15 +240,18 @@ explorer_list$homeTab_ui  <- tabItem(
 # Server Module for Network Tab
 explorer_list$homeTab_server <- function(input, output, session, study_data) {
   
+  
   # Render ValueBox for 'Total Studies'
   output$total_dataverses <- renderValueBox({
     
     # Compute the value only once study_data() is available
     req(study_data())  # Ensures that the data is available
     
-    valueBox(value = tags$span(tags$b(class = "animated-box", style = "font-size: 60px; color: white;", "6")),
-             subtitle = tags$span(style = "font-size: 20px; color: white;",
-                                  "Dataverses in the OAC repository to explore!"),
+    valueBox(value = tags$span(class = "animated-box", 
+                               style = "font-size: 60px; color: white;", 
+                               tags$b(length(unique(study_data()$CollegeName)))),
+             subtitle = tags$div(style = "font-size: 20px; color: white; 
+                        text-align: center;", "Agri-Environment Dataverses to Explore!"),
              icon = icon("database"),
              color = "maroon",
              elevation = 2,
@@ -244,8 +267,8 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
     valueBox(value = tags$span(tags$b(class = "animated-box",
                                       style = "font-size: 60px;",
                                       nrow(study_data()))),
-             subtitle = tags$span(style = "font-size: 20px;",
-                                  "Research papers available for exploration!"),
+             subtitle = tags$div(style = "font-size: 20px; text-align: center;",
+                                  "Research papers available to explore!"),
              icon = icon("book"),
              color = "info",
              elevation = 2,
@@ -263,7 +286,8 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
     valueBox(value = tags$span(tags$b(class = "animated-box",
                                       style = "font-size: 60px;",
                                       author_count)),
-             subtitle = tags$span(style = "font-size: 20px;", "Researchers whose work you can discover!"),
+             subtitle = tags$div(style = "font-size: 20px; text-align: center;",
+                                 "Researchers whose work you can discover!"),
              icon = icon("user"),
              color = "purple",
              elevation = 2,
@@ -279,7 +303,7 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
     valueBox(value = tags$span(tags$b(class = "animated-box",
                                       style = "font-size: 60px;",
                                       length(unique(unlist(strsplit(study_data()$Keywords, ";")))))),
-             subtitle = tags$span(style = "font-size: 20px;",
+             subtitle = tags$div(style = "font-size: 20px; text-align: center;",
                                   "Topics and themes to guide your research!"),
              icon = icon("tags"),
              color = "success",
@@ -296,7 +320,7 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
     valueBox(value = tags$span(tags$b(class = "animated-box",
                                       style = "font-size: 60px;",
                                       length(unique(unlist(strsplit(study_data()$FileList, ";")))))),
-             subtitle = tags$span(style = "font-size: 20px;",
+             subtitle = tags$div(style = "font-size: 20px; text-align: center;",
                                   "Metadata and Data files to explore!"),
              icon = icon("file"),
              color = "danger",
@@ -306,15 +330,15 @@ explorer_list$homeTab_server <- function(input, output, session, study_data) {
   
   # When the 'go_to_network' image or button is clicked, navigate to the 'network_tab'
   observeEvent(input$go_to_network, {
-    updateNavbarTabs(session= session, 
-                     inputId = "navmenu", 
+    updateNavbarTabs(session= session,
+                     inputId = "navmenu",
                      selected = "network_tab")
   })
   
   # When the 'go_to_borealis' image or button is clicked, navigate to the 'borealis_tab'
   observeEvent(input$go_to_borealis, {
-    updateNavbarTabs(session= session,  
-                     inputId = "navmenu", 
+    updateNavbarTabs(session= session,
+                     inputId = "navmenu",
                      selected = "borealis_tab")
   })
 }

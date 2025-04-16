@@ -8,6 +8,7 @@ datareviewTab_UI <- function(id) {
   
   # Build the UI elements using tagList
   tagList(
+    
     # Div containing the dropdown for selecting a study
     div(
       id = "selectDiv",
@@ -78,15 +79,18 @@ datareviewTab_server <- function(id, study_data, shared_data) {
     ns <- session$ns
     
     # Update study_select dropdown when the selected_dataverse changes
-    observeEvent(shared_data$selected_dataverse, {
+    observe({
+      
+      # Determine which data to use (filtered or full)
       data <- if (is.null(shared_data$selected_dataverse) || length(shared_data$selected_dataverse) == 0) {
         study_data()  # Use all study data if no dataverse is selected
       } else {
         shared_data$filtered_data()  # Use filtered data when a dataverse is selected
       }
       
+      # Dynamically split based on the selected column (CollegeName or DepartmentName)
       choices <- lapply(
-        split(data$Title, data$DataverseName),
+        split(data$Title, data[[shared_data$selected_collegeDept]]),  # Split by the dynamic column
         as.list
       )
       
@@ -94,32 +98,30 @@ datareviewTab_server <- function(id, study_data, shared_data) {
       if ("Title" %in% names(data)) {
         updateSelectizeInput(session, "study_select", choices = choices, selected = NULL)
       }
-    }, ignoreNULL = FALSE)
+    })
     
     # Observe changes to shared_data$study_choices and update the dropdown
     observeEvent(shared_data$study_choices, {
       # Ensure data is available to update the dropdown
       req(shared_data$study_choices)
       
-      # Extract unique study titles for the dropdown
-      choices <- lapply(
-        split(shared_data$study_choices$Title, shared_data$study_choices$DataverseName),
-        as.list
-      )
+      # Extract unique study titles for the dropdown, split by selected column (College/Department)
+      choices <- split(shared_data$study_choices$Title, shared_data$study_choices[[shared_data$selected_collegeDept]])
       
       # Update the study select dropdown with the new choices
       updateSelectizeInput(
         session,
         "study_select",
         choices = choices,
-        selected = NULL # Clear previous selections
+        selected = NULL  # Clear previous selections
       )
-    }, ignoreNULL = TRUE) # Trigger only when study_choices is updated
+    }, ignoreNULL = TRUE)  # Trigger only when study_choices is updated
+    
     
     # Observe changes in the study selection
     observeEvent(input$study_select, {
       # Check if a study is selected
-      if (!is.null(input$study_select) && input$study_select != "") {
+      if (length(input$study_select) > 0 && nzchar(input$study_select)) {
         # Show the overviewBox if a study is selected
         shinyjs::show("overviewBox")
       } else {

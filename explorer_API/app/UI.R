@@ -28,26 +28,38 @@ ui <- dashboardPage(
   
   # Define the main body content of the dashboard
   dashboardBody(
-    # Add custom styles for active and hover states of navigation tabs
-    tags$head(tags$style(".nav-pills .nav-link.active {color: #fff; background-color: #3c8dbc;}")), # Active tab styling
-    tags$head(tags$style(".nav-pills .nav-link:not(.active):hover {color: #3c8dbc !important;}")),  # Hover styling for inactive tabs
+    use_waiter(),  # Only need this once here
+    
+    # Add custom styles
+    tags$head(tags$style(".nav-pills .nav-link.active {color: #fff; background-color: #3c8dbc;}")),
+    tags$head(tags$style(".nav-pills .nav-link:not(.active):hover {color: #3c8dbc !important;}")),
     
     
-    # Define the content of individual tabs
+    waiter_show_on_load(
+      html = tagList(
+        h5("Loading data from database...", style = "color: white;"),
+        shinyWidgets::progressBar(
+          id = "load_progress",
+          value = 1,  # minimal value to render the bar initially
+          display_pct = TRUE,
+          striped = TRUE,
+          status = "info"
+        )
+      ),
+      color = "#333"
+    ),
+    
     tabItems(
-      # Render the UI elements for the home, about, and network tabs from explorer_list
-      explorer_list$homeTab_ui,        
+      explorer_list$homeTab_ui,
       explorer_list$aboutTab_ui,
       explorer_list$networkTab_ui,
-      
-      # Define the Data Review tab with a unique identifier and content
       tabItem(
-        tabName = "borealis_tab",    # Unique identifier for the Data Review tab
-        datareviewTab_UI("data")    # Call the `datareviewTab_UI` module to define the Data Review tab's UI
+        tabName = "borealis_tab",
+        datareviewTab_UI("data")
       )
     ),
     
-    br(),br(),
+    br(), br(),
     
     # Add Footer
     tags$footer(
@@ -55,7 +67,7 @@ ui <- dashboardPage(
         HTML(paste0("&copy; Agrifood Data Canada ", format(Sys.Date(), "%Y"), ". All rights reserved.")),
         style = "font-size: 16px; font-weight: bold; color: #333;"
       ),
-      style = "text-align: center; padding: 10px; background-color: #f8f8f8;"
+      style = "text-align: center; padding: 10px; background-color: #f8f8f8; width: 100%;"
     )
   )
 )

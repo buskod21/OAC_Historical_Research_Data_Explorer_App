@@ -17,140 +17,143 @@ dataexplorationUI_module <- function(id){
         br(), # Add a line break for spacing
         
         # Tabs for exploring data files
-        bs4Dash::tabsetPanel(
-          id = ns("datafiles"),  # Namespace-aware tabset ID
-          
-          # Tab for viewing all data files
-          tabPanel(
-            "View all Datafile",
-            value = ns("view_alldata"),
-            br(), # Add a line break
-            DT::dataTableOutput(ns("view_alldata"))
-          ),
-          
-          # Tab for data summary
-          tabPanel(
-            "Data Summary",
-            style = "margin-left: 10px;",
-            value = ns("filtered_data1"),
-            br(),
-            # Box for viewing raw data
-            box(
-              title = "View Data",
-              status = "white",
-              solidHeader = TRUE,
-              collapsible = TRUE,
-              elevation = 1,
-              width = 12,
-              collapsed = FALSE,
-              DT::dataTableOutput(ns("rawtable"))
+        tags$div(
+          id = ns("dataTabBlock"),
+          bs4Dash::tabsetPanel(
+            id = ns("datafiles"),  # Namespace-aware tabset ID
+            
+            # Tab for viewing all data files
+            tabPanel(
+              "View all Datafile",
+              value = ns("view_alldata"),
+              br(), # Add a line break
+              DT::dataTableOutput(ns("view_alldata"))
             ),
             
-            br(),
-            
-            # Row with data structure and descriptive statistics
-            fluidRow(
-              column(
-                4,
-                box(
-                  title = "Data Structure",
-                  status = "white",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  elevation = 1,
-                  width = 12,
-                  collapsed = FALSE,
-                  DT::dataTableOutput(ns("structure"))
+            # Tab for data summary
+            tabPanel(
+              "Data Summary",
+              style = "margin-left: 10px;",
+              value = ns("filtered_data1"),
+              br(),
+              # Box for viewing raw data
+              box(
+                title = "View Data",
+                status = "white",
+                solidHeader = TRUE,
+                collapsible = TRUE,
+                elevation = 1,
+                width = 12,
+                collapsed = FALSE,
+                DT::dataTableOutput(ns("rawtable"))
+              ),
+              
+              br(),
+              
+              # Row with data structure and descriptive statistics
+              fluidRow(
+                column(
+                  4,
+                  box(
+                    title = "Data Structure",
+                    status = "white",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    elevation = 1,
+                    width = 12,
+                    collapsed = FALSE,
+                    DT::dataTableOutput(ns("structure"))
+                  )
+                ),
+                
+                column(
+                  8,
+                  box(
+                    title = "Descriptive Statistics",
+                    status = "white",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    elevation = 1,
+                    width = 12,
+                    collapsed = FALSE,
+                    DT::dataTableOutput(ns("summary"))
+                  )
                 )
               ),
               
-              column(
-                8,
-                box(
-                  title = "Descriptive Statistics",
-                  status = "white",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  elevation = 1,
-                  width = 12,
-                  collapsed = FALSE,
-                  DT::dataTableOutput(ns("summary"))
-                )
+              br(),
+              
+              # Box for missing values
+              box(
+                title = "Missing Values",
+                status = "white",
+                solidHeader = TRUE,
+                collapsible = TRUE,
+                elevation = 1,
+                width = 12,
+                collapsed = FALSE,
+                maximizable = TRUE,
+                plotOutput(ns("missing_value"))
+                
               )
             ),
             
-            br(),
-            
-            # Box for missing values
-            box(
-              title = "Missing Values",
-              status = "white",
-              solidHeader = TRUE,
-              collapsible = TRUE,
-              elevation = 1,
-              width = 12,
-              collapsed = FALSE,
-              maximizable = TRUE,
-              plotOutput(ns("missing_value"))
-              
-            )
-          ),
-          
-          # Tab for data visualization
-          tabPanel(
-            "Data Visualization",
-            value = ns("filtered_data1"),
-            br(),
-            fluidRow(
-              column(
-                3,
-                # Box for selecting analysis type and variables
-                box(
-                  title = "Select Analysis Type",
-                  status = "white",
-                  solidHeader = TRUE,
-                  collapsible = FALSE,
-                  elevation = 1,
-                  width = 12,
-                  # Radio buttons for selecting analysis type
-                  awesomeRadio(
-                    inputId = ns("analysis_type"),
-                    label = NULL,
-                    choices = c(
-                      "Histogram",
-                      "Density Plot",
-                      "QQ Plot",
-                      "Heat Map",
-                      "Boxplot",
-                      "Linear Regression"
+            # Tab for data visualization
+            tabPanel(
+              "Data Visualization",
+              value = ns("filtered_data1"),
+              br(),
+              fluidRow(
+                column(
+                  3,
+                  # Box for selecting analysis type and variables
+                  box(
+                    title = "Select Analysis Type",
+                    status = "white",
+                    solidHeader = TRUE,
+                    collapsible = FALSE,
+                    elevation = 1,
+                    width = 12,
+                    # Radio buttons for selecting analysis type
+                    awesomeRadio(
+                      inputId = ns("analysis_type"),
+                      label = NULL,
+                      choices = c(
+                        "Histogram",
+                        "Density Plot",
+                        "QQ Plot",
+                        "Heat Map",
+                        "Boxplot",
+                        "Linear Regression"
+                      ),
+                      selected = "Histogram",
+                      inline = FALSE
                     ),
-                    selected = "Histogram",
-                    inline = FALSE
-                  ),
-                  # Dynamic UI for selecting variables
-                  uiOutput(ns("variable_selection_x")),
-                  uiOutput(ns("variable_selection_y"))
-                )
-              ),
-              column(
-                9,
-                # Box for displaying the generated plot
-                box(
-                  title = "Plot Viewer",
-                  status = "white",
-                  solidHeader = TRUE,
-                  collapsible = FALSE,
-                  elevation = 1,
-                  width = NULL,
-                  maximizable = TRUE,
-                  withSpinner(uiOutput(ns("plot")))
+                    # Dynamic UI for selecting variables
+                    uiOutput(ns("variable_selection_x")),
+                    uiOutput(ns("variable_selection_y"))
+                  )
+                ),
+                column(
+                  9,
+                  # Box for displaying the generated plot
+                  box(
+                    title = "Plot Viewer",
+                    status = "white",
+                    solidHeader = TRUE,
+                    collapsible = FALSE,
+                    elevation = 1,
+                    width = NULL,
+                    maximizable = TRUE,
+                    withSpinner(uiOutput(ns("plot")))
+                  )
                 )
               )
-            )
-          ),
-          
-          type = "pills",      # Use pill-style tabs
-          vertical = FALSE     # Horizontal tab arrangement
+            ),
+            
+            type = "pills",      # Use pill-style tabs
+            vertical = FALSE     # Horizontal tab arrangement
+          )
         )
       )
     )
@@ -162,19 +165,32 @@ dataexplorationserver_module <- function(id, input_dataset_select, shared_data){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
     
-    # Reactive expression for updating datafiles select choices
     observe({
       req(shared_data$file_list)
       
-      # Filter text files from the file_list
-      datafile <-filter_filelist(shared_data$file_list, is_txt = FALSE)
+      # Filter non-txt data files
+      datafile <- filter_filelist(shared_data$file_list, is_txt = FALSE)
       
-      # Process update dataset_select  based on the active tab dynamically
+      # Determine which files to use based on tab selection
       if (input$datafiles == "view_alldata") {
-        updateSelectInput(session, "dataset_select", choices = basename(shared_data$file_list), selected = NULL)
+        choices <- basename(shared_data$file_list)
+      } else {
+        choices <- basename(datafile)
       }
-      else {
-        updateSelectInput(session, "dataset_select", choices = basename(datafile), selected = NULL)
+      
+      # Handle the case where no valid data files are found
+      if (length(choices) == 0) {
+        updateSelectInput(session, "dataset_select",
+                          choices = c("No data files found" = ""),
+                          selected = "")
+        shinyjs::disable("dataset_select")
+        shinyjs::hide("dataTabBlock")
+      } else {
+        updateSelectInput(session, "dataset_select",
+                          choices = choices,
+                          selected = NULL)
+        shinyjs::enable("dataset_select")
+        shinyjs::show("dataTabBlock")
       }
     })
     
