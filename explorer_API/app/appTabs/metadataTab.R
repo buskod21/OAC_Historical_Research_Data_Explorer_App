@@ -35,14 +35,26 @@ Metadataserver_module <- function(id, input_metadata_select, shared_data){
     # Reactive expression for updating metadata select choices
     observe({
       req(shared_data$file_list)
-
-      # Filter text files from the file_list
+      
+      # Filter text files
       metadata_files <- filter_filelist(shared_data$file_list, is_txt = TRUE)
-
-      # Update the metadata_select input choices dynamically
-      updateSelectInput(session, "metadata_select", choices = basename(metadata_files), selected = NULL)
+      
+      if (length(metadata_files) == 0) {
+        # Show "No metadata" option + disable input
+        updateSelectInput(session, "metadata_select",
+                          choices = c("No metadata file found" = ""),
+                          selected = "")
+        
+        shinyjs::disable("metadata_select")  # Disable dropdown
+        
+      } else {
+        updateSelectInput(session, "metadata_select",
+                          choices = basename(metadata_files),
+                          selected = NULL)
+        
+        shinyjs::enable("metadata_select")  # Re-enable if needed
+      }
     })
-
 
     # Reactive expression for loading and handling metadata
     loaded_metadata <- reactive({
