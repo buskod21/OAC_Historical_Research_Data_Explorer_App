@@ -33,10 +33,7 @@ ui <- dashboardPage(
     # Add custom styles
     tags$head(tags$style(".nav-pills .nav-link.active {color: #fff; background-color: #3c8dbc;}")),
     tags$head(tags$style(".nav-pills .nav-link:not(.active):hover {color: #3c8dbc !important;}")),
-    # tags$head(tags$style(".selectize-input, .vscomp-wrapper
-    #                      {min-height: calc(2.25rem + 2px);
-    #                      border-radius: .25rem;}")),
-    # tags$head(tags$style(".vscomp-toggle-button {border-radius: .25rem; border: 1px solid #ced4da;}")),
+    
     
     waiter_show_on_load(
       html = tagList(
