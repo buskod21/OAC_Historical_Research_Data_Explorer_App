@@ -6,7 +6,7 @@ ui <- dashboardPage(
   fullscreen = TRUE,        # Allow the dashboard to open in fullscreen mode
   help = NULL,              # Placeholder for future help functionality (currently unused)
   dark = NULL,              # Placeholder for future dark mode functionality (currently unused)
-  
+  title = "RED-X | Re-usable Data Explorer App",
   # Define the dashboard header with a fixed position and a navbar menu module
   dashboardHeader(
     status = "lightblue",   # Set the header's color to light blue
