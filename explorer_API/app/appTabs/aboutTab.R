@@ -98,34 +98,59 @@ explorer_list$aboutTab_ui <-tabItem(
     
     tags$div(
       style = "display: flex; justify-content: space-between; align-items: flex-start;",
+      # First profile card
       tags$div(
-        style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$img(src = "AME_2019.jpg", height = "150px", width = "150px", 
-                 style = "border-radius: 50%; margin: auto; 
-                 display: block;")
-        , br(),
-        h5(tags$b("Michelle Edwards")),
-        h6("Director")
+        style = "text-align: center; max-width: 250px; margin: auto;",
+        
+        # Image container (circular crop)
+        tags$div(
+          style = "width: 200px; height: 200px; overflow: hidden; border-radius: 50%; margin: auto;",
+          tags$img(
+            src = "AME_2019.jpg",
+            style = "width: 100%; height: auto; object-fit: cover; display: block;"
+          )
+        ),
+        
+        # Name and title below the image
+        tags$br(),
+        tags$h5(tags$b("Michelle Edwards")),
+        tags$h6("Director, Agri-food Data Strategy")
       ),
       
+      # Second profile card
       tags$div(
-        style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$img(src = "lucas.jpg", height = "150px", width = "150px", 
-                 style = "border-radius: 50%; margin: auto; 
-                 display: block;")
-        , br(),
+        style = "text-align: center; max-width: 250px; margin: auto;",
+        
+        # Image container (circular crop)
+        tags$div(
+          style = "width: 200px; height: 200px; overflow: hidden; border-radius: 50%; margin: auto;",
+          tags$img(src = "lucas.jpg",
+                   style = "width: 100%; height: auto; object-fit: cover; display: block;"
+          )
+        ),                
+        
+        # Name and title below the image
+        br(),
         h5(tags$b("Lucas Alcantara")),
-        h6("Manager")
+        h6("Manager, Research Centre Data")
       ),
       
+      # Second profile card
       tags$div(
-        style = "flex: 1; text-align: center; padding: 15px; max-width: 30%;",
-        tags$img(src = "bkodaolu_img.jpg", height = "150px", width = "150px", 
-                 style = "border-radius: 50%; margin: auto; 
-                 display: block;")
-        , br(),
+        style = "text-align: center; max-width: 250px; margin: auto;",
+        
+        # Image container (circular crop)
+        tags$div(
+          style = "width: 200px; height: 200px; overflow: hidden; border-radius: 50%; margin: auto;",
+          tags$img(src = "bkodaolu_img.jpg",
+                   style = "width: 100%; height: auto; object-fit: cover; display: block;"
+          )
+        ),                
+        
+        # Name and title below the image
+        br(),
         h5(tags$b("Busayo Kodaolu")),
-        h6("Research Associate - Data Reusability")
+        h6("Research associate, Data Reusability")
       )
     )
   ),
@@ -178,9 +203,9 @@ explorer_list$aboutTab_ui <-tabItem(
     
     br(),
     
-    p("This application is released under the",
+    p("This application is released under this",
       tags$a(href = "https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App/blob/main/LICENSE.md",
-             tags$b("MIT License"),
+             tags$b("License"),
              target = "_blank", style = "color:#3c8dbc;"))
   )
 )
