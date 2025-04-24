@@ -36,6 +36,7 @@ server <- function(input, output, session) {
         study_data_val()
       })
       
+      
       # Shared reactive values
       shared_data <- reactiveValues(
         study_choices = NULL,
@@ -45,6 +46,7 @@ server <- function(input, output, session) {
         file_list = NULL,
         full_paths = list()
       )
+      
       
       # Initialize modules
       explorer_list$homeTab_server(input, output, session, study_data)

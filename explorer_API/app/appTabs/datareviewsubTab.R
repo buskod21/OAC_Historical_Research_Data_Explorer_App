@@ -22,14 +22,13 @@ overviewServer_module <- function(id, input_study_select, study_data, shared_dat
     # Show study details based on selection
     output$study_details <- DT::renderDataTable({
 
-       req(input_study_select())  # Ensure that a selection has been made and detailed_data is available
+      # Ensure that a selection has been made and study_data() is available
+      req(study_data(), input_study_select())  
 
-
-      # Dynamically choose between study_data and shared_data$filtered_data() to display study details
-      data <- if (is.null(shared_data$selected_dataverse)) study_data() else shared_data$filtered_data()
+       
 
       # Filter data first before transposing
-      overview_data <- data %>%
+      overview_data <- study_data()  %>%
         mutate(PeriodCovered = str_replace_all(PeriodCovered, "/", " - ")) %>%
         mutate(DOI = paste0('<a class="badge badge-info" href="https://doi.org/',
                             DOI, '" target="_blank">', DOI, '</a>')) %>%

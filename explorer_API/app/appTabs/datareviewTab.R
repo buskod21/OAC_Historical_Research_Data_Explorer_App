@@ -12,28 +12,45 @@ datareviewTab_UI <- function(id) {
     # Div containing the dropdown for selecting a study
     div(
       id = "selectDiv",
-      # TabBox containing the study selection dropdown menu
-      tabBox(
-        title = "",           # No title for the tabBox
-        width = 12,           # Full-width tabBox
-        collapsible = FALSE,   # Make the box non-collapsible
-        maximizable = FALSE,   # Allow maximizing the box
-        elevation = 1,        # Elevation style for the box
-        solidHeader = FALSE,  # Do not use a solid header
-        status = "lightblue", # Light blue styling for the box
-        tabPanel("Select a Study", # Tab for selecting a study
-                 selectizeInput(
-                   inputId = ns("study_select"),  # Namespace-aware input ID
-                   label = "",
-                   choices = NULL,               # Initial choices are empty
-                   selected = "",                # No initial selection
-                   multiple = TRUE,              # Allow multiple selections
-                   options = list(               # Dropdown options
-                     maxItems = 1,               # Allow only one selection at a time
-                     placeholder = "Nothing Selected ..."  # Placeholder text
-                   ),
-                   width = "100%"                # Full-width dropdown
-                 )
+      fluidRow(
+        box(title = "Select a College",
+            status = "lightblue",
+            solidHeader = FALSE,
+            collapsible = TRUE,
+            elevation = 1,
+            width = 4,
+            collapsed = FALSE,
+            selectizeInput(
+              inputId = ns("college_select"),
+              label = NULL,
+              choices = NULL,
+              selected = NULL,
+              multiple = TRUE,
+              options = list(
+                placeholder = "Select a College ..."
+              ),
+              width = "100%" 
+            )
+        ),
+        box(title = "Select a Study to Explore",
+            status = "lightblue",
+            solidHeader = FALSE,
+            collapsible = TRUE,
+            elevation = 1,
+            width = 8,
+            collapsed = FALSE,
+            selectizeInput(
+              inputId = ns("study_select"),  # Namespace-aware input ID
+              label = NULL,
+              choices = NULL,               # Initial choices are empty
+              selected = NULL,                # No initial selection
+              multiple = FALSE,              # Allow multiple selections
+              options = list(                # Allow only one selection at a time
+                placeholder = "Select a Study ...",  # Placeholder text
+                onInitialize = I('function() { this.clear(); }')  # prevents auto-select
+              ),
+              width = "100%"                # Full-width dropdown
+            )
         )
       )
     ),
@@ -78,48 +95,46 @@ datareviewTab_server <- function(id, study_data, shared_data) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
-    # Update study_select dropdown when the selected_dataverse changes
+    
+    # 1. Populate the college_select dropdown
     observe({
+      req(study_data())
       
-      # Determine which data to use (filtered or full)
-      data <- if (is.null(shared_data$selected_dataverse) || length(shared_data$selected_dataverse) == 0) {
-        study_data()  # Use all study data if no dataverse is selected
-      } else {
-        shared_data$filtered_data()  # Use filtered data when a dataverse is selected
-      }
-      
-      # Dynamically split based on the selected column (CollegeName or DepartmentName)
-      choices <- lapply(
-        split(data$Title, data[[shared_data$selected_collegeDept]]),  # Split by the dynamic column
-        as.list
+      updateSelectizeInput(
+        session,
+        "college_select",
+        choices = sort(unique(study_data()$CollegeName)),
+        selected = NULL  # always start fresh
       )
-      
-      # Update the study selection dropdown with the new choices
-      if ("Title" %in% names(data)) {
-        updateSelectizeInput(session, "study_select", choices = choices, selected = NULL)
-      }
     })
     
-    # Observe changes to shared_data$study_choices and update the dropdown
-    observeEvent(shared_data$study_choices, {
-      # Ensure data is available to update the dropdown
-      req(shared_data$study_choices)
+    # 2. Update study_select based on selected colleges
+    observeEvent(input$college_select, {
+      data <- study_data()
       
-      # Extract unique study titles for the dropdown, split by selected column (College/Department)
-      choices <- split(shared_data$study_choices$Title, shared_data$study_choices[[shared_data$selected_collegeDept]])
+      if (is.null(input$college_select) || length(input$college_select) == 0) {
+        updateSelectizeInput(session, "study_select", choices = NULL, selected = NULL)
+        shinyjs::hide("overviewBox")  # optional: also hide box when cleared
+        return()
+      }
       
-      # Update the study select dropdown with the new choices
+      # Filter and split study titles by college
+      filtered_data <- data %>%
+        filter(CollegeName %in% input$college_select)
+      
+      choices <- split(filtered_data$Title, filtered_data$CollegeName)
+      
       updateSelectizeInput(
         session,
         "study_select",
         choices = choices,
-        selected = NULL  # Clear previous selections
+        selected = NULL
       )
-    }, ignoreNULL = TRUE)  # Trigger only when study_choices is updated
+    })
     
     
     # Observe changes in the study selection
-    observeEvent(input$study_select, {
+    observeEvent(input$study_select,{
       # Check if a study is selected
       if (length(input$study_select) > 0 && nzchar(input$study_select)) {
         # Show the overviewBox if a study is selected
@@ -140,10 +155,9 @@ datareviewTab_server <- function(id, study_data, shared_data) {
     observe({
       # Ensure a study is selected before proceeding
       req(input$study_select)
-      
-      # Dynamically choose between full study data or filtered data based on dataverse selection
-      data <- if (is.null(shared_data$selected_dataverse)) study_data() else shared_data$filtered_data()
-      
+  
+      data <- study_data() %>%
+        filter(CollegeName %in% input$college_select)
       # Fetch DOI, file lists, and update inputs accordingly
       selected_title <- input$study_select
       selected_doi <- data %>%
