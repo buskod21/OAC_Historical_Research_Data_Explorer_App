@@ -12,11 +12,23 @@ ui <- dashboardPage(
     status = "lightblue",   # Set the header's color to light blue
     fixed = TRUE,           # Fix the header at the top during scrolling
     rightUi = tagList(
-      dropdownMenu(
+      # GitHub icon link
+      tags$li(
+        class = "nav-item dropdown",
+        tags$a(
+          href = "https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App",
+          target = "_blank",
+          class = "nav-link",
+          icon("github"),
+          style = "color: white; margin-right: -10px; font-weight: bold;"  
+        )
+      ),
+      bs4DropdownMenu(
         badgeStatus = "success",
         type = "notifications",
         uiOutput("update_notification")
-      )),
+      )
+    ),
     
     
     # Render the navigation menu from the explorer_list 
@@ -49,9 +61,10 @@ ui <- dashboardPage(
       color = "#333"
     ),
     
+    
     tabItems(
       explorer_list$homeTab_ui,
-      explorer_list$aboutTab_ui,
+     explorer_list$aboutTab_ui,
       explorer_list$networkTab_ui,
       tabItem(
         tabName = "borealis_tab",

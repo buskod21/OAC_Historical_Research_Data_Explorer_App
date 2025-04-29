@@ -61,6 +61,3 @@ for (f in my_helpers) {
   source(f)  # Load the script into the current R session, allowing functions and variables to be used
 }
 
-
-
-
