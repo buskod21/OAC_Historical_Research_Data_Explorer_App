@@ -18,13 +18,6 @@ see some basic descriptive statistics and plot the data.
 
 You can check the live version at: https://agrifooddatacanada.shinyapps.io/RED-X
 
-
-## Acknowledgement
-
-The first version of this application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
-
-<img src="app/www/workshop1.jpeg" width="100%" />
-
 ## About the App
 
 RED-X supports the FAIR data principles (Findable, Accessible, Interoperable, and Reusable), helping users:
@@ -78,6 +71,12 @@ When available, users can:
 - Inspect associated metadata
 
 - Explore and visualize data files
+
+## Acknowledgement
+
+The first version of this application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
+
+<img src="app/www/workshop1.jpeg" width="100%" />
 
 ## License
 
