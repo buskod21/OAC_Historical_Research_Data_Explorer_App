@@ -10,17 +10,20 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of DataExplorer is to enable user to explore and visualize
-historical data from the Borealis database. The app enables users to
+The goal of RED-X is to enable users to explore and visualize
+historical data from the Borealis database. Users can explore the 
+connections between published studies via a network of keywords or authors,
 visualize the metadata for the data, check the structure of raw data,
 see some basic descriptive statistics and plot the data.
+
+You can check the live version at: https://agrifooddatacanada.shinyapps.io/RED-X
 
 
 ## Acknowledgement
 
 This application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
 
-<img src="app/www/workshop1.jpeg" width="80%" />
+<img src="app/www/workshop1.jpeg" width="100%" />
 
 ## About the App
 
@@ -40,7 +43,7 @@ The application consists of four primary tabs:
 
 ## 1. Home Tab
 
-- Displays summary statistics including:
+Displays intorductory information and summary statistics including:
 
 - Number of Agri-Environment Dataverses
 
@@ -54,23 +57,23 @@ The application consists of four primary tabs:
 
 Explains the motivation behind the app and its development, emphasizing the importance of reusing historical datasets for research, innovation, and automation in the agri-food sector.
 
-
-
 ## 3. Network Explorer Tab
 
-- Enables users to explore datasets via network plots:
+Enables users to explore datasets via network plots:
 
-- Filter by College or Department
+- Filter by College, Campus, Institution, Department, or Research Centre
 
 - View relationships based on Keywords or Authors
 
 ## 4. Data Explorer Tab
 
-- Allows users to:
+Allows users to:
 
 - Select a study from a searchable dropdown
 
 - View study overview and objectives
+
+When available, users can:
 
 - Inspect associated metadata
 
