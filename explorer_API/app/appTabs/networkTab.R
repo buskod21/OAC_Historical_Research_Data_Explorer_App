@@ -1,5 +1,5 @@
 
-explorer_list$networkTab_ui <-tabItem(
+explorer_list$networkTab_ui <- tabItem(
   tabName = "network_tab",
   
   tags$head(tags$style(HTML("
@@ -20,79 +20,97 @@ explorer_list$networkTab_ui <-tabItem(
   .dropdown-menu.inner li a {
     text-align: left !important;
   }
-"))),
+  
+  /* Visually hide column headers, but keep them accessible to screen reader users. */
+  .hidden-column-headers .rt-thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+  "))),
   
   fluidRow(
-    box(
-      title = tags$b("Filter Data by :", 
-                     style = "padding-left: 5px; margin-bottom: 2px;"),
-      width = 12,  # Full-width box
-      collapsible = FALSE,
-      maximizable = FALSE,
-      elevation = 1,
-      solidHeader = FALSE,
-      status = "lightblue",
-      side = "right",
-      type = "pills",
-      
-      div(style ="margin-left: 10px;",
-          awesomeRadio(
-            inputId = "collegeDept_filter",
-            label = "",
-            choices = c(
-              "Colleges / Campus / Institution" = "CollegeName",
-              "Department / Research Centre" = "DepartmentName"
-            ),
-            selected = "CollegeName",
-            inline = TRUE
-          )),
-      
-      uiOutput("dynamic_filter_ui"),
-      
-      sidebar = boxSidebar(
-        id = "infoPanel",
-        uiOutput("nodeInfo"), 
-        width = 25,  # Sidebar width
-        startOpen = FALSE  # Sidebar starts closed
-      ),
-      
-      hr(),
-      
-      h6(tags$b("View Network By : ", style = "padding-left: 10px; margin-bottom: 2px;")),
-      
-      div(style = "margin-left: 10px;",
-          awesomeRadio(
-            inputId = "event_type",
-            label = "",
-            choices = c("Keywords", "Authors"),
-            selected = "Keywords",
-            inline = TRUE
-          )
-      ),
-      
-      hr(),
-      fluidRow(
-        column(10,  # 100% width for the plot on small screens
-               withSpinner(visNetworkOutput(
-                 "networkPlot",
-                 width = "100%",
-                 height = "800px"
-               ))
-        ),
-        column(2,  # Full width on small screens for legend
-               div(class = "custom-legend",
-                   uiOutput("customLegend", 
-                            style = "display: flex; justify-content: center; align-items: center;
-                            position: relative; top: 120px;")
-               )
+    column(12,
+           box(title = "Filter",
+               status = "lightblue",
+               solidHeader = FALSE,
+               collapsible = FALSE,
+               elevation = 1,
+               width = 12,
+               collapsed = FALSE,
                
-        )
-      )
+               div(style ="margin-left: 10px;",
+                   awesomeRadio(
+                     inputId = "collegeDept_filter",
+                     label = "Select One",
+                     choices = c(
+                       "College / Campus / Institution" = "CollegeName",
+                       "Department / Research Centre" = "DepartmentName"
+                     ),
+                     selected = "CollegeName",
+                     inline = TRUE
+                   )
+               ),
+               
+               uiOutput("dynamic_filter_ui")
+           )
+    )
+  ),
+  
+  fluidRow(
+    column(12,
+           box(
+             title = "Explore",
+             status = "lightblue",
+             solidHeader = FALSE,
+             collapsible = FALSE,
+             elevation = 1,
+             width = 12,
+             collapsed = FALSE,
+             
+             div(style = "margin-left: 10px;",
+                 awesomeRadio(
+                   inputId = "event_type",
+                   label = "View Network By",
+                   choices = c("Keywords", "Authors"),
+                   selected = "Keywords",
+                   inline = TRUE
+                 )
+             ),
+             
+             hr(),
+             fluidRow(
+               column(10,
+                      withSpinner(visNetworkOutput(
+                        "networkPlot",
+                        width = "100%",
+                        height = "800px"
+                      ))
+               ),
+               column(2,
+                      div(class = "custom-legend",
+                          uiOutput("customLegend", 
+                                   style = "display: flex; justify-content: center; align-items: center;
+                            position: relative; top: 120px;")
+                      )
+                      
+               )
+             ),
+             hr(),
+             fluidRow(
+               column(12,
+                      uiOutput("nodeInfo")
+               )
+             )
+           )
     )
   )
 )
-
-
 
 
 # Server Module for Network Tab
@@ -216,12 +234,18 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
       distinct(label, color) %>%
       arrange(label)
     
-    bs4Card(
+    absolutePanel(
+      width = 320,
+      top = 0,
+      right = 0,
+      draggable = TRUE,
+
+      bs4Card(
       title = tags$div(
         "Network Legend",
         style = "text-align: center; font-size: 20px; font-weight: bold;"
       ),
-      collapsible = FALSE,
+      collapsible = TRUE,
       width = 12,
       solidHeader = TRUE,
       status = "lightblue",
@@ -244,11 +268,14 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
             minWidth = 50
           )
         ),
+        # Visually hide column headers
+        class = "hidden-column-headers",
         width = "100%",
-        outlined = TRUE,
+        outlined = FALSE,
         borderless = TRUE,
         sortable = FALSE
       )
+    )
     )
   })
   
@@ -347,7 +374,7 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
   # Event: Update UI based on selected node
   observeEvent(input$selectedEvent, {
     req(shared_data$filtered_data(), shared_data$selected_dataverse, input$selectedEvent, conn)
-    
+    # browser()
     # Get filtered data based on selected dataverse(s)
     data <- shared_data$filtered_data()
     
@@ -404,13 +431,15 @@ explorer_list$networkTab_server <- function(input, output, session, study_data, 
         length()
       
       info_html <- tags$div(
-        tags$p(tags$b("Number of studies: "), length(unique(studies))),
+        tags$p(tags$b("Author: "), selected_event),
+        tags$p(tags$b("Number of associated studies: "), length(unique(studies))),
         tags$p(tags$b("Number of collaborators: "), collaborators),
         tags$p(tags$b("DOIs of studies: "), HTML(doi_text))
       )
     } else {
       info_html <- tags$div(
-        tags$p(tags$b("Number of studies: "), length(unique(studies))),
+        tags$p(tags$b("Keyword: "), selected_event),
+        tags$p(tags$b("Number of associated studies: "), length(unique(studies))),
         tags$p(tags$b("DOIs of studies: "), HTML(doi_text))
       )
     }

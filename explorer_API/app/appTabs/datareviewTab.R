@@ -13,44 +13,48 @@ datareviewTab_UI <- function(id) {
     div(
       id = "selectDiv",
       fluidRow(
-        box(title = "Select a College",
-            status = "lightblue",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            elevation = 1,
-            width = 4,
-            collapsed = FALSE,
-            selectizeInput(
-              inputId = ns("college_select"),
-              label = NULL,
-              choices = NULL,
-              selected = NULL,
-              multiple = TRUE,
-              options = list(
-                placeholder = "Select a College ..."
-              ),
-              width = "100%" 
-            )
+        column(3,
+               box(title = "Select College / Campus / Institution",
+                   status = "lightblue",
+                   solidHeader = FALSE,
+                   collapsible = FALSE,
+                   elevation = 1,
+                   width = 12,
+                   collapsed = FALSE,
+                   selectizeInput(
+                     inputId = ns("college_select"),
+                     label = NULL,
+                     choices = NULL,
+                     selected = NULL,
+                     multiple = TRUE,
+                     options = list(
+                       placeholder = "Select a College ..."
+                     ),
+                     width = "100%" 
+                   )
+               )
         ),
-        box(title = "Select a Study to Explore",
-            status = "lightblue",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            elevation = 1,
-            width = 8,
-            collapsed = FALSE,
-            selectizeInput(
-              inputId = ns("study_select"),  # Namespace-aware input ID
-              label = NULL,
-              choices = NULL,               # Initial choices are empty
-              selected = NULL,                # No initial selection
-              multiple = FALSE,              # Allow multiple selections
-              options = list(                # Allow only one selection at a time
-                placeholder = "Select a Study ...",  # Placeholder text
-                onInitialize = I('function() { this.clear(); }')  # prevents auto-select
-              ),
-              width = "100%"                # Full-width dropdown
-            )
+        column(9,
+               box(title = "Select a Study to Explore",
+                   status = "lightblue",
+                   solidHeader = FALSE,
+                   collapsible = FALSE,
+                   elevation = 1,
+                   width = 12,
+                   collapsed = FALSE,
+                   selectizeInput(
+                     inputId = ns("study_select"),  # Namespace-aware input ID
+                     label = NULL,
+                     choices = NULL,               # Initial choices are empty
+                     selected = NULL,                # No initial selection
+                     multiple = FALSE,              # Allow multiple selections
+                     options = list(                # Allow only one selection at a time
+                       placeholder = "Select a Study ...",  # Placeholder text
+                       onInitialize = I('function() { this.clear(); }')  # prevents auto-select
+                     ),
+                     width = "100%"                # Full-width dropdown
+                   )
+               )
         )
       )
     ),
@@ -64,25 +68,29 @@ datareviewTab_UI <- function(id) {
       # Div to hold the content of the tab once a study is selected
       div(
         id = ns("overviewBox"),
-        # Add a spinner to show loading while content is loading
-        withSpinner(
-          tabBox(
-            title = "",           # No title for the tabBox
-            width = 12,           # Full-width tabBox
-            collapsible = TRUE,   # Make the box collapsible
-            maximizable = TRUE,   # Allow maximizing the box
-            elevation = 1,        # Elevation style for the box
-            solidHeader = FALSE,  # Do not use a solid header
-            status = "lightblue", # Light blue styling for the box
-            
-            # Tab 1: Study Overview
-            tabPanel("Study Overview", overviewUI_module(ns("overview"))),
-            
-            # Tab 2: Metadata
-            tabPanel("Metadata", metadataUI_module(ns("metadata"))),
-            
-            # Tab 3: Data Exploration
-            tabPanel("Data Exploration", dataexplorationUI_module(ns("dataexploration")))
+        fluidRow(
+          column(12,
+                 # Add a spinner to show loading while content is loading
+                 withSpinner(
+                   tabBox(
+                     title = "",           # No title for the tabBox
+                     width = 12,           # Full-width tabBox
+                     collapsible = TRUE,   # Make the box collapsible
+                     maximizable = TRUE,   # Allow maximizing the box
+                     elevation = 1,        # Elevation style for the box
+                     solidHeader = FALSE,  # Do not use a solid header
+                     status = "lightblue", # Light blue styling for the box
+                     
+                     # Tab 1: Study Overview
+                     tabPanel("Study Overview", overviewUI_module(ns("overview"))),
+                     
+                     # Tab 2: Metadata
+                     tabPanel("Metadata", metadataUI_module(ns("metadata"))),
+                     
+                     # Tab 3: Data Exploration
+                     tabPanel("Data Exploration", dataexplorationUI_module(ns("dataexploration")))
+                   )
+                 )
           )
         )
       )
@@ -155,7 +163,7 @@ datareviewTab_server <- function(id, study_data, shared_data) {
     observe({
       # Ensure a study is selected before proceeding
       req(input$study_select)
-  
+      
       data <- study_data() %>%
         filter(CollegeName %in% input$college_select)
       # Fetch DOI, file lists, and update inputs accordingly
