@@ -20,7 +20,7 @@ see some basic descriptive statistics and plot the data.
 
 This application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
 
-<img src="inst/app/www/workshop1.jpeg" width="80%" />
+<img src="app/www/workshop1.jpeg" width="80%" />
 
 ## About the App
 
