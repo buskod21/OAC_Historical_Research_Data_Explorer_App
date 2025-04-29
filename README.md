@@ -21,7 +21,7 @@ You can check the live version at: https://agrifooddatacanada.shinyapps.io/RED-X
 
 ## Acknowledgement
 
-This application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
+The first version of this application was developed during the "Reusable Research Data Made Shiny" workshop hosted at the University of Guelph and supported by Agri-Food Data Canada.
 
 <img src="app/www/workshop1.jpeg" width="100%" />
 
