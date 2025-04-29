@@ -26,13 +26,13 @@ This application was developed during the "Reusable Research Data Made Shiny" wo
 
 RED-X supports the FAIR data principles (Findable, Accessible, Interoperable, and Reusable), helping users:
 
--Discover reusable datasets from agri-environmental research
+- Discover reusable datasets from agri-environmental research
 
--Visualize relationships between datasets, authors, and keywords
+- Visualize relationships between datasets, authors, and keywords
 
--Filter data by college, department, or research center
+- Filter data by college, department, or research center
 
--Navigate and explore studies in a clean, structured layout
+- Navigate and explore studies in a clean, structured layout
 
 ## App Overview
 
@@ -40,17 +40,15 @@ The application consists of four primary tabs:
 
 ## 1. Home Tab
 
--Displays summary statistics including:
+- Displays summary statistics including:
 
--Number of Agri-Environment Dataverses
+- Number of Agri-Environment Dataverses
 
--Total research papers
+- Total research papers
 
--Unique authors and keywords
+- Unique authors and keywords
 
--Metadata and data file counts
-
-
+- Metadata and data file counts
 
 ## 2. About Tab
 
@@ -60,33 +58,28 @@ Explains the motivation behind the app and its development, emphasizing the impo
 
 ## 3. Network Explorer Tab
 
--Enables users to explore datasets via network plots:
+- Enables users to explore datasets via network plots:
 
--Filter by College or Department
+- Filter by College or Department
 
--View relationships based on Keywords or Authors
-
-
+- View relationships based on Keywords or Authors
 
 ## 4. Data Explorer Tab
 
--Allows users to:
+- Allows users to:
 
--Select a study from a searchable dropdown
+- Select a study from a searchable dropdown
 
--View study overview and objectives
+- View study overview and objectives
 
--Inspect associated metadata
+- Inspect associated metadata
 
--Explore and visualize data files
-
-
+- Explore and visualize data files
 
 ## License
 
 This project is licensed under the EUPL v1.2 (European Union Public Licence). 
 Individual dataset licenses are also displayed in the app when available.
-
 
 ## Contributor Code of Conduct
 
