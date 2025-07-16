@@ -1,28 +1,42 @@
 project:
   type: website
+  git-repo-url: https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App
 
 website:
-  title: "RED-X documentation"
+  title: "RED-X Documentation"
   navbar:
-    title: "RED-X documentation"
-    background: "primary"
+    title: "RED-X Documentation"
     pinned: false
+    right:
+      - icon: github
+        href: https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App
+
   sidebar:
     style: docked
     contents: 
-      - index.qmd
-      - about.qmd
+      - text: Home
+        file: index.qmd
+      - getting-started.qmd
+      - user-guide.qmd
+      - section: "System Design"
+        contents:
+          - file: architecture.qmd
+          - text: "API Guide"
+            file: api.qmd
+          - text: "Developer Guide"
+            file: dev.qmd
 
 format:
   html:
-    number-sections: true
+    number-sections: false
     theme:
       light: flatly
       dark: darkly
     css: styles.css
     toc: true
-    toc-depth: 3
+    toc-depth: 5
     toc-title: "On this page"
+
 
 
 

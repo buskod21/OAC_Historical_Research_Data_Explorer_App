@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Explore historical agri-food research data with enhanced speed, coverage, and visualization.">
+<meta name="description" content="Technical documentation for developers contributing to the RED-X Shiny application.">
 
-<title>RED-X Documentation - Welcome to RED‑X</title>
+<title>RED-X Documentation - Developer Guide</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -90,7 +90,7 @@ ul.task-list{list-style: none;}
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Welcome to RED‑X</h1>
+      <h1 class="quarto-secondary-nav-title">Developer Guide</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -105,7 +105,7 @@ ul.task-list{list-style: none;}
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Home</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -138,11 +138,16 @@ ul.task-list{list-style: none;}
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
+  <a href="./dev.html" class="sidebar-item-text sidebar-link active">Developer Guide</a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contributing.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -152,14 +157,46 @@ ul.task-list{list-style: none;}
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#redx-reusable-data-explorer" id="toc-redx-reusable-data-explorer" class="nav-link active" data-scroll-target="#redx-reusable-data-explorer">1.0 RED‑X (Re‑usable Data Explorer)</a></li>
-  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link" data-scroll-target="#background-and-motivation">2.0 Background and Motivation</a></li>
-  <li><a href="#purpose-goals" id="toc-purpose-goals" class="nav-link" data-scroll-target="#purpose-goals">3.0 Purpose &amp; Goals</a></li>
-  <li><a href="#who-should-use-redx" id="toc-who-should-use-redx" class="nav-link" data-scroll-target="#who-should-use-redx">4.0 Who Should Use RED‑X</a></li>
-  <li><a href="#key-features-in-version-2.0" id="toc-key-features-in-version-2.0" class="nav-link" data-scroll-target="#key-features-in-version-2.0">5.0 Key Features in Version 2.0</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">6.0 Getting Started</a></li>
-  <li><a href="#browse-the-documentation" id="toc-browse-the-documentation" class="nav-link" data-scroll-target="#browse-the-documentation">7.0 Browse the Documentation</a></li>
-  <li><a href="#support-credits" id="toc-support-credits" class="nav-link" data-scroll-target="#support-credits">8.0 Support &amp; Credits</a></li>
+  <li><a href="#project-structure" id="toc-project-structure" class="nav-link active" data-scroll-target="#project-structure">1.0 Project Structure</a>
+  <ul class="collapse">
+  <li><a href="#repository-layout" id="toc-repository-layout" class="nav-link" data-scroll-target="#repository-layout">1.1 Repository Layout</a></li>
+  <li><a href="#key-files-and-scripts" id="toc-key-files-and-scripts" class="nav-link" data-scroll-target="#key-files-and-scripts">1.2 Key Files and Scripts</a></li>
+  <li><a href="#modular-design" id="toc-modular-design" class="nav-link" data-scroll-target="#modular-design">1.3 Modular Design</a></li>
+  </ul></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">2.0 Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">2.1 Prerequisites</a></li>
+  <li><a href="#setup-instructions" id="toc-setup-instructions" class="nav-link" data-scroll-target="#setup-instructions">2.2 Setup Instructions</a></li>
+  <li><a href="#running-the-app" id="toc-running-the-app" class="nav-link" data-scroll-target="#running-the-app">2.3 Running the App</a></li>
+  </ul></li>
+  <li><a href="#api-integration" id="toc-api-integration" class="nav-link" data-scroll-target="#api-integration">3.0 API Integration</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">3.1 Overview</a></li>
+  <li><a href="#api-token" id="toc-api-token" class="nav-link" data-scroll-target="#api-token">3.2 API Token</a></li>
+  <li><a href="#api-functions" id="toc-api-functions" class="nav-link" data-scroll-target="#api-functions">3.3 API Functions</a></li>
+  </ul></li>
+  <li><a href="#database-and-data-handling" id="toc-database-and-data-handling" class="nav-link" data-scroll-target="#database-and-data-handling">4.0 Database and Data Handling</a>
+  <ul class="collapse">
+  <li><a href="#local-sqlite-cache" id="toc-local-sqlite-cache" class="nav-link" data-scroll-target="#local-sqlite-cache">4.1 Local SQLite Cache</a></li>
+  <li><a href="#key-tables" id="toc-key-tables" class="nav-link" data-scroll-target="#key-tables">4.2 Key Tables</a></li>
+  <li><a href="#scheduled-updates" id="toc-scheduled-updates" class="nav-link" data-scroll-target="#scheduled-updates">4.3 Scheduled Updates</a></li>
+  </ul></li>
+  <li><a href="#ui-and-ux-design" id="toc-ui-and-ux-design" class="nav-link" data-scroll-target="#ui-and-ux-design">5.0 UI and UX Design</a>
+  <ul class="collapse">
+  <li><a href="#layout" id="toc-layout" class="nav-link" data-scroll-target="#layout">5.1 Layout</a></li>
+  <li><a href="#modules" id="toc-modules" class="nav-link" data-scroll-target="#modules">5.2 Modules</a></li>
+  </ul></li>
+  <li><a href="#deployment" id="toc-deployment" class="nav-link" data-scroll-target="#deployment">6.0 Deployment</a>
+  <ul class="collapse">
+  <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform">6.1 Platform</a></li>
+  <li><a href="#deployment-steps" id="toc-deployment-steps" class="nav-link" data-scroll-target="#deployment-steps">6.2 Deployment Steps</a></li>
+  </ul></li>
+  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing">7.0 Contributing</a>
+  <ul class="collapse">
+  <li><a href="#coding-standards" id="toc-coding-standards" class="nav-link" data-scroll-target="#coding-standards">7.1 Coding Standards</a></li>
+  <li><a href="#submitting-changes" id="toc-submitting-changes" class="nav-link" data-scroll-target="#submitting-changes">7.2 Submitting Changes</a></li>
+  </ul></li>
+  <li><a href="#additional-notes" id="toc-additional-notes" class="nav-link" data-scroll-target="#additional-notes">8.0 Additional Notes</a></li>
   </ul>
 </nav>
     </div>
@@ -168,12 +205,12 @@ ul.task-list{list-style: none;}
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Welcome to RED‑X</h1>
+<h1 class="title d-none d-lg-block">Developer Guide</h1>
 </div>
 
 <div>
   <div class="description">
-    Explore historical agri-food research data with enhanced speed, coverage, and visualization.
+    Technical documentation for developers contributing to the RED-X Shiny application.
   </div>
 </div>
 
@@ -187,77 +224,180 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<section id="redx-reusable-data-explorer" class="level3">
-<h3 class="anchored" data-anchor-id="redx-reusable-data-explorer">1.0 RED‑X (Re‑usable Data Explorer)</h3>
-<p>RED-X is a reusable data exploration app that helps users discover historical research data hosted on the Borealis Dataverse.It is a modern web application developed by Agri‑Food Data Canada (ADC) to provide researchers and data managers streamlined access to historical research data. It simplifies access to metadata, visualizes keyword/author relationships, and supports informed reuse of datasets. With version 2.0, RED‑X delivers faster performance, a broader institutional scope, and intuitive visual tools.</p>
-<hr>
+<section id="project-structure" class="level3">
+<h3 class="anchored" data-anchor-id="project-structure">1.0 Project Structure</h3>
+<pre class="text"><code>RED-X/
+├── CODE_OF_CONDUCT.md     # Contributor behavior guidelines
+├── LICENSE                # Open source license info
+├── README.md              # Overview and instructions
+├── RED-X.Rproj            # RStudio project file
+├── renv/                  # Dependency management via renv
+├── renv.lock              # Locked dependency versions
+├── app/                   # Core application folder
+│   ├── global.R           # Global settings and shared variables
+│   ├── server.R           # Server logic
+│   ├── UI.R               # Main UI structure
+│   ├── appData/           # Local SQLite database
+│   │   └── Explorer_cache.db           
+│   ├── appFunction/       # Custom function scripts
+│   │   └── dataExplorer_functions.R
+│   ├── appTabs/           # Modular UI tab definitions
+│   │   ├── aboutTab.R
+│   │   ├── datareviewTab.R
+│   │   ├── datareviewsubTab.R
+│   │   ├── datareviewsubTab1.R
+│   │   ├── homeTab.R
+│   │   ├── metadataTab.R
+│   │   ├── navmenuTab.R
+│   │   └── networkTab.R
+│   └── www/               # Static assets (images, logos)
+│       ├── adc logo.jpg
+│       ├── Agri-food.png
+│       └── workshop1.jpeg
+├── docs/                  # Quarto-based documentation source
+│   ├── api.qmd
+│   ├── architecture.qmd
+│   ├── contributing.qmd
+│   ├── dev.qmd
+│   ├── getting-started.qmd
+│   ├── index.qmd
+│   ├── user-guide.qmd
+│   ├── _quarto.yml
+│   ├── styles.css
+│   ├── images/            # Diagrams/screenshots for docs
+│   │   ├── API_flow.png
+│   │   └── data_exploration.png
+│   └── _site/             # Rendered HTML site output
+│       ├── index.html
+│       ├── api.html
+│       └── site_libs/     # Quarto JS/CSS dependencies</code></pre>
+<section id="repository-layout" class="level4">
+<h4 class="anchored" data-anchor-id="repository-layout">1.1 Repository Layout</h4>
+<p>The RED-X app is organized into clearly defined folders for modularity:</p>
+<p>app/ – Core app logic and structure (UI, server, data, tabs)</p>
+<p>docs/ – Quarto-based documentation for users and developers</p>
+<p>www/ – Static files (images, logos, assets)</p>
+<p>renv/ – Package dependencies managed using renv</p>
+<p>Explorer_cache.db – SQLite database file for cached metadata</p>
 </section>
-<section id="background-and-motivation" class="level3">
-<h3 class="anchored" data-anchor-id="background-and-motivation">2.0 Background and Motivation</h3>
-<p>RED-X was developed in response to a growing need for <strong>efficient access to historical research datasets</strong>—particularly in the agricultural and environmental sciences.</p>
-<p>Over the years, large volumes of valuable data have been collected by researchers at the <strong>University of Guelph</strong>, especially through the <strong>Ontario Agricultural College (OAC)</strong>. However, much of this data remained siloed, inconsistently described, or difficult to navigate, making reuse a significant challenge.</p>
-<p>The motivation behind RED-X came from a <strong>workshop hosted by the University of Guelph in collaboration with Compute Ontario</strong>, which focused on enhancing the <strong>FAIRness</strong> (Findability, Accessibility, Interoperability, and Reusability) of research data. Researchers, librarians, and data specialists at the event emphasized the need for a user-friendly tool that could help bridge the gap between stored data and actionable insight.</p>
-<p>RED-X was thus envisioned as a <strong>web-based metadata and dataset discovery platform</strong>, built using <strong>RShiny</strong>, that connects directly to <strong>Borealis</strong>, a Dataverse-based data repository platform. The app provides both technical and non-technical users with intuitive tools for exploring, visualizing, and filtering datasets, enabling better use of existing research outputs and supporting data-driven collaboration across departments and institutions.</p>
-<hr>
+<section id="key-files-and-scripts" class="level4">
+<h4 class="anchored" data-anchor-id="key-files-and-scripts">1.2 Key Files and Scripts</h4>
+<p>UI.R &amp; server.R – Main application UI and server logic</p>
+<p>global.R – Global configuration, including shared resources</p>
+<p>appFunction/ – Helper functions (e.g., data fetching, transformation)</p>
+<p>appTabs/ – UI layout of individual tabs (e.g., Home, Network, Metadata)</p>
 </section>
-<section id="purpose-goals" class="level3">
-<h3 class="anchored" data-anchor-id="purpose-goals">3.0 Purpose &amp; Goals</h3>
-<ul>
-<li><strong>Unlock historical research insights</strong> — aggregates metadata and datasets from multiple colleges and departments within the Agri-environmental Research Data dataverse in Borealis (Canadian Dataverse Repository).</li>
-<li><strong>Promote FAIR principles</strong> — ensures data is Findable, Accessible, Interoperable, and Reusable, elevating the value of Agri-Food data.</li>
-<li><strong>Enhance discoverability</strong> — presents keyword-author network visualizations and smart filters to reveal connections and trends.</li>
-</ul>
-<hr>
+<section id="modular-design" class="level4">
+<h4 class="anchored" data-anchor-id="modular-design">1.3 Modular Design</h4>
+<p>Tabs are modularized into separate scripts for readability and reuse. Example:</p>
+<p>source(“./app/appTabs/homeTab.R”)</p>
 </section>
-<section id="who-should-use-redx" class="level3">
-<h3 class="anchored" data-anchor-id="who-should-use-redx">4.0 Who Should Use RED‑X</h3>
-<ul>
-<li><strong>Academic researchers/Scientist</strong> investigating historical trends.<br>
-</li>
-<li><strong>Data librarians and stewards</strong> aiming to manage and share historical datasets.<br>
-</li>
-<li><strong>Graduate students</strong> conducting meta-analyses or literature reviews/data review.</li>
-</ul>
-<hr>
-</section>
-<section id="key-features-in-version-2.0" class="level3">
-<h3 class="anchored" data-anchor-id="key-features-in-version-2.0">5.0 Key Features in Version 2.0</h3>
-<ul>
-<li><strong>Optimized loading</strong> through direct database access and 48‑hour auto-refresh.<br>
-</li>
-<li><strong>Network Explorer</strong> — visualize relationships among keywords, authors, institutions, and colleges.</li>
-<li><strong>Explore datasets and metadata</strong>- Navigate historical datasets collected across various colleges and departments, with metadata drawn directly from Borealis.</li>
-<li><strong>Smart Filters</strong> — quickly navigate by college, department, or campus.<br>
-</li>
-<li><strong>Home Tab Summary</strong> — at-a-glance metrics for available studies and datasets.</li>
-<li><strong>View study-level summaries</strong> - Gain insight into each dataset through high-level summary statistics, research objectives, study location, and associated keywords.</li>
-<li><strong>Seamless navigation</strong> — one-click access to Network or Data Explorer interfaces.</li>
-</ul>
-<hr>
 </section>
 <section id="getting-started" class="level3">
-<h3 class="anchored" data-anchor-id="getting-started">6.0 Getting Started</h3>
-<p>Visit the <strong>Getting Started</strong> section to learn how to access RED‑X, review system requirements, and complete your first data query.</p>
-<hr>
+<h3 class="anchored" data-anchor-id="getting-started">2.0 Getting Started</h3>
+<section id="prerequisites" class="level4">
+<h4 class="anchored" data-anchor-id="prerequisites">2.1 Prerequisites</h4>
+<p>R version &gt;= 4.2</p>
+<p>RStudio (recommended)</p>
+<p>Internet access for API calls</p>
 </section>
-<section id="browse-the-documentation" class="level3">
-<h3 class="anchored" data-anchor-id="browse-the-documentation">7.0 Browse the Documentation</h3>
-<p>Use the sidebar to navigate in sequence:</p>
-<ol type="1">
-<li><a href="./getting-started.html">Getting Started</a><br>
-</li>
-<li><a href="./user-guide.html">User Guide</a><br>
-</li>
-<li><a href="./architecture.html">Architecture</a><br>
-</li>
-<li><a href="./api.html">API</a></li>
-<li><a href="./dev.html">Developer Guide</a></li>
-</ol>
-<hr>
+<section id="setup-instructions" class="level4">
+<h4 class="anchored" data-anchor-id="setup-instructions">2.2 Setup Instructions</h4>
+<p>git clone https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Explorer_App.git setwd(“OAC_Historical_Research_Data_Explorer_App”) renv::restore()</p>
 </section>
-<section id="support-credits" class="level3">
-<h3 class="anchored" data-anchor-id="support-credits">8.0 Support &amp; Credits</h3>
-<p>RED‑X was developed by <strong>Agri‑Food Data Canada</strong> at the University of Guelph with support from the Canada First Research Excellence Fund. Special thanks to <strong>Dr.&nbsp;Busayo Kodaolu</strong> for contributions to the design, development, and documentation of RED‑X Version 2.0. For inquiries or technical support, contact: <a href="mailto:adc@uoguelph.ca">adc@uoguelph.ca</a>.</p>
+<section id="running-the-app" class="level4">
+<h4 class="anchored" data-anchor-id="running-the-app">2.3 Running the App</h4>
+<p>shiny::runApp(“./app”)</p>
+</section>
+</section>
+<section id="api-integration" class="level3">
+<h3 class="anchored" data-anchor-id="api-integration">3.0 API Integration</h3>
+<section id="overview" class="level4">
+<h4 class="anchored" data-anchor-id="overview">3.1 Overview</h4>
+<p>RED-X uses the Borealis Dataverse API to fetch study metadata, authorship, keywords, and files.</p>
+</section>
+<section id="api-token" class="level4">
+<h4 class="anchored" data-anchor-id="api-token">3.2 API Token</h4>
+<p>Your API token is stored in an environment variable:</p>
+<p>Sys.getenv(“API_TOKEN”)</p>
+<p>⚠️ Never hardcode your API token. Permissions vary by user level.</p>
+</section>
+<section id="api-functions" class="level4">
+<h4 class="anchored" data-anchor-id="api-functions">3.3 API Functions</h4>
+<p>fetch_all_datasets() – Recursively fetches datasets from Dataverse</p>
+<p>fetch_study_details() – Pulls metadata using persistent DOIs</p>
+<p>access_data() – Downloads file bundles (ZIP) from Dataverse</p>
+</section>
+</section>
+<section id="database-and-data-handling" class="level3">
+<h3 class="anchored" data-anchor-id="database-and-data-handling">4.0 Database and Data Handling</h3>
+<section id="local-sqlite-cache" class="level4">
+<h4 class="anchored" data-anchor-id="local-sqlite-cache">4.1 Local SQLite Cache</h4>
+<p>The app stores metadata locally for fast loading:</p>
+<p>dbConnect(SQLite(), “Explorer_cache.db”)</p>
+</section>
+<section id="key-tables" class="level4">
+<h4 class="anchored" data-anchor-id="key-tables">4.2 Key Tables</h4>
+<p>research_data – Main table with metadata and links</p>
+<p>update_info – Tracks last sync time</p>
+<p>college_colors / department_colors – Categorical color maps</p>
+<p>keywords_node, keywords_edge – Nodes and edges for network graph</p>
+</section>
+<section id="scheduled-updates" class="level4">
+<h4 class="anchored" data-anchor-id="scheduled-updates">4.3 Scheduled Updates</h4>
+<p>Every 48 hours:</p>
+<p>API is called</p>
+<p>Metadata is refreshed</p>
+<p>Cache is merged and updated in SQLite</p>
+</section>
+</section>
+<section id="ui-and-ux-design" class="level3">
+<h3 class="anchored" data-anchor-id="ui-and-ux-design">5.0 UI and UX Design</h3>
+<section id="layout" class="level4">
+<h4 class="anchored" data-anchor-id="layout">5.1 Layout</h4>
+<p>Navbar and sidebar-driven interface</p>
+<p>Each tab supports interactivity and filtering</p>
+</section>
+<section id="modules" class="level4">
+<h4 class="anchored" data-anchor-id="modules">5.2 Modules</h4>
+<p>Tabs include:</p>
+<p>Home</p>
+<p>Network Explorer</p>
+<p>Data Explorer</p>
+<p>Metadata Viewer</p>
+</section>
+</section>
+<section id="deployment" class="level3">
+<h3 class="anchored" data-anchor-id="deployment">6.0 Deployment</h3>
+<section id="platform" class="level4">
+<h4 class="anchored" data-anchor-id="platform">6.1 Platform</h4>
+<p>The app is hosted publicly on shinyapps.io</p>
+</section>
+<section id="deployment-steps" class="level4">
+<h4 class="anchored" data-anchor-id="deployment-steps">6.2 Deployment Steps</h4>
+<p>Log in to shinyapps.io</p>
+<p>Deploy from RStudio using rsconnect::deployApp()</p>
+</section>
+</section>
+<section id="contributing" class="level3">
+<h3 class="anchored" data-anchor-id="contributing">7.0 Contributing</h3>
+<section id="coding-standards" class="level4">
+<h4 class="anchored" data-anchor-id="coding-standards">7.1 Coding Standards</h4>
+<p>Follow tidyverse style</p>
+<p>Keep code modular</p>
+<p>Comment your logic</p>
+</section>
+<section id="submitting-changes" class="level4">
+<h4 class="anchored" data-anchor-id="submitting-changes">7.2 Submitting Changes</h4>
+<p>Fork and branch</p>
+<p>Submit PR with description</p>
+</section>
+</section>
+<section id="additional-notes" class="level3">
+<h3 class="anchored" data-anchor-id="additional-notes">8.0 Additional Notes</h3>
+<p>Documentation is generated using Quarto</p>
+<p>Visit the GitHub Repo for full code</p>
+<p>All diagrams are stored in docs/images/</p>
 
 
 </section>

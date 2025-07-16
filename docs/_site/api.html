@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Explore historical agri-food research data with enhanced speed, coverage, and visualization.">
+<meta name="description" content="Detailed explanation of how RED-X interacts with the Borealis Dataverse API, including authentication, data fetching, and integration processes.">
 
-<title>RED-X Documentation - Welcome to RED‑X</title>
+<title>RED-X Documentation - API Guide</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -16,6 +16,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -90,7 +153,7 @@ ul.task-list{list-style: none;}
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Welcome to RED‑X</h1>
+      <h1 class="quarto-secondary-nav-title">API Guide</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -105,7 +168,7 @@ ul.task-list{list-style: none;}
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Home</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -133,7 +196,7 @@ ul.task-list{list-style: none;}
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./api.html" class="sidebar-item-text sidebar-link">API guide</a>
+  <a href="./api.html" class="sidebar-item-text sidebar-link active">API Guide</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -152,14 +215,10 @@ ul.task-list{list-style: none;}
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#redx-reusable-data-explorer" id="toc-redx-reusable-data-explorer" class="nav-link active" data-scroll-target="#redx-reusable-data-explorer">1.0 RED‑X (Re‑usable Data Explorer)</a></li>
-  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link" data-scroll-target="#background-and-motivation">2.0 Background and Motivation</a></li>
-  <li><a href="#purpose-goals" id="toc-purpose-goals" class="nav-link" data-scroll-target="#purpose-goals">3.0 Purpose &amp; Goals</a></li>
-  <li><a href="#who-should-use-redx" id="toc-who-should-use-redx" class="nav-link" data-scroll-target="#who-should-use-redx">4.0 Who Should Use RED‑X</a></li>
-  <li><a href="#key-features-in-version-2.0" id="toc-key-features-in-version-2.0" class="nav-link" data-scroll-target="#key-features-in-version-2.0">5.0 Key Features in Version 2.0</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">6.0 Getting Started</a></li>
-  <li><a href="#browse-the-documentation" id="toc-browse-the-documentation" class="nav-link" data-scroll-target="#browse-the-documentation">7.0 Browse the Documentation</a></li>
-  <li><a href="#support-credits" id="toc-support-credits" class="nav-link" data-scroll-target="#support-credits">8.0 Support &amp; Credits</a></li>
+  <li><a href="#api-token" id="toc-api-token" class="nav-link active" data-scroll-target="#api-token">1.0 <strong>API Token</strong></a></li>
+  <li><a href="#api-calls" id="toc-api-calls" class="nav-link" data-scroll-target="#api-calls">2.0 <strong>API Calls</strong></a></li>
+  <li><a href="#fetching-metadata-and-study-details" id="toc-fetching-metadata-and-study-details" class="nav-link" data-scroll-target="#fetching-metadata-and-study-details">3.0 <strong>Fetching Metadata and Study Details</strong></a></li>
+  <li><a href="#downloading-metadata-and-data-files" id="toc-downloading-metadata-and-data-files" class="nav-link" data-scroll-target="#downloading-metadata-and-data-files">4.0 <strong>Downloading metadata and data Files</strong></a></li>
   </ul>
 </nav>
     </div>
@@ -168,12 +227,12 @@ ul.task-list{list-style: none;}
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Welcome to RED‑X</h1>
+<h1 class="title d-none d-lg-block">API Guide</h1>
 </div>
 
 <div>
   <div class="description">
-    Explore historical agri-food research data with enhanced speed, coverage, and visualization.
+    Detailed explanation of how RED-X interacts with the Borealis Dataverse API, including authentication, data fetching, and integration processes.
   </div>
 </div>
 
@@ -187,77 +246,59 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<section id="redx-reusable-data-explorer" class="level3">
-<h3 class="anchored" data-anchor-id="redx-reusable-data-explorer">1.0 RED‑X (Re‑usable Data Explorer)</h3>
-<p>RED-X is a reusable data exploration app that helps users discover historical research data hosted on the Borealis Dataverse.It is a modern web application developed by Agri‑Food Data Canada (ADC) to provide researchers and data managers streamlined access to historical research data. It simplifies access to metadata, visualizes keyword/author relationships, and supports informed reuse of datasets. With version 2.0, RED‑X delivers faster performance, a broader institutional scope, and intuitive visual tools.</p>
-<hr>
-</section>
-<section id="background-and-motivation" class="level3">
-<h3 class="anchored" data-anchor-id="background-and-motivation">2.0 Background and Motivation</h3>
-<p>RED-X was developed in response to a growing need for <strong>efficient access to historical research datasets</strong>—particularly in the agricultural and environmental sciences.</p>
-<p>Over the years, large volumes of valuable data have been collected by researchers at the <strong>University of Guelph</strong>, especially through the <strong>Ontario Agricultural College (OAC)</strong>. However, much of this data remained siloed, inconsistently described, or difficult to navigate, making reuse a significant challenge.</p>
-<p>The motivation behind RED-X came from a <strong>workshop hosted by the University of Guelph in collaboration with Compute Ontario</strong>, which focused on enhancing the <strong>FAIRness</strong> (Findability, Accessibility, Interoperability, and Reusability) of research data. Researchers, librarians, and data specialists at the event emphasized the need for a user-friendly tool that could help bridge the gap between stored data and actionable insight.</p>
-<p>RED-X was thus envisioned as a <strong>web-based metadata and dataset discovery platform</strong>, built using <strong>RShiny</strong>, that connects directly to <strong>Borealis</strong>, a Dataverse-based data repository platform. The app provides both technical and non-technical users with intuitive tools for exploring, visualizing, and filtering datasets, enabling better use of existing research outputs and supporting data-driven collaboration across departments and institutions.</p>
-<hr>
-</section>
-<section id="purpose-goals" class="level3">
-<h3 class="anchored" data-anchor-id="purpose-goals">3.0 Purpose &amp; Goals</h3>
+<p><img src="images/API_flow.png" class="img-fluid" style="width:70.0%"></p>
+<section id="api-token" class="level3">
+<h3 class="anchored" data-anchor-id="api-token">1.0 <strong>API Token</strong></h3>
+<p>To access the Borealis Dataverse API, RED-X uses a secure API token that is user-specific. This token is stored safely using R’s system environment variables and never hard coded in the script. This helps protect the token from unauthorized access.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Api_token <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">"API_TOKEN"</span>) <span class="co"># Retrieve the API token from environment variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>The API token is expected to be stored in your system environment (e.g., .Renviron file). This ensures sensitive credentials are encrypted and hidden from the codebase.</p>
+</blockquote>
+<p><strong>Access Levels</strong></p>
 <ul>
-<li><strong>Unlock historical research insights</strong> — aggregates metadata and datasets from multiple colleges and departments within the Agri-environmental Research Data dataverse in Borealis (Canadian Dataverse Repository).</li>
-<li><strong>Promote FAIR principles</strong> — ensures data is Findable, Accessible, Interoperable, and Reusable, elevating the value of Agri-Food data.</li>
-<li><strong>Enhance discoverability</strong> — presents keyword-author network visualizations and smart filters to reveal connections and trends.</li>
+<li>Public users (without an API token) can only access openly available datasets.</li>
+<li>Authenticated users with an API token may access restricted datasets depending on their permissions.</li>
+<li>Super users (e.g., developers or internal collaborators) may edit the .Renviron file or project settings to include a higher-level API token to unlock more datasets.</li>
 </ul>
-<hr>
+<p>If you are a developer or contributor with elevated access, you can add your token to your environment like so:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In .Renviron (do not share publicly!)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>API_TOKEN<span class="ot">=</span>your<span class="sc">-</span>personal<span class="sc">-</span>token<span class="sc">-</span>here</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>Never share your API token publicly or hardcode it into your project files.</p>
+</blockquote>
 </section>
-<section id="who-should-use-redx" class="level3">
-<h3 class="anchored" data-anchor-id="who-should-use-redx">4.0 Who Should Use RED‑X</h3>
+<section id="api-calls" class="level3">
+<h3 class="anchored" data-anchor-id="api-calls">2.0 <strong>API Calls</strong></h3>
+<p>The app uses a recursive function to explore dataverses and extract dataset metadata. The first step involves calling the API to recursively retrieve all datasets from all sub-dataverses in the repository:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fetch_all_datasets <span class="ot">&lt;-</span> <span class="cf">function</span>(id, <span class="at">layer_titles =</span> <span class="fu">character</span>()) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://borealisdata.ca/api/dataverses/"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This function calls the following endpoint:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>borealisdata.ca<span class="sc">/</span>api<span class="sc">/</span>dataverses<span class="sc">/</span>{dataverse_id}<span class="sc">/</span>contents</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>which returns a list of datasets and nested dataverses. Each dataset is parsed and assigned metadata such as:</p>
 <ul>
-<li><strong>Academic researchers/Scientist</strong> investigating historical trends.<br>
-</li>
-<li><strong>Data librarians and stewards</strong> aiming to manage and share historical datasets.<br>
-</li>
-<li><strong>Graduate students</strong> conducting meta-analyses or literature reviews/data review.</li>
+<li>College (e.g., Ontario Agricultural College)</li>
+<li>Department (e.g., Plant Agriculture)</li>
+<li>Persistent DOI</li>
+<li>Hierarchical structure of the repository</li>
 </ul>
-<hr>
+<p>Each dataverse is traversed recursively to capture all nested content.</p>
 </section>
-<section id="key-features-in-version-2.0" class="level3">
-<h3 class="anchored" data-anchor-id="key-features-in-version-2.0">5.0 Key Features in Version 2.0</h3>
-<ul>
-<li><strong>Optimized loading</strong> through direct database access and 48‑hour auto-refresh.<br>
-</li>
-<li><strong>Network Explorer</strong> — visualize relationships among keywords, authors, institutions, and colleges.</li>
-<li><strong>Explore datasets and metadata</strong>- Navigate historical datasets collected across various colleges and departments, with metadata drawn directly from Borealis.</li>
-<li><strong>Smart Filters</strong> — quickly navigate by college, department, or campus.<br>
-</li>
-<li><strong>Home Tab Summary</strong> — at-a-glance metrics for available studies and datasets.</li>
-<li><strong>View study-level summaries</strong> - Gain insight into each dataset through high-level summary statistics, research objectives, study location, and associated keywords.</li>
-<li><strong>Seamless navigation</strong> — one-click access to Network or Data Explorer interfaces.</li>
-</ul>
-<hr>
+<section id="fetching-metadata-and-study-details" class="level3">
+<h3 class="anchored" data-anchor-id="fetching-metadata-and-study-details">3.0 <strong>Fetching Metadata and Study Details</strong></h3>
+<p>Using the persistentId of each dataset, metadata is extracted in schema.org format and the following endpoints:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="st">"https://borealisdata.ca/api/datasets/export?exporter=schema.org&amp;persistentId={DOI}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This request returns structured metadata in Schema.org JSON format, including: - Study Title - Publication Date - Authors &amp; affiliations - Keywords - Study Objectives - Spatial &amp; temporal coverage - College and Department Name - Citation Info - Funding source - License &amp; DOI - File Listings</p>
+<p>The result is parsed and stored as a tibble for downstream processing</p>
 </section>
-<section id="getting-started" class="level3">
-<h3 class="anchored" data-anchor-id="getting-started">6.0 Getting Started</h3>
-<p>Visit the <strong>Getting Started</strong> section to learn how to access RED‑X, review system requirements, and complete your first data query.</p>
-<hr>
-</section>
-<section id="browse-the-documentation" class="level3">
-<h3 class="anchored" data-anchor-id="browse-the-documentation">7.0 Browse the Documentation</h3>
-<p>Use the sidebar to navigate in sequence:</p>
-<ol type="1">
-<li><a href="./getting-started.html">Getting Started</a><br>
-</li>
-<li><a href="./user-guide.html">User Guide</a><br>
-</li>
-<li><a href="./architecture.html">Architecture</a><br>
-</li>
-<li><a href="./api.html">API</a></li>
-<li><a href="./dev.html">Developer Guide</a></li>
-</ol>
-<hr>
-</section>
-<section id="support-credits" class="level3">
-<h3 class="anchored" data-anchor-id="support-credits">8.0 Support &amp; Credits</h3>
-<p>RED‑X was developed by <strong>Agri‑Food Data Canada</strong> at the University of Guelph with support from the Canada First Research Excellence Fund. Special thanks to <strong>Dr.&nbsp;Busayo Kodaolu</strong> for contributions to the design, development, and documentation of RED‑X Version 2.0. For inquiries or technical support, contact: <a href="mailto:adc@uoguelph.ca">adc@uoguelph.ca</a>.</p>
+<section id="downloading-metadata-and-data-files" class="level3">
+<h3 class="anchored" data-anchor-id="downloading-metadata-and-data-files">4.0 <strong>Downloading metadata and data Files</strong></h3>
+<p>When needed, data files are downloaded directly via this endpoint:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>borealisdata.ca<span class="sc">/</span>api<span class="sc">/</span>access<span class="sc">/</span>dataset<span class="sc">/</span><span class="er">:</span>persistentId<span class="sc">/</span>?persistentId<span class="ot">=</span>{DOI}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Downloaded ZIP archives are unzipped and filtered for: - .csv or .tab files (raw data) - README.txt files (metadata) Only supported file formats are used in the app and are filtered using the function below;</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_filelist</span>(file_list, <span class="at">is_txt =</span> <span class="cn">TRUE</span>)  <span class="co"># Get README.txt files</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_filelist</span>(file_list, <span class="at">is_txt =</span> <span class="cn">FALSE</span>) <span class="co"># Get .csv/.tab files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
