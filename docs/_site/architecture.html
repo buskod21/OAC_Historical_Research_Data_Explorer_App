@@ -222,7 +222,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#fetching-data-from-borealis-using-api-calls" id="toc-fetching-data-from-borealis-using-api-calls" class="nav-link" data-scroll-target="#fetching-data-from-borealis-using-api-calls">3.1 Fetching Data from Borealis using API calls</a>
   <ul class="collapse">
   <li><a href="#api-integration-for-data-fetching" id="toc-api-integration-for-data-fetching" class="nav-link" data-scroll-target="#api-integration-for-data-fetching">1. API Integration for data fetching</a></li>
-  <li><a href="#data-cleaning-transformation-and-storage-in-sqlite-database" id="toc-data-cleaning-transformation-and-storage-in-sqlite-database" class="nav-link" data-scroll-target="#data-cleaning-transformation-and-storage-in-sqlite-database">2. <strong>Data cleaning, transformation and storage in SQLite database</strong></a></li>
+  <li><a href="#data-cleaning-transformation" id="toc-data-cleaning-transformation" class="nav-link" data-scroll-target="#data-cleaning-transformation">2. <strong>Data cleaning, transformation</strong></a></li>
   <li><a href="#storage-in-sqlite-database" id="toc-storage-in-sqlite-database" class="nav-link" data-scroll-target="#storage-in-sqlite-database">3. <strong>Storage in SQLite Database</strong></a></li>
   <li><a href="#scheduled-updates" id="toc-scheduled-updates" class="nav-link" data-scroll-target="#scheduled-updates">4. <strong>Scheduled Updates</strong></a></li>
   </ul></li>
@@ -304,59 +304,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="api-integration-for-data-fetching" class="level5">
 <h5 class="anchored" data-anchor-id="api-integration-for-data-fetching">1. API Integration for data fetching</h5>
 <p>RED-X connects to the <a href="https://guides.dataverse.org/en/latest/api/">Borealis Dataverse API</a> to fetch metadata, datasets, and file information from public and restricted research repositories. This guide provides a high-level overview of how the API is integrated into the app.</p>
-<p>Below is a summary of the key API endpoints used in RED-X, the type of data each provides, and how it contributes to the app’s functionality.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 19%">
-<col style="width: 41%">
-<col style="width: 29%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>API Call Purpose</strong></th>
-<th><strong>Endpoint</strong></th>
-<th><strong>Description</strong></th>
-<th><strong>Information Returned</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Fetch Dataverse Contents</td>
-<td><code>https://borealisdata.ca/api/dataverses/{id}/contents</code></td>
-<td>Retrieves contents of a given dataverse (datasets and sub-dataverses). Used recursively to explore all levels of the dataverse hierarchy.</td>
-<td>Dataset IDs, types (<code>dataset</code>, <code>dataverse</code>), titles, metadata fields</td>
-</tr>
-<tr class="even">
-<td>Fetch Dataverse Metadata</td>
-<td><code>https://borealisdata.ca/api/dataverses/{id}</code></td>
-<td>Retrieves the name of the dataverse and basic metadata. Used for labeling and organizing datasets by layers (e.g., College, Department).</td>
-<td>Dataverse title, alias, description, creation date, and more</td>
-</tr>
-<tr class="odd">
-<td>Fetch Dataset Metadata (Study Info)</td>
-<td><code>https://borealisdata.ca/api/datasets/export?exporter=schema.org&amp;persistentId={DOI}</code></td>
-<td>Retrieves detailed metadata for each dataset using its persistent ID (DOI).</td>
-<td>Study title, publication date, authors, affiliations, keywords, objectives, data license, spatial and temporal info</td>
-</tr>
-<tr class="even">
-<td>Fetch Dataset Files</td>
-<td><code>https://borealisdata.ca/api/access/dataset/:persistentId/?persistentId={DOI}</code></td>
-<td>Downloads the zipped data archive for a dataset.</td>
-<td><code>.tab</code>, <code>.csv</code>, <code>.txt</code>, and other file types packaged in a ZIP archive</td>
-</tr>
-</tbody>
-</table>
+<p>The RED-X app integrates with the Borealis Dataverse API to automatically retrieve and update metadata, authorship information, keywords, DOIs, and associated research files. This integration allows RED-X to stay synchronized with the most recent dataset updates on Borealis, without requiring manual downloads or uploads. It streamlines the process of discovering and exploring historical research data.</p>
+<p>API calls are made using custom R functions that fetch and process the data into a clean, structured format. Access to the API is secured using a user-specific token stored in environment variables, ensuring both security and flexibility. Depending on user permissions (e.g., general user vs.&nbsp;superuser), access levels to certain data may vary.</p>
 <blockquote class="blockquote">
-<p><strong>Note:</strong> API tokens are user-specific and must be kept secure. In this app, the token is accessed from environment variables using <code>Sys.getenv("API_TOKEN")</code> to avoid hardcoding it in the project. Super users with appropriate permissions can access restricted files. Detailed information about the API integrations and functions can be found at the <a href="./api.html">API Guide</a> section.</p>
+<p><strong>Note:</strong> Detailed information about the API integrations and functions can be found at the <a href="./api.html">API Guide</a> section.</p>
 </blockquote>
 </section>
-<section id="data-cleaning-transformation-and-storage-in-sqlite-database" class="level5">
-<h5 class="anchored" data-anchor-id="data-cleaning-transformation-and-storage-in-sqlite-database">2. <strong>Data cleaning, transformation and storage in SQLite database</strong></h5>
+<section id="data-cleaning-transformation" class="level5">
+<h5 class="anchored" data-anchor-id="data-cleaning-transformation">2. <strong>Data cleaning, transformation</strong></h5>
 <p>After data is fetched from the <a href="https://borealisdata.ca/dataverse/ugardr"><strong>Borealis Dataverse</strong></a> via API calls, it undergoes a structured pipeline that cleans, transforms, and stores the information in a <strong>lightweight SQLite database</strong> for fast retrieval and application use.</p>
-<ul>
-<li><strong>Cleaning and Transformation Workflow</strong></li>
-</ul>
 <p>The raw metadata and file listings are parsed and cleaned using a combination of R packages like <code>dplyr</code>, <code>tidyr</code>, and <code>stringr</code>. Below are the main steps:</p>
 <table class="table">
 <colgroup>
@@ -403,7 +359,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_squish</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_to_title</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
 </section>
 <section id="storage-in-sqlite-database" class="level5">
 <h5 class="anchored" data-anchor-id="storage-in-sqlite-database">3. <strong>Storage in SQLite Database</strong></h5>
@@ -494,6 +449,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 
 </main> <!-- /main -->
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('img', {
+    margin: 24,
+    background: '#000',
+    scrollOffset: 0,
+  })
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

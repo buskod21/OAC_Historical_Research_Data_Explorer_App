@@ -131,7 +131,7 @@ The **Metadata tab** helps users explore important background information about 
 *Figure showing what is displayed when metadata is not available*
 
 
-- **Data explorer Tab**
+- **Data exploration Tab**
 
 **View All Datafile**
 This section displays the full contents of the selected dataset in an interactive table. Users can scroll, search, and sort the data to explore the raw values directly within the app. It’s helpful for quickly reviewing the structure of the dataset, spotting missing values, or identifying specific entries.

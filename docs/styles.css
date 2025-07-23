@@ -44,3 +44,11 @@ th {
   background-color: #f2f2f2;
   color: #333;
 }
+
+.medium-zoom-overlay {
+  z-index: 9999 !important;  /* Ensure it's on top of sidebar */
+}
+
+.medium-zoom-image--opened {
+  z-index: 10000 !important; /* Image itself even higher */
+}

@@ -133,7 +133,7 @@ ul.task-list{list-style: none;}
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./api.html" class="sidebar-item-text sidebar-link">API guide</a>
+  <a href="./api.html" class="sidebar-item-text sidebar-link">API Guide</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -293,7 +293,7 @@ Trace authors or departments with similar work and explore their datasets for de
 <p><img src="images/metadata_notfound.png" class="img-fluid" style="width:30.0%"></p>
 <p><em>Figure showing what is displayed when metadata is not available</em></p>
 <ul>
-<li><strong>Data explorer Tab</strong></li>
+<li><strong>Data exploration Tab</strong></li>
 </ul>
 <p><strong>View All Datafile</strong> This section displays the full contents of the selected dataset in an interactive table. Users can scroll, search, and sort the data to explore the raw values directly within the app. It’s helpful for quickly reviewing the structure of the dataset, spotting missing values, or identifying specific entries.</p>
 <p><img src="images/data_exploration.png" class="img-fluid" style="width:50.0%"></p>
@@ -333,6 +333,14 @@ Trace authors or departments with similar work and explore their datasets for de
 </section>
 
 </main> <!-- /main -->
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('img', {
+    margin: 24,
+    background: '#000',
+    scrollOffset: 0,
+  })
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

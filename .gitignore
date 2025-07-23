@@ -58,7 +58,10 @@ vignettes/*.pdf
  
 # pkgdown site
 
-docs/
+# Quarto and docs
+docs/_site/           # Ignore rendered HTML site (can be rebuilt)
+docs/site_libs/       # Quarto JS/CSS dependencies (auto-generated)
+docs/*.html           # Optional: ignore individual rendered HTML files
  
 # translation temp files
 

@@ -91,9 +91,19 @@ Ensure the following software and system requirements are in place:
 - RStudio (recommended IDE)
 - Git (for cloning the repository)
 - Internet access (required for API calls to Borealis)
-- Quarto (if you plan to build the documentation locally)
+- Quarto (optional, for building documentation locally)
+- renv package (used to manage project-specific R dependencies)
 
-> Optional: Install Quarto to build and serve the documentation locally.
+> The RED‑X app uses renv to isolate and restore R package versions. This ensures that collaborators and users can reproduce the environment consistently across systems.
+
+Install renv if not already available:
+
+```r
+install.packages("renv")
+# Once installed, project dependencies will be restored automatically when you run:
+renv::restore()
+
+```
 
 #### 2.2 Clone and Set Up the Project
 
@@ -137,7 +147,7 @@ fetch_all_datasets() – Recursively retrieves datasets and structures metadata 
 fetch_study_details() – Fetches metadata using DOIs
 access_data() – Downloads files associated with each dataset
 
-> View detailed[API guide here](api.qmd)
+> View detailed [API guide here](api.qmd)
 
 ### 4.0 Database and Data Handling
 
