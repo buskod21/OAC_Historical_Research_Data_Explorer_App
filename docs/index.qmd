@@ -64,6 +64,7 @@ Use the sidebar to navigate in sequence:
 3. [System Architecture](architecture.qmd)  
 4. [API Guide](api.qmd) 
 5. [Developer Guide](dev.qmd) 
+6. [Developer Guide](dev.qmd)
 
 ---
 
