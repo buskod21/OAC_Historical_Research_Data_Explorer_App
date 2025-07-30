@@ -23,7 +23,7 @@ website:
           - file: architecture.qmd
           - text: "API Guide"
             file: api.qmd
-          - section: "Developer Guide"
+          - section: "Developer"
             contents:
               - file: dev.qmd
               - section: "Database Schema"

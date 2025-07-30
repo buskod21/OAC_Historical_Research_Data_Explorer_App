@@ -94,12 +94,7 @@ Ensure the following software and system requirements are in place:
 - Quarto (optional, for building documentation locally)
 - renv package (used to manage project-specific R dependencies)
 
-The RED‑X app uses the renv package to isolate and restore specific R package versions. This helps ensure that collaborators and users can consistently reproduce the development environment across different systems.
-
-To learn more, see:
-
-- [Introduction to renv package](https://rstudio.github.io/renv/articles/renv.html)
-- [Why renv matters for reproducibility](https://agrifooddatacanada.ca/ensuring-code-consistency-and-reproducibility-with-r-projects-and-renv/)
+The RED‑X app uses the renv package to isolate and restore specific R package versions. This helps ensure that collaborators and users can consistently reproduce the development environment across different systems. To learn more, see [Introduction to renv package](https://rstudio.github.io/renv/articles/renv.html).
 
 #### 2.2 Clone and Set Up the Project
 
@@ -110,10 +105,11 @@ git clone https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Exp
 # Navigate into the project directory
 cd OAC_Historical_Research_Data_Explorer_App
 ```
+Open the RED-X app as a project in the app directory in RStudio. Read more about [using R studio project here](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects).
 
 #### 2.3 Restoring Project Dependencies in RStudio
 
-Open the RED-X app as a project in the app directory in RStudio. Read more about [using R studio project here](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects). Run the following in the R console to restore dependencies:
+Run the following in the R console to restore dependencies:
 
 ```r
 
@@ -124,6 +120,7 @@ install.packages("renv")
 renv::restore()
 
 ```
+Learn more about [Why renv matters for reproducibility here](https://agrifooddatacanada.ca/ensuring-code-consistency-and-reproducibility-with-r-projects-and-renv/).
 
 #### 2.4 Running the App Locally
 
