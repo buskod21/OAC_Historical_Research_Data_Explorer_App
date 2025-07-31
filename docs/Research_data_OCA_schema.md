@@ -12,10 +12,10 @@ title: Research_data
 1. TOC
 {:toc}
 
-**Name**: RED-X_Research_data  
+**Name**: Research_data  
 **Description**: The research_data.csv dataset is a core component of the RED-X app and serves as the primary cache of research metadata retrieved from the Borealis Dataverse repository. It contains structured metadata for multiple agricultural and environmental studies, including fields such as Title, PublicationDate, Authors, Affiliations, Keywords, and Objectives. Each record is linked to a persistent identifier (DOI), along with institutional context like CollegeName and DepartmentName. These entries support the app’s dynamic search, visualization, and filtering features, and are stored in a local SQLite database to improve performance and reduce redundant API calls.  
 **Classification**: RDF212  
-**Schema package SAID**: EFW_reFg0AVj7epcGZE1vM1HOO555OrEYJ60BAb8aqVq  
+**Schema package SAID**: EG6D6-mYDrAB1iivIHNnhqumcEbWaoyujJmSzlcunc-M  
 
 ## Schema quick view
 
@@ -41,7 +41,7 @@ title: Research_data
 
 | Language | Name | Description |
 | --- | --- | --- |
-| English | RED-X_Research_data | The research_data.csv dataset is a core component of the RED-X app and serves as the primary cache of research metadata retrieved from the Borealis Dataverse repository. It contains structured metadata for multiple agricultural and environmental studies, including fields such as Title, PublicationDate, Authors, Affiliations, Keywords, and Objectives. Each record is linked to a persistent identifier (DOI), along with institutional context like CollegeName and DepartmentName. These entries support the app’s dynamic search, visualization, and filtering features, and are stored in a local SQLite database to improve performance and reduce redundant API calls. |
+| English | Research_data | The research_data.csv dataset is a core component of the RED-X app and serves as the primary cache of research metadata retrieved from the Borealis Dataverse repository. It contains structured metadata for multiple agricultural and environmental studies, including fields such as Title, PublicationDate, Authors, Affiliations, Keywords, and Objectives. Each record is linked to a persistent identifier (DOI), along with institutional context like CollegeName and DepartmentName. These entries support the app’s dynamic search, visualization, and filtering features, and are stored in a local SQLite database to improve performance and reduce redundant API calls. |
 
 ## Language-independent schema details
 
@@ -59,7 +59,7 @@ title: Research_data
 | Funder | false |  | Text | utf-8 | false |  |
 | FileList | false |  | Text | utf-8 | false |  |
 | DataLicense | false |  | Text | utf-8 | false |  |
-| DOI | false |  | Text | utf-8 | true | ^doi:10\\\.\\d\{4,9\}/\[\-\.\_;\(\)/:A\-Z0\-9\]\+$ \(case\-insensitive\) |
+| DOI | false |  | Text | utf-8 | true | ^doi:10\\\.\\d\{4,9\}/\[\-\.\_;\(\)/:Aa\-Zz0\-9\]\+$  |
 | CollegeName | false |  | Text | utf-8 | true |  |
 | DepartmentName | false |  | Text | utf-8 | true |  |
 
@@ -89,19 +89,19 @@ title: Research_data
 
 **Capture base**: EAbbWiPPVbr8eHX9Vy0zghNVzfOtHScaSTjyy39DjNFq
 
-**Bundle**: ECjO3pGNlFd75nB-DIN151wde6qnaBNC1nmjb_4nwTBA
+**Bundle**: EOVr6xIUajAON8if09vlXAvWOhVp8tsbOYUGVMKOYtAc
 
-**Package**: EFW_reFg0AVj7epcGZE1vM1HOO555OrEYJ60BAb8aqVq
+**Package**: EG6D6-mYDrAB1iivIHNnhqumcEbWaoyujJmSzlcunc-M
 
 | Layer | SAID | Type |
 | --- | --- | --- |
 | character_encoding | EFF_SIriN5fvG0dOuqO0ArKsulc-k4jfsz82RFosFbiD | spec/overlays/character_encoding/1.1 |
 | conformance | ECNSoB8U31gxNcyHJfxk6XFDD_9flElc_gH6kCE8IUdB | spec/overlays/conformance/1.1 |
-| format | EKv1pJv6KKNb2WcPTA5V69N_bcM_DmidJ_gxUVMg9mYP | spec/overlays/format/1.1 |
+| format | EFr_apY3LgDd9Zyns3alJUVyLxapP5NSKsphb7_z_a79 | spec/overlays/format/1.1 |
 | information (eng) | EO9iqg0aCp32hsVB7qLRRQ6EwgTwe-FXhrBhWDO_v8c8 | spec/overlays/information/1.1 |
 | label (eng) | EEQSRNYUSLktOqYLha2udTs5HzBmWjpl3hNF0ylrmlV- | spec/overlays/label/1.1 |
-| meta (eng) | EN35Hea2yu8UG7S296iJgiPmRHCtzYGO0pHD4gX1SFs3 | spec/overlays/meta/1.1 |
+| meta (eng) | EAyt9CmbKnc_xBwJ1TqN6nnjDYFhCd5pbgw1-peUkIQR | spec/overlays/meta/1.1 |
 | ordering | EG4ysAjmw2iv6NK7OhkHtV9167W5qMimERnJl9OgKoeB | community/overlays/adc/ordering/1.1 |
 
-**Date created**: 2025-07-29 04:29:03
+**Date created**: 2025-07-31 05:29:10
 

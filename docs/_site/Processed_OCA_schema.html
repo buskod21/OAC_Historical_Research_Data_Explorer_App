@@ -135,14 +135,9 @@ ul.task-list{list-style: none;}
   <a href="./api.html" class="sidebar-item-text sidebar-link">API Guide</a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
-  </div>
-</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Database Schema</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Developer</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -150,7 +145,20 @@ ul.task-list{list-style: none;}
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./RED-X_Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
+  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Database Schema</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -178,6 +186,23 @@ ul.task-list{list-style: none;}
   <a href="./Processed_OCA_schema.html" class="sidebar-item-text sidebar-link active">Processed_studies</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Update_info_OCA_schema.html" class="sidebar-item-text sidebar-link">Update_info</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./college_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">College_colors</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Department_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">Department_colors</a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
       </ul>
@@ -237,7 +262,7 @@ ul.task-list{list-style: none;}
 <p><strong>Name</strong>: Processed datasets in RED-X<br>
 <strong>Description</strong>: The processed_studies file contains a list of DOIs (Digital Object Identifiers) that have already been processed and cached within the RED-X app. It plays a crucial role in optimizing performance by allowing the application to skip reprocessing datasets that are already up-to-date. This helps reduce API load and improve app speed, especially when checking for new or updated studies from the Borealis Dataverse. In essence, it acts as a tracking list or checkpoint registry that the caching function (cache_raw_data()) uses to compare and filter out redundant operations.<br>
 <strong>Classification</strong>: RDF212<br>
-<strong>Schema package SAID</strong>: EIqXNdirNPd_vxjcyYXHKXblEOt21KKVb46LKohqg7jf</p>
+<strong>Schema package SAID</strong>: EEew5fwKdA3zkz_Y8CMSDnBFdJRAwZYGiuOtQhlypCnp</p>
 </section>
 <section id="schema-quick-view" class="level2">
 <h2 class="anchored" data-anchor-id="schema-quick-view">Schema quick view</h2>
@@ -318,7 +343,7 @@ ul.task-list{list-style: none;}
 <td>Numeric</td>
 <td>utf-8</td>
 <td>true</td>
-<td>^10\.\d{4,9}/[-._;()/:A-Z0-9]+$ (case-insensitive)</td>
+<td>^doi:10\.\d{4,9}/[-._;()/:Aa-Zz0-9]+$</td>
 </tr>
 </tbody>
 </table>
@@ -356,8 +381,8 @@ ul.task-list{list-style: none;}
 <section id="schema-saids" class="level2">
 <h2 class="anchored" data-anchor-id="schema-saids">Schema SAIDs</h2>
 <p><strong>Capture base</strong>: EBcWQH7PjQw6JiKG0X7FMFeUgMNv3SIstRf4MxhYzjeS</p>
-<p><strong>Bundle</strong>: ELcSYberEhPfMoYPgzUvX952e-G90g-8zJYCaY_US-5s</p>
-<p><strong>Package</strong>: EIqXNdirNPd_vxjcyYXHKXblEOt21KKVb46LKohqg7jf</p>
+<p><strong>Bundle</strong>: EFCP0jgcA_VD-jSMX9Gt4NuJ8eQrzuG7CHnzM9SgGtwW</p>
+<p><strong>Package</strong>: EEew5fwKdA3zkz_Y8CMSDnBFdJRAwZYGiuOtQhlypCnp</p>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -384,7 +409,7 @@ ul.task-list{list-style: none;}
 </tr>
 <tr class="odd">
 <td>format</td>
-<td>EE9uIiziOm9eKomRq1XF-Zzr1Al8Zt23YgMoN6ERAmuv</td>
+<td>EGcL2BlrJ835nNSF1EMXHarKYxuZUkw0kQhROK7Y1u-m</td>
 <td>spec/overlays/format/1.1</td>
 </tr>
 <tr class="even">
@@ -409,7 +434,7 @@ ul.task-list{list-style: none;}
 </tr>
 </tbody>
 </table>
-<p><strong>Date created</strong>: 2025-07-29 04:34:21</p>
+<p><strong>Date created</strong>: 2025-07-30 06:44:38</p>
 
 
 </section>
@@ -622,6 +647,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return popup.innerHTML;
     });
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->

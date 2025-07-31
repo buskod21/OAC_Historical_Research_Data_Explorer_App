@@ -15,7 +15,7 @@ title: Keyword Node
 **Name**: Keyword Node  
 **Description**: The keywords_node dataset is used in the RED-X application to represent keyword nodes within the research network visualization. Each row corresponds to a unique keyword found in the research metadata, along with attributes that help categorize, color-code, and display connections in the app’s interactive network plot. The network allows users to explore how specific keywords are distributed across departments, colleges, and over time, offering a visual overview of research trends and thematic overlaps. In the app, each keyword node is connected to others through shared appearances in the same studies (captured in a separate keywords_edge.csv file). When a user clicks on a node, the app highlights related keywords and reveals metadata for associated studies. The node color represents its affiliated college or department, making it easier to see institutional patterns. This dataset underpins the keyword filtering functionality in RED-X and supports discovery of related research themes through visual exploration.  
 **Classification**: RDF212  
-**Schema package SAID**: EDxrdnt5wTthT326SLIDY9tcbbwtX8YnAZ1owZPBcTZ6  
+**Schema package SAID**: EIQeu3xRmf0uz6xR2rFekFRQVrN2x0ub5CI4DIfLcEk8  
 
 ## Schema quick view
 
@@ -50,10 +50,10 @@ title: Keyword Node
 | DepartmentColor | false |  | Text | utf-8 | true | ^\#\(?:\[0\-9a\-fA\-F\]\{3\}\|\[0\-9a\-fA\-F\]\{6\}\)$ |
 | CollegeName | false |  | Text | utf-8 | true |  |
 | DepartmentName | false |  | Text | utf-8 | true |  |
-| study_count | false |  | Numeric |  | true |  |
+| study_count | false |  | Numeric |  | true | ^\\d\+$ |
 | year_range | false |  | Text | utf-8 | true |  |
-| DOI | false |  | Text | utf-8 | true | ^10\\\.\\d\{4,9\}/\[\-\.\_;\(\)/:A\-Z0\-9\]\+$  |
-| id | false |  | Numeric |  | true |  |
+| DOI | false |  | Text | utf-8 | true | ^doi:10\\\.\\d\{4,9\}/\[\-\.\_;\(\)/:Aa\-Zz0\-9\]\+$ |
+| id | false |  | Numeric |  | true | ^\\d\+$ |
 
 ## Language-specific schema details
 
@@ -77,19 +77,19 @@ title: Keyword Node
 
 **Capture base**: EErvygNKDSiSJlIyI1Xr5ptemkmRGXViH2nPYmU9TuYM
 
-**Bundle**: ENC8apowSVwiYISlCLR85-PkNYZfni-cf-EvqYjWHWHv
+**Bundle**: EAJNbuReH5ndB3zgGyBAMQEglFEe-bPEHF2qubsGbU8N
 
-**Package**: EDxrdnt5wTthT326SLIDY9tcbbwtX8YnAZ1owZPBcTZ6
+**Package**: EIQeu3xRmf0uz6xR2rFekFRQVrN2x0ub5CI4DIfLcEk8
 
 | Layer | SAID | Type |
 | --- | --- | --- |
 | character_encoding | EId4qK9jG2jiI_gDciiBUKVv4vd26tevKxMo2v1te5oy | spec/overlays/character_encoding/1.1 |
 | conformance | ECQzJ3PfDLsCtqaFHm3uVPs9uQIGzuRkLYR2YHRiTtuP | spec/overlays/conformance/1.1 |
-| format | EFwz0qDmjbDN3lAgLHcayJ22A5Q61q0uKbBuCifF-4Nv | spec/overlays/format/1.1 |
+| format | EPJeUB-M-d9za2yW8ST6gbVDbBeAYWZHdbY8FUIW_qHZ | spec/overlays/format/1.1 |
 | information (eng) | EGTltT9R6zYsr1N17beLBCrMZ9ffJuKKSIf9HaRBRnDV | spec/overlays/information/1.1 |
 | label (eng) | EIlTOVOjITxYQWmtTQIuwQ4ZEA9WNWF9vQBthYtrRP00 | spec/overlays/label/1.1 |
 | meta (eng) | EFu1lA89ounWzPVa6XRyPwhOle06-XzyNSoyrlgp7Y5_ | spec/overlays/meta/1.1 |
 | ordering | EP6PBzIq0meI-CrbjYiJ0zqO6cb5rvDBo0DrEP_4mzEY | community/overlays/adc/ordering/1.1 |
 
-**Date created**: 2025-07-29 03:34:45
+**Date created**: 2025-07-31 05:31:16
 

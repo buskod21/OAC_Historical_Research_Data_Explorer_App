@@ -29,7 +29,7 @@ website:
               - section: "Database Schema"
                 contents: 
                   - text: "Research_data"
-                    file: RED-X_Research_data_OCA_schema.md
+                    file: Research_data_OCA_schema.md
                   - text: "Keywords_node"
                     file: Keyword_node_OCA_schema.md
                   - text: "Keywords_edge"

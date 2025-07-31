@@ -135,14 +135,9 @@ ul.task-list{list-style: none;}
   <a href="./api.html" class="sidebar-item-text sidebar-link">API Guide</a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
-  </div>
-</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Database Schema</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Developer</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -150,7 +145,20 @@ ul.task-list{list-style: none;}
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./RED-X_Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
+  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Database Schema</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -168,6 +176,33 @@ ul.task-list{list-style: none;}
   <a href="./Authors_node_OCA_schema.html" class="sidebar-item-text sidebar-link active">Authors_node</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Authors_edge_OCA_schema.html" class="sidebar-item-text sidebar-link">Authors_edge</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Processed_OCA_schema.html" class="sidebar-item-text sidebar-link">Processed_studies</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Update_info_OCA_schema.html" class="sidebar-item-text sidebar-link">Update_info</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./college_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">College_colors</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Department_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">Department_colors</a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
       </ul>
@@ -226,7 +261,7 @@ ul.task-list{list-style: none;}
 </ol>
 <p><strong>Name</strong>: Authors Nodes<br>
 <strong>Description</strong>: The authors_node dataset is part of the RED-X application's network visualization layer. It represents author nodes in the research network, where each row corresponds to an individual author or research group identified in the study metadata. The dataset includes details such as the author name, the number of studies they contributed to, associated departments and colleges, color assignments for visualization, and the range of years during which their work was published. This dataset enables users to interactively explore the relationships and collaboration patterns among authors across different departments and institutions.<br>
-<strong>Schema package SAID</strong>: EHMuETFqvT5txnZ0msn8ul0oIWQdt0fUC1Xgf65tZ8pp</p>
+<strong>Schema package SAID</strong>: EKO783UxISz24bqUFtZkmPYh3JpSIfriG2CeY75XKCq9</p>
 </section>
 <section id="schema-quick-view" class="level2">
 <h2 class="anchored" data-anchor-id="schema-quick-view">Schema quick view</h2>
@@ -438,7 +473,7 @@ ul.task-list{list-style: none;}
 <td>Text</td>
 <td>utf-8</td>
 <td>true</td>
-<td>^10\.\d{4,9}/[-._;()/:A-Z0-9]+$</td>
+<td>^doi:10\.\d{4,9}/[-._;()/:Aa-Zz0-9]+$</td>
 </tr>
 <tr class="odd">
 <td>id</td>
@@ -545,8 +580,8 @@ ul.task-list{list-style: none;}
 <section id="schema-saids" class="level2">
 <h2 class="anchored" data-anchor-id="schema-saids">Schema SAIDs</h2>
 <p><strong>Capture base</strong>: EO57nBzzNO8FR1UjLfUtcUJDuFDG8dBUFWPsS5g0Cuqq</p>
-<p><strong>Bundle</strong>: EPyNICJxaItiYc6k8hZL8nCfZLHOohGgqc9gObmWtc-H</p>
-<p><strong>Package</strong>: EHMuETFqvT5txnZ0msn8ul0oIWQdt0fUC1Xgf65tZ8pp</p>
+<p><strong>Bundle</strong>: EMmbDVCzAnMK3wKRjDH0gNAzQDJFOdo6DuROPPWU_uLf</p>
+<p><strong>Package</strong>: EKO783UxISz24bqUFtZkmPYh3JpSIfriG2CeY75XKCq9</p>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -573,7 +608,7 @@ ul.task-list{list-style: none;}
 </tr>
 <tr class="odd">
 <td>format</td>
-<td>EAYVuoDIlbY57RCEEXY7LeI4cpnkMps4Y5MRhgGJI3IZ</td>
+<td>EN6Yx-pu1_UFyLofdxe_zycsaTC9d-7gSHj-AcK2U9s1</td>
 <td>spec/overlays/format/1.1</td>
 </tr>
 <tr class="even">
@@ -598,7 +633,7 @@ ul.task-list{list-style: none;}
 </tr>
 </tbody>
 </table>
-<p><strong>Date created</strong>: 2025-07-29 04:07:36</p>
+<p><strong>Date created</strong>: 2025-07-31 05:26:04</p>
 
 
 </section>
@@ -811,6 +846,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return popup.innerHTML;
     });
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->

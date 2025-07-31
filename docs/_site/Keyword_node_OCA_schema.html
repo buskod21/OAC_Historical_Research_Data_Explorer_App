@@ -135,14 +135,9 @@ ul.task-list{list-style: none;}
   <a href="./api.html" class="sidebar-item-text sidebar-link">API Guide</a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
-  </div>
-</li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Database Schema</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Developer</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -150,7 +145,20 @@ ul.task-list{list-style: none;}
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./RED-X_Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
+  <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Database Schema</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -168,6 +176,33 @@ ul.task-list{list-style: none;}
   <a href="./Authors_node_OCA_schema.html" class="sidebar-item-text sidebar-link">Authors_node</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Authors_edge_OCA_schema.html" class="sidebar-item-text sidebar-link">Authors_edge</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Processed_OCA_schema.html" class="sidebar-item-text sidebar-link">Processed_studies</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Update_info_OCA_schema.html" class="sidebar-item-text sidebar-link">Update_info</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./college_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">College_colors</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Department_colors_OCA_schema.html" class="sidebar-item-text sidebar-link">Department_colors</a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
       </ul>
@@ -227,7 +262,7 @@ ul.task-list{list-style: none;}
 <p><strong>Name</strong>: Keyword Node<br>
 <strong>Description</strong>: The keywords_node dataset is used in the RED-X application to represent keyword nodes within the research network visualization. Each row corresponds to a unique keyword found in the research metadata, along with attributes that help categorize, color-code, and display connections in the app’s interactive network plot. The network allows users to explore how specific keywords are distributed across departments, colleges, and over time, offering a visual overview of research trends and thematic overlaps. In the app, each keyword node is connected to others through shared appearances in the same studies (captured in a separate keywords_edge.csv file). When a user clicks on a node, the app highlights related keywords and reveals metadata for associated studies. The node color represents its affiliated college or department, making it easier to see institutional patterns. This dataset underpins the keyword filtering functionality in RED-X and supports discovery of related research themes through visual exploration.<br>
 <strong>Classification</strong>: RDF212<br>
-<strong>Schema package SAID</strong>: EDxrdnt5wTthT326SLIDY9tcbbwtX8YnAZ1owZPBcTZ6</p>
+<strong>Schema package SAID</strong>: EIQeu3xRmf0uz6xR2rFekFRQVrN2x0ub5CI4DIfLcEk8</p>
 </section>
 <section id="schema-quick-view" class="level2">
 <h2 class="anchored" data-anchor-id="schema-quick-view">Schema quick view</h2>
@@ -421,7 +456,7 @@ ul.task-list{list-style: none;}
 <td>Numeric</td>
 <td></td>
 <td>true</td>
-<td></td>
+<td>^\d+$</td>
 </tr>
 <tr class="odd">
 <td>year_range</td>
@@ -439,7 +474,7 @@ ul.task-list{list-style: none;}
 <td>Text</td>
 <td>utf-8</td>
 <td>true</td>
-<td>^10\.\d{4,9}/[-._;()/:A-Z0-9]+$</td>
+<td>^doi:10\.\d{4,9}/[-._;()/:Aa-Zz0-9]+$</td>
 </tr>
 <tr class="odd">
 <td>id</td>
@@ -448,7 +483,7 @@ ul.task-list{list-style: none;}
 <td>Numeric</td>
 <td></td>
 <td>true</td>
-<td></td>
+<td>^\d+$</td>
 </tr>
 </tbody>
 </table>
@@ -546,8 +581,8 @@ ul.task-list{list-style: none;}
 <section id="schema-saids" class="level2">
 <h2 class="anchored" data-anchor-id="schema-saids">Schema SAIDs</h2>
 <p><strong>Capture base</strong>: EErvygNKDSiSJlIyI1Xr5ptemkmRGXViH2nPYmU9TuYM</p>
-<p><strong>Bundle</strong>: ENC8apowSVwiYISlCLR85-PkNYZfni-cf-EvqYjWHWHv</p>
-<p><strong>Package</strong>: EDxrdnt5wTthT326SLIDY9tcbbwtX8YnAZ1owZPBcTZ6</p>
+<p><strong>Bundle</strong>: EAJNbuReH5ndB3zgGyBAMQEglFEe-bPEHF2qubsGbU8N</p>
+<p><strong>Package</strong>: EIQeu3xRmf0uz6xR2rFekFRQVrN2x0ub5CI4DIfLcEk8</p>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -574,7 +609,7 @@ ul.task-list{list-style: none;}
 </tr>
 <tr class="odd">
 <td>format</td>
-<td>EFwz0qDmjbDN3lAgLHcayJ22A5Q61q0uKbBuCifF-4Nv</td>
+<td>EPJeUB-M-d9za2yW8ST6gbVDbBeAYWZHdbY8FUIW_qHZ</td>
 <td>spec/overlays/format/1.1</td>
 </tr>
 <tr class="even">
@@ -599,7 +634,7 @@ ul.task-list{list-style: none;}
 </tr>
 </tbody>
 </table>
-<p><strong>Date created</strong>: 2025-07-29 03:34:45</p>
+<p><strong>Date created</strong>: 2025-07-31 05:31:16</p>
 
 
 </section>
@@ -812,6 +847,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return popup.innerHTML;
     });
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
