@@ -51,7 +51,7 @@ RED-X was thus envisioned as a **web-based metadata and dataset discovery platfo
 
 ### 6.0 Getting Started
 
-Visit the **Getting Started** section to learn how to access RED‑X, review system requirements, and complete your first data query.
+Visit the [**Getting Started**](getting-started.qmd) to launch the RED‑X app, explore its structure, understand system requirements, and get a quick overview of how to navigate and begin using its core features.
 
 ---
 
@@ -61,9 +61,10 @@ Use the sidebar to navigate in sequence:
 
 1. [Getting Started](getting-started.qmd)  
 2. [User Guide](user-guide.qmd)  
-3. [Architecture](architecture.qmd)  
-4. [API](api.qmd) 
+3. [System Architecture](architecture.qmd)  
+4. [API Guide](api.qmd) 
 5. [Developer Guide](dev.qmd) 
+6. [Developer Guide](dev.qmd)
 
 ---
 

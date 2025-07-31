@@ -43,16 +43,12 @@ Data originates from the [**Borealis Dataverse**](https://borealisdata.ca/datave
 
 RED-X connects to the [Borealis Dataverse API](https://guides.dataverse.org/en/latest/api/) to fetch metadata, datasets, and file information from public and restricted research repositories. This guide provides a high-level overview of how the API is integrated into the app.
 
-Below is a summary of the key API endpoints used in RED-X, the type of data each provides, and how it contributes to the app's functionality.
+The RED-X app integrates with the Borealis Dataverse API to automatically retrieve and update metadata, authorship information, keywords, DOIs, and associated research files. This integration allows RED-X to stay synchronized with the most recent dataset updates on Borealis, without requiring manual downloads or uploads. It streamlines the process of discovering and exploring historical research data.
 
-| **API Call Purpose**                 | **Endpoint**         | **Description**     | **Information Returned**                                                                                              |
-|--------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Fetch Dataverse Contents             | `https://borealisdata.ca/api/dataverses/{id}/contents`                      | Retrieves contents of a given dataverse (datasets and sub-dataverses). Used recursively to explore all levels of the dataverse hierarchy.                           | Dataset IDs, types (`dataset`, `dataverse`), titles, metadata fields                                                  |
-| Fetch Dataverse Metadata             | `https://borealisdata.ca/api/dataverses/{id}`                               | Retrieves the name of the dataverse and basic metadata. Used for labeling and organizing datasets by layers (e.g., College, Department).                           | Dataverse title, alias, description, creation date, and more                                                          |
-| Fetch Dataset Metadata (Study Info)  | `https://borealisdata.ca/api/datasets/export?exporter=schema.org&persistentId={DOI}` | Retrieves detailed metadata for each dataset using its persistent ID (DOI).                                                                                         | Study title, publication date, authors, affiliations, keywords, objectives, data license, spatial and temporal info   |
-| Fetch Dataset Files                  | `https://borealisdata.ca/api/access/dataset/:persistentId/?persistentId={DOI}`       | Downloads the zipped data archive for a dataset.                                                                                                                     | `.tab`, `.csv`, `.txt`, and other file types packaged in a ZIP archive                                                |
+API calls are made using custom R functions that fetch and process the data into a clean, structured format. Access to the API is secured using a user-specific token stored in environment variables, ensuring both security and flexibility. Depending on user permissions (e.g., general user vs. superuser), access levels to certain data may vary.
 
-> **Note:** API tokens are user-specific and must be kept secure. In this app, the token is accessed from environment variables using `Sys.getenv("API_TOKEN")` to avoid hardcoding it in the project. Super users with appropriate permissions can access restricted files. Detailed information about the API integrations and functions can be found at the [API Guide](api.qmd) section.
+
+> **Note:** Detailed information about the API integrations and functions can be found at the [API Guide](api.qmd) section.
 
 
 ##### 2. **Data cleaning, transformation**

@@ -133,7 +133,7 @@ ul.task-list{list-style: none;}
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./api.html" class="sidebar-item-text sidebar-link">API guide</a>
+  <a href="./api.html" class="sidebar-item-text sidebar-link">API Guide</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -141,6 +141,46 @@ ul.task-list{list-style: none;}
   <a href="./dev.html" class="sidebar-item-text sidebar-link">Developer Guide</a>
   </div>
 </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Database Schema</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./RED-X_Research_data_OCA_schema.html" class="sidebar-item-text sidebar-link">Research_data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Keyword_node_OCA_schema.html" class="sidebar-item-text sidebar-link">Keywords_node</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Keyword_edge_OCA_schema.html" class="sidebar-item-text sidebar-link">Keywords_edge</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Authors_node_OCA_schema.html" class="sidebar-item-text sidebar-link">Authors_node</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Authors_edge_OCA_schema.html" class="sidebar-item-text sidebar-link">Authors_edge</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Processed_OCA_schema.html" class="sidebar-item-text sidebar-link">Processed_studies</a>
+  </div>
+</li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -192,13 +232,15 @@ ul.task-list{list-style: none;}
 
 <section id="background" class="level3">
 <h3 class="anchored" data-anchor-id="background">1.0 Background</h3>
-<p>RED-X is a web-based application built with R Shiny and hosted on <a href="https://www.shinyapps.io">shinyapps.io</a>. It is designed to help researchers explore historical research data. RED-X connects to the <a href="https://borealisdata.ca/dataverse/ugardr">Borealis Dataverse</a> via API. The retrieved data/information is stored in an embedded relational database to store and retrieve data efficiently. It updates automatically every 48 hours to provide an up-to-date metadata and research data.</p>
+<p>RED-X is a web-based application built with R Shiny and hosted on <a href="https://www.shinyapps.io">shinyapps.io</a>. It is designed to help researchers explore historical research data. RED-X connects to the <a href="https://borealisdata.ca/dataverse/ugardr">Borealis Dataverse</a> via Application Programming Interface (API). The retrieved data/information is stored in an embedded relational database to store and retrieve data efficiently. It updates automatically every 48 hours to provide an up-to-date metadata and research data.</p>
 <hr>
 </section>
 <section id="accessing-red-x" class="level3">
 <h3 class="anchored" data-anchor-id="accessing-red-x">2.0 Accessing RED-X</h3>
-<p>You can access the app directly through the following link: 🔗 <strong><a href="https://agrifooddatacanada.shinyapps.io/RED-X/">Launch RED-X</a></strong><br>
-&gt; <strong>Note:</strong> No installation or login is required. RED-X is optimized for desktop browsers. Mobile functionality is limited.</p>
+<p>You can access the app directly through the following link: 🔗 <strong><a href="https://agrifooddatacanada.shinyapps.io/RED-X/">Launch RED-X</a></strong></p>
+<blockquote class="blockquote">
+<p><strong>Note</strong> : No installation or login is required. RED-X is optimized for desktop browsers. Mobile functionality is limited.</p>
+</blockquote>
 <hr>
 </section>
 <section id="system-requirements" class="level3">
@@ -221,7 +263,7 @@ ul.task-list{list-style: none;}
 <li>Number of downloadable files</li>
 </ul>
 <p><img src="images/RED-X_HOME.png" class="img-fluid"></p>
-<p>It also introduces users to the two primary interactive tools:</p>
+<p>It also introduces users to the two primary interactive tools like:</p>
 <section id="network-explorer" class="level4">
 <h4 class="anchored" data-anchor-id="network-explorer">4.1 Network Explorer</h4>
 <p>This tab allows you to explore <strong>relationships between keywords, authors, departments, and colleges</strong> using an interactive network graph. It’s designed to support discovery, literature and data review, and collaboration tracking.</p>
@@ -236,7 +278,7 @@ ul.task-list{list-style: none;}
 </section>
 <section id="data-refresh-cycle" class="level3">
 <h3 class="anchored" data-anchor-id="data-refresh-cycle">5.0 Data Refresh Cycle</h3>
-<p>RED-X connects to the <strong>Borealis Dataverse</strong> using an API. Metadata and datasets are updated every 48 hours to ensure access to the most recent content available from contributing institutions.</p>
+<p>RED-X connects to the <strong>Borealis Dataverse</strong> using an API calls. Metadata and datasets are updated every 48 hours to ensure access to the most recent content available from contributing institutions.</p>
 <p><img src="images/updates.jpg" class="img-fluid" style="width:50.0%"></p>
 <hr>
 </section>
@@ -244,19 +286,27 @@ ul.task-list{list-style: none;}
 <h3 class="anchored" data-anchor-id="next-steps">6.0 Next Steps</h3>
 <ul>
 <li>Read the <a href="./user-guide.html">User Guide</a> for more detailed walkthroughs.</li>
-<li>View the <a href="./architecture.html">Architecture</a> to understand the backend and data flow.</li>
+<li>View the <a href="./architecture.html">System Architecture</a> to understand the backend and data flow.</li>
 <li>Contact <a href="mailto:adc@uoguelph.ca">adc@uoguelph.ca</a> for questions or support.</li>
 </ul>
 <hr>
 </section>
 <section id="want-to-contribute" class="level3">
 <h3 class="anchored" data-anchor-id="want-to-contribute">7.0 Want to Contribute?</h3>
-<p>If you’re interested in the development process or contributing to the project, see the <a href="./dev.html">Developer Guide</a> or <a href="contributing.qmd">Contributing</a> section.</p>
+<p>If you’re interested in the development process or contributing to the project, see the <a href="./dev.html">Developer Guide</a>.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('img', {
+    margin: 24,
+    background: '#000',
+    scrollOffset: 0,
+  })
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

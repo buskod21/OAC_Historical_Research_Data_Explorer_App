@@ -23,11 +23,35 @@ website:
           - file: architecture.qmd
           - text: "API Guide"
             file: api.qmd
-          - text: "Developer Guide"
-            file: dev.qmd
+          - section: "Developer"
+            contents:
+              - file: dev.qmd
+              - section: "Database Schema"
+                contents: 
+                  - text: "Research_data"
+                    file: Research_data_OCA_schema.md
+                  - text: "Keywords_node"
+                    file: Keyword_node_OCA_schema.md
+                  - text: "Keywords_edge"
+                    file: Keyword_edge_OCA_schema.md
+                  - text: "Authors_node"
+                    file: Authors_node_OCA_schema.md
+                  - text: "Authors_edge"
+                    file: Authors_edge_OCA_schema.md 
+                  - text: "Processed_studies"
+                    file: Processed_OCA_schema.md
+                  - text: "Update_info"
+                    file: Update_info_OCA_schema.md
+                  - text: "College_colors"
+                    file: college_colors_OCA_schema.md
+                  - text: "Department_colors"
+                    file: Department_colors_OCA_schema.md
 
 format:
   html:
+    link-external-newwindow: true
+    include-after-body: 
+      - zoom.js
     number-sections: false
     theme:
       light: flatly

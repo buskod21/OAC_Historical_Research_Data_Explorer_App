@@ -91,9 +91,10 @@ Ensure the following software and system requirements are in place:
 - RStudio (recommended IDE)
 - Git (for cloning the repository)
 - Internet access (required for API calls to Borealis)
-- Quarto (if you plan to build the documentation locally)
+- Quarto (optional, for building documentation locally)
+- renv package (used to manage project-specific R dependencies)
 
-> Optional: Install Quarto to build and serve the documentation locally.
+The RED‑X app uses the renv package to isolate and restore specific R package versions. This helps ensure that collaborators and users can consistently reproduce the development environment across different systems. To learn more, see [Introduction to renv package](https://rstudio.github.io/renv/articles/renv.html).
 
 #### 2.2 Clone and Set Up the Project
 
@@ -104,16 +105,24 @@ git clone https://github.com/agrifooddatacanada/OAC_Historical_Research_Data_Exp
 # Navigate into the project directory
 cd OAC_Historical_Research_Data_Explorer_App
 ```
-Open the project in RStudio, then run the following in the R console to restore dependencies:
+Open the RED-X app as a project in the app directory in RStudio. Read more about [using R studio project here](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects).
+
+#### 2.3 Restoring Project Dependencies in RStudio
+
+Run the following in the R console to restore dependencies:
 
 ```r
 
-# Restore packages from renv.lock
+# install.packages("renv") if not already installed
+install.packages("renv")
+
+# Once installed, project dependencies will be restored automatically from renv.lock when you run:
 renv::restore()
 
 ```
+Learn more about [Why renv matters for reproducibility here](https://agrifooddatacanada.ca/ensuring-code-consistency-and-reproducibility-with-r-projects-and-renv/).
 
-#### 2.3 Running the App Locally
+#### 2.4 Running the App Locally
 
 To launch the RED-X app from your R console:
 
@@ -137,7 +146,7 @@ fetch_all_datasets() – Recursively retrieves datasets and structures metadata 
 fetch_study_details() – Fetches metadata using DOIs
 access_data() – Downloads files associated with each dataset
 
-> View detailed[API guide here](api.qmd)
+> View detailed [API guide here](api.qmd)
 
 ### 4.0 Database and Data Handling
 
@@ -157,6 +166,8 @@ Cleaned data is cached in Explorer_cache.db using the DBI and RSQLite packages. 
 - Main study metadata (research_data)
 - Nodes and edges for keywords and authors
 - Update timestamp (update_info)
+
+> See the [Database Schemas](RED-X_Research_data_OCA_schema.md) under the Developer Guide for table details and structure.
 
 ##### 4. Automatic Updates
 Every 48 hours, the system checks for new or modified DOIs and appends only new records—preserving performance and avoiding duplication.
